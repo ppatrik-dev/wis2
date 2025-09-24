@@ -1,0 +1,49 @@
+# Logs
+*.log
+
+# macOS
+.DS_Store
+
+# Environment files
+.env
+.env.backup
+.env.production
+
+# IDE / Editor
+.phpactor.json
+.phpunit.result.cache
+/.fleet
+/.idea
+/.nova
+/.phpunit.cache
+/.vscode
+/.zed
+
+# Composer / Auth
+/auth.json
+/vendor
+
+# NPM / Frontend
+/node_modules
+/public/build
+/public/hot
+/public/storage
+
+# Storage & cache
+/storage/*.key
+/storage/pail
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/logs/*
+
+# Homestead
+Homestead.json
+Homestead.yaml
+
+# OS / Misc
+Thumbs.db
+
+# Sail / Docker
+docker-compose.override.yml
+/.docker
