@@ -1,4 +1,5 @@
 {
     "User": true,
-    "Course": true
+    "Course": true,
+    "Term": true
 }
