@@ -6,10 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Modules\User\Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\MediaLibrary\HasMedia; // Add this import if using Spatie Media Library
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class User extends Model {
-    use HasFactory, SoftDeletes;
+class User extends Authenticatable implements HasMedia {
+    use HasFactory, SoftDeletes, InteractsWithMedia;
 
+    /**
+     * The table associated with the model.
+     *
+     * @var string|null
+     */
+    protected $table = 'users';
     /**
      * The attributes that are mass assignable.
      */
@@ -26,8 +36,20 @@ class User extends Model {
     // {
     //     // return UserFactory::new();
     // }
+    /**
+     * Accessor for full name
+     */
     public function getFullNameAttribute(): string {
         return "{$this->first_name} {$this->last_name}";
+    }
+    /**
+     * Defining media collection for user's avatar
+     */
+    public function registerMediaCollections(): void {
+        $this->addMediaCollection('avatar')
+            ->singleFile()
+            ->useDisk('public')
+            ->usePath('avatars');;
     }
     protected function casts(): array {
         return [
