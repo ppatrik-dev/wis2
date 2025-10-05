@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# chmod +x sail.sh
 # Go to project root
 cd "$(dirname "$0")"
 
