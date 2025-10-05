@@ -18,8 +18,9 @@ return new class extends Migration {
             $table->string('country', 64)->nullable();
             $table->text('bio')->nullable();
             $table->string('email', 64)->unique();
-            $table->string('password_hash', 255);
+            $table->string('password', 255);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
