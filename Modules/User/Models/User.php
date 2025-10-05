@@ -32,10 +32,15 @@ class User extends Authenticatable implements HasMedia {
         'remember_token',
         'deleted_at',
     ];
-    // protected static function newFactory(): UserFactory
-    // {
-    //     // return UserFactory::new();
-    // }
+    /**
+     * The attributes that should be cast to native types.
+     */
+    protected function casts(): array {
+        return [
+            'password' => 'hashed',
+            'birth_date' => 'date',
+        ];
+    }
     /**
      * Accessor for full name
      */
@@ -47,14 +52,8 @@ class User extends Authenticatable implements HasMedia {
      */
     public function registerMediaCollections(): void {
         $this->addMediaCollection('avatar')
-            ->singleFile()
             ->useDisk('public')
-            ->usePath('avatars');;
-    }
-    protected function casts(): array {
-        return [
-            'password' => 'hashed',
-            'birth_date' => 'date',
-        ];
+            ->usePath('avatars/' . $this->id)
+            ->singleFile();
     }
 }
