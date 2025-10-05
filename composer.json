@@ -35,8 +35,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/",
-            "Modules\\": "Modules/"
+            "Tests\\": "tests/"
         }
     },
     "scripts": {
