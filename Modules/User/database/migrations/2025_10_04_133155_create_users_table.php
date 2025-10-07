@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->id();
             $table->string('first_name', 64);
             $table->string('last_name', 64);
+            $table->string('degree', 64)->nullable();
             $table->enum('sex', ['male', 'female']);
             $table->date('birth_date');
             $table->string('country', 64)->nullable();
