@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -14,7 +13,7 @@ return new class extends Migration
         Schema::create('terms', function (Blueprint $table) {
             $table->id();
             $table->foreignId('lecturer_id')->nullable()->constrained('users')->onDelete('set null');
-            //room
+            $table->foreignId('room_id')->nullable()->constrained('room')->onDelete('set null');
             $table->foreignId('course_id')->constrained('courses')->onDelete('cascade');
             $table->string('name', 64);
             $table->enum('type', ['lecture', 'exercise', 'exam', 'assignment']);
@@ -22,9 +21,10 @@ return new class extends Migration
             $table->boolean('registration_required');
             $table->tinyInteger('max_score')->unsigned();
             $table->smallInteger('capacity')->unsigned();
-            $table->date('event_date');
-            $table->time('event_time');
+            $table->dateTime('event_datetime');
+            $table->timestamp('approved_at')->nullable();
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
         });
     }
 
