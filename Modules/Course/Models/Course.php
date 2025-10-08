@@ -9,7 +9,8 @@ use Modules\User\Models\User;
 use Modules\Term\Models\Term;
 // use Modules\Course\Database\Factories\CourseFactory;
 
-class Course extends Model {
+class Course extends Model
+{
     use HasFactory, SoftDeletes;
 
     /**
@@ -21,31 +22,35 @@ class Course extends Model {
     protected $casts = [
         'auto_enroll_confirm' => 'boolean',
         'is_approved' => 'boolean',
-        'deleted_at' => 'datetime'
     ];
 
-    public function guarantor() {
+    public function guarantor()
+    {
         return $this->belongsTo(User::class, 'guarantor_id');
     }
 
-    public function news() {
+    public function news()
+    {
         return $this->hasMany(CourseNews::class);
     }
 
-    public function students() {
+    public function students()
+    {
         return $this->belongsToMany(User::class, 'course_student', 'course_id', 'student_id')
             ->using(CourseStudent::class)
             ->withPivot(['final_score', 'is_approved', 'approved_at']);
     }
 
 
-    public function lecturers() {
+    public function lecturers()
+    {
         return $this->belongsToMany(User::class, 'course_lecturer', 'course_id', 'lecturer_id')
             ->using(CourseLecturer::class)
             ->withPivot('role');
     }
 
-    public function terms() {
+    public function terms()
+    {
         return $this->hasMany(Term::class);
     }
 

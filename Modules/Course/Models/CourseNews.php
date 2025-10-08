@@ -17,8 +17,6 @@ class CourseNews extends Model
     protected $table = 'course_news';
     protected $fillable = ['course_id', 'author_id', 'title', 'description'];
 
-    protected $casts = ['deleted_at' => 'datetime'];
-
     public function courses()
     {
         return $this->belongsTo(Course::class, 'course_id');

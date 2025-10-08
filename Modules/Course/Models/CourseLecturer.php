@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Modules\Course\Database\Factories\CourseLecturerFactory;
 use Modules\User\Models\User;
 
-class CourseLecturer extends Model {
+class CourseLecturer extends Model
+{
     use HasFactory;
 
     /**
@@ -15,14 +16,15 @@ class CourseLecturer extends Model {
      */
     protected $table = "course_lecturer";
     protected $fillable = ['course_id', 'lecturer_id', 'role'];
-    protected $casts = ['deleted_at' => 'datetime'];
 
 
-    public function courses() {
+    public function courses()
+    {
         return $this->belongsTo(Course::class, 'course_id');
     }
 
-    public function lecturer() {
+    public function lecturer()
+    {
         return $this->belongsTo(User::class, 'lecturer_id');
     }
 

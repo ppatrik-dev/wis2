@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->smallInteger('capacity')->unsigned()->nullable();
             $table->timestamp('approved_at')->nullable();
             $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
+            $table->softDeletes();
         });
     }
 

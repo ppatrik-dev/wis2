@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->integer('score')->nullable();
             $table->timestamp('approved_at')->nullable();
             $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
+            $table->softDeletes();
         });
     }
 
