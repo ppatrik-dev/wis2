@@ -8,8 +8,7 @@ return new class extends Migration {
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
+    public function up(): void {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('guarantor_id')->nullable()->constrained('users')->nullOnDelete();
@@ -24,15 +23,14 @@ return new class extends Migration {
             $table->boolean('is_approved');
             $table->timestamp('approved_at')->nullable();
             $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
+            $table->softDeletes();
         });
     }
 
     /**
      * Reverse the migrations.
      */
-    public function down(): void
-    {
+    public function down(): void {
         Schema::dropIfExists('courses');
     }
 };

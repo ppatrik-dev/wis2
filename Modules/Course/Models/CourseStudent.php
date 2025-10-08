@@ -5,9 +5,9 @@ namespace Modules\Course\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Modules\Course\Database\Factories\CourseStudentFactory;
+use Modules\User\Models\User;
 
-class CourseStudent extends Model
-{
+class CourseStudent extends Model {
     use HasFactory;
 
     /**
@@ -18,12 +18,10 @@ class CourseStudent extends Model
     protected $casts = ['deleted_at' => 'datetime', 'is_approved' => 'boolean', 'approved_at' => 'datetime'];
 
 
-    public function student()
-    {
-        return $this->belongsTo(\Modules\User\Models\User::class, 'student_id');
+    public function student() {
+        return $this->belongsTo(User::class, 'student_id');
     }
-    public function course()
-    {
+    public function course() {
         return $this->belongsTo(Course::class, 'course_id');
     }
 

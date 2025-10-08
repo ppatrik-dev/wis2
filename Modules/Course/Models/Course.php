@@ -4,11 +4,13 @@ namespace Modules\Course\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\User\Models\User;
+use Modules\Term\Models\Term;
 // use Modules\Course\Database\Factories\CourseFactory;
 
-class Course extends Model
-{
-    use HasFactory;
+class Course extends Model {
+    use HasFactory, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -22,34 +24,29 @@ class Course extends Model
         'deleted_at' => 'datetime'
     ];
 
-    public function guarantor()
-    {
-        return $this->belongsTo(\Modules\User\Models\User::class, 'guarantor_id');
+    public function guarantor() {
+        return $this->belongsTo(User::class, 'guarantor_id');
     }
 
-    public function news()
-    {
-        return $this->hasMany(\Modules\Course\Models\CourseNews::class);
+    public function news() {
+        return $this->hasMany(CourseNews::class);
     }
 
-    public function students()
-    {
-        return $this->belongsToMany(\Modules\User\Models\User::class, 'course_student', 'course_id', 'student_id')
-            ->using(\Modules\Course\Models\CourseStudent::class)
+    public function students() {
+        return $this->belongsToMany(User::class, 'course_student', 'course_id', 'student_id')
+            ->using(CourseStudent::class)
             ->withPivot(['final_score', 'is_approved', 'approved_at']);
     }
 
 
-    public function lecturers()
-    {
-        return $this->belongsToMany(\Modules\User\Models\User::class, 'course_lecturer', 'course_id', 'lecturer_id')
-            ->using(\Modules\Course\Models\CourseLecturer::class)
+    public function lecturers() {
+        return $this->belongsToMany(User::class, 'course_lecturer', 'course_id', 'lecturer_id')
+            ->using(CourseLecturer::class)
             ->withPivot('role');
     }
 
-    public function terms()
-    {
-        return $this->hasMany(\Modules\Term\Models\Term::class);
+    public function terms() {
+        return $this->hasMany(Term::class);
     }
 
     // protected static function newFactory(): CourseFactory
