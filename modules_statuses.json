@@ -1,0 +1,7 @@
+{
+    "User": true,
+    "Course": true,
+    "Term": true,
+    "Auth": true,
+    "Permission": true
+}
