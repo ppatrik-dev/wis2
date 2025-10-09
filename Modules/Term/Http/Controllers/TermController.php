@@ -1,18 +1,18 @@
 <?php
 
-namespace Modules\User\Http\Controllers;
+namespace Modules\Term\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class TermController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('user::index');
+        return view('term::index');
     }
 
     /**
@@ -20,7 +20,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('user::create');
+        return view('term::create');
     }
 
     /**
@@ -33,7 +33,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        return view('user::show');
+        return view('term::show');
     }
 
     /**
@@ -41,7 +41,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        return view('user::edit');
+        return view('term::edit');
     }
 
     /**
