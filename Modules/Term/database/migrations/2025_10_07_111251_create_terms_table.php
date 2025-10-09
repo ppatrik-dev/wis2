@@ -8,12 +8,11 @@ return new class extends Migration {
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
+    public function up(): void {
         Schema::create('terms', function (Blueprint $table) {
             $table->id();
             $table->foreignId('lecturer_id')->nullable()->constrained('users')->onDelete('set null');
-            $table->foreignId('room_id')->nullable()->constrained('room')->onDelete('set null');
+            $table->foreignId('room_id')->nullable()->constrained('rooms')->onDelete('set null');
             $table->foreignId('course_id')->constrained('courses')->onDelete('cascade');
             $table->string('name', 64);
             $table->enum('type', ['lecture', 'exercise', 'exam', 'assignment']);
@@ -31,8 +30,7 @@ return new class extends Migration {
     /**
      * Reverse the migrations.
      */
-    public function down(): void
-    {
+    public function down(): void {
         Schema::dropIfExists('terms');
     }
 };
