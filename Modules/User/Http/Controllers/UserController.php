@@ -20,8 +20,9 @@ class UserController extends Controller {
      */
     public function index() {
         try {
+            $roles = $this->roleService->getAllRoles();
             $users = User::orderBy('created_at', 'desc')->paginate(10);
-            return view('user::index', ["users" => $users]);
+            return view('user::index', ["users" => $users, "roles" => $roles]);
         } catch (\Exception $e) {
             Log::error('Error fetching users: ' . $e->getMessage());
             return back()->withError('Failed to load users.');
