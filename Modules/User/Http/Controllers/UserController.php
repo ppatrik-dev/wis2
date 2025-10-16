@@ -6,8 +6,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\User\Models\User;
 use Illuminate\Support\Facades\Log;
+use Modules\User\Services\RoleService;
 
 class UserController extends Controller {
+
+    protected $roleService;
+
+    public function __construct(RoleService $roleService) {
+        $this->roleService = $roleService;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -39,11 +46,12 @@ class UserController extends Controller {
             'email'      => 'required',
             'sex'        => 'required',
             'birth_date' => 'required',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'required|string|min:8',
         ]);
 
-        User::create($validated);
-        return redirect()->route('users.index')->with('success', 'User created successfully');
+        $user = User::create($validated);
+        $this->roleService->assignRole($user, "user");
+        return $user;
     }
 
     /**
@@ -72,12 +80,12 @@ class UserController extends Controller {
             'email'      => 'required|email|unique:users,email,' . $id,
             'sex'        => 'required',
             'birth_date' => 'required',
-            'password'   => 'nullable|string|min:8|confirmed',
+            'password'   => 'nullable|string|min:8',
         ]);
 
         $user = User::findOrFail($id);
         $user->update($validated);
-
+        $this->roleService->assignRoles($user, $request->input('roles', []));
         return redirect()->route('users.index')->with('success', 'User updated successfully !');
     }
 
