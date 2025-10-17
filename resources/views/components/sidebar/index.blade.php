@@ -20,9 +20,7 @@
         </ul>
         
         <div class="absolute bottom-0 left-0 w-full px-3 py-4">
-            <x-user-logged />
+            <x-user-info />
         </div>
     </div>
 </aside>
-
-

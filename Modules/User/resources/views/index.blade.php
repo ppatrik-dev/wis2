@@ -1,6 +1,10 @@
 <x-user::layouts.master>
     
-    <h1 class="text-4xl text-white p-8">Users</h1>
+    <x-header headline="Users" >
+        <x-slot:actions>
+            <x-button href="{{ route('user.create') }}" variant="primary">Create</x-button>
+        </x-slot:actions>
+    </x-header>
 
     <x-user::table :users="$users" :roles="$roles" />
 
