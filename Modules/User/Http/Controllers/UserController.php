@@ -87,7 +87,7 @@ class UserController extends Controller {
         $user = User::findOrFail($id);
         $user->update($validated);
         $this->roleService->assignRoles($user, $request->input('roles', []));
-        return redirect()->route('users.index')->with('success', 'User updated successfully !');
+        return redirect()->route('user.index')->with('success', 'User updated successfully !');
     }
 
     /**
@@ -98,6 +98,6 @@ class UserController extends Controller {
         $user = User::findOrFail($id);
         $user->delete();
 
-        return redirect()->route('users.index')->with('success', 'User deleted successfully!');
+        return redirect()->route('user.index')->with('success', 'User deleted successfully!');
     }
 }
