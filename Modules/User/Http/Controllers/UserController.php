@@ -19,14 +19,9 @@ class UserController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
-        try {
-            $roles = $this->roleService->getAllRoles();
-            $users = User::orderBy('created_at', 'desc')->paginate(10);
-            return view('user::index', ["users" => $users, "roles" => $roles]);
-        } catch (\Exception $e) {
-            Log::error('Error fetching users: ' . $e->getMessage());
-            return back()->withError('Failed to load users.');
-        }
+        $roles = $this->roleService->getAllRoles();
+        $users = User::orderBy('created_at', 'desc')->paginate(10);
+        return view('user::index', ["users" => $users, "roles" => $roles]);
     }
 
     /**
@@ -66,8 +61,9 @@ class UserController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit($id) {
+        $roles = $this->roleService->getAllRoles();
         $user = User::findOrFail($id);
-        return view('user::edit', ["user" => $user]);
+        return view('user::edit', ["user" => $user, "roles" => $roles]);
     }
 
     /**
