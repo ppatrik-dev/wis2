@@ -1,5 +1,5 @@
 <div>
     @php
-        dd($user);
+        dd($roles);
     @endphp
 </div>
