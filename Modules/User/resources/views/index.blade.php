@@ -1,8 +1,7 @@
 <x-user::layouts.master>
-    <h1>Hello World</h1>
+    
+    <h1 class="text-4xl text-white p-8">Users</h1>
 
-    <p>Module: {!! config('user.name') !!}</p>
-    @php
-        dd($users);
-    @endphp
+    <x-user::table :users="$users" :roles="$roles" />
+
 </x-user::layouts.master>
