@@ -21,7 +21,7 @@
     </head>
         <body>
 
-        <body class="bg-gray-50 dark:bg-gray-900">
+        <body class="bg-white dark:bg-gray-900">
             
             <!-- Include sidebar component -->
             <x-sidebar />

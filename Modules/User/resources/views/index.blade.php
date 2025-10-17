@@ -2,7 +2,7 @@
     
     <x-header headline="Users" >
         <x-slot:actions>
-            <x-button href="{{ route('user.create') }}" variant="primary">Create</x-button>
+            <x-button variant="primary" href="{{ route('user.create') }}">Create</x-button>
         </x-slot:actions>
     </x-header>
 

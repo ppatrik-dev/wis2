@@ -3,8 +3,8 @@
     'roles' => [],  
 ])
 
-<div class="relative overflow-x-auto shadow-md">
-    <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900">
+<div class="relative overflow-x-auto">
+    <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
         <div>
             <button id="dropdownRoleButton" data-dropdown-toggle="dropdownRole" class="inline-flex items-center text-gray-500 bg-white border border-gray-300 hover:bg-gray-100font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
                 <span class="sr-only">Role button</span>

@@ -4,7 +4,7 @@
     <div class="h-full flex flex-col px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
         <a href="#" class="flex items-center ps-2.5 mb-5">
             <img src="{{ asset('images/logo.png') }}" class="h-6 me-3 sm:h-7" alt="Logo" />
-            <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">WIS 2</span>
+            <span class="self-center text-xl font-semibold whitespace-nowrap text-blue-700 dark:text-white">WIS 2</span>
         </a>
 
         <ul class="space-y-2 font-medium">
@@ -20,7 +20,7 @@
         </ul>
         
         <div class="absolute bottom-0 left-0 w-full px-3 py-4">
-            <x-user-info />
+            <x-auth-info />
         </div>
     </div>
 </aside>
