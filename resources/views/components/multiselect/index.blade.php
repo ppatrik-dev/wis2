@@ -1,11 +1,12 @@
 @props([
+    'label' => '',
     'user' => null,
     'roles' => [],
     'disabled' => false
 ])
 
 <div>
-    <label class="block mb-1 text-sm font-medium text-gray-500">Roles</label>
+    <label class="block mb-1 text-sm font-medium text-gray-500">{{ $label }}</label>
     <button id="dropdownMenuButton" data-dropdown-toggle="dropdownMenu"  
         class="relative w-full h-9.5 p-2 flex items-center dark:text-white border border-gray-300 rounded-lg
                 bg-gray-50 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 

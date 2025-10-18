@@ -67,7 +67,7 @@
                         {{ $user->degree }}
                     </td>
                     <th scope="row" class="flex items-center px-6 py-3 text-gray-900 whitespace-nowrap dark:text-white">
-                        <a href="{{ route('user.show', ['user' => $user->id]) }}" class="transition duration-300 ease-in-out hover:scale-105 hover:shadow-lg rounded-md">
+                        <a href="{{ route('user.show', $user->id) }}" class="transition duration-300 ease-in-out hover:scale-105 hover:shadow-lg rounded-md">
                             <img class="w-8 h-8 rounded-full" src="{{ asset('images/patrik.png') }}" alt="Jese image">
                         </a>
                         <div class="ps-3">
@@ -90,8 +90,15 @@
                         </div>
                     </td>
                     <td class="px-6 py-3">
-                        <a href="{{ route('user.edit', ['user' => $user->id]) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                        <a href="{{ route('user.destroy', ['user' => $user->id]) }}" class="font-medium text-red-600 dark:text-red-500 hover:underline ms-3">Remove</a>
+                        <a href="{{ route('user.edit', $user->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                        <form action="{{ route('user.destroy', $user->id) }}" method="POST" class="inline ms-3"
+                            onsubmit="return confirm('Are you sure you want to delete this user?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="font-medium text-red-600 dark:text-red-500 hover:underline bg-transparent p-0">
+                                Remove
+                            </button>
+                        </form>
                     </td>
                 </tr>
             @endforeach

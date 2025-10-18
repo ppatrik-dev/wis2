@@ -1,5 +1,6 @@
 @props([
     'href' => null,
+    'form' => '',
     'variant' => 'default',
     'type' => 'button',
     'rounded' => ''
@@ -23,7 +24,7 @@ $classes =  $baseClasses . ' ' . ($variants[$variant] ?? '') . ' ' . $rounded;
         {{ $slot }}
     </a>
 @else
-    <button type="{{ $type }}" {{ $attributes->merge(['class' => $classes]) }}>
+    <button type="{{ $type }}" form="{{ $form }}" {{ $attributes->merge(['class' => $classes]) }}>
         {{ $slot }}
     </button>
 @endif

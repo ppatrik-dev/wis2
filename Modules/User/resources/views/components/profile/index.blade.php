@@ -19,8 +19,5 @@
             </label>
         @endif
     </div>
-
-    <form class="w-full max-w-3/4 mx-auto py-10 grid grid-cols-3 gap-6">
-        {{ $slot ?? '' }}
-    </form>
+    {{ $slot ?? '' }}
 </div>
