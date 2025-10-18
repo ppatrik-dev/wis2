@@ -16,11 +16,11 @@
 @if ($input == "input")
     <div>
         <label class="block mb-1 text-sm font-medium text-gray-500">{{ $name }} {!! $required ? '<span class="text-blue-500">*</span>' : '' !!}</label>
-        <input type={{ $type }} value="{{ $value }}" {{ $attributes->merge(['class' => $classes]) }} {{ $disabled ? 'disabled' : '' }}></input>
+        <input type={{ $type }} value="{{ $value }}" {{ $attributes->merge(['class' => $classes]) }} @disabled($disabled)></input>
     </div>
 @elseif ($input == "textarea")
     <div class="row-span-2">
         <label class="block mb-1 text-sm font-medium text-gray-500">{{ $name }} </label>
-        <textarea rows="5" {{ $attributes->merge(['class' => $classes]) }} {{ $disabled ? 'disabled' : '' }}></textarea>
+        <textarea rows="5" value="{{ $value }}" {{ $attributes->merge(['class' => $classes]) }} @disabled($disabled)></textarea>
     </div>
 @endif

@@ -55,7 +55,9 @@ class UserController extends Controller {
      * Show the specified resource.
      */
     public function show($id) {
-        return view('user::show');
+        $roles = $this->roleService->getAllRoles();
+        $user = User::findOrFail($id);
+        return view('user::show', ["user" => $user, "roles" => $roles]);
     }
 
     /**
