@@ -28,7 +28,8 @@ class UserController extends Controller {
      * Show the form for creating a new resource.
      */
     public function create() {
-        return view('user::create');
+        $roles = $this->roleService->getAllRoles();
+        return view('user::create', ['roles' => $roles]);
     }
 
     /**

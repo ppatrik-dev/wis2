@@ -1,7 +1,9 @@
 @props([
-    'type' => 'input',
+    'input' => 'input',
+    'type' => 'text',
     'name' => '',
     'value' => '',
+    'required' => false,
     'disabled' => false
 ])
 
@@ -11,14 +13,14 @@
                 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
 @endphp
 
-@if ($type == "input")
+@if ($input == "input")
     <div>
-        <label class="block mb-1 text-sm font-medium text-gray-500">{{ $name }}</label>
-        <input type="text" value="{{ $value }}" {{ $attributes->merge(['class' => $classes]) }} {{ $disabled ? 'disabled' : '' }}></input>
+        <label class="block mb-1 text-sm font-medium text-gray-500">{{ $name }} {!! $required ? '<span class="text-blue-500">*</span>' : '' !!}</label>
+        <input type={{ $type }} value="{{ $value }}" {{ $attributes->merge(['class' => $classes]) }} {{ $disabled ? 'disabled' : '' }}></input>
     </div>
-@elseif ($type == "textarea")
+@elseif ($input == "textarea")
     <div class="row-span-2">
         <label class="block mb-1 text-sm font-medium text-gray-500">{{ $name }} </label>
-        <textarea rows="6" {{ $attributes->merge(['class' => $classes]) }} {{ $disabled ? 'disabled' : '' }}></textarea>
+        <textarea rows="5" {{ $attributes->merge(['class' => $classes]) }} {{ $disabled ? 'disabled' : '' }}></textarea>
     </div>
 @endif

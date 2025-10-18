@@ -4,7 +4,7 @@
     </h2>
 
     @isset($actions)
-        <div class="flex items-center gap-2">
+        <div class="inline-flex rounded-md shadow-xs">
             {{ $actions }}
         </div>
     @endisset

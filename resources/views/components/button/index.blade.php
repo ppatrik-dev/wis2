@@ -1,23 +1,20 @@
 @props([
     'href' => null,
     'variant' => 'default',
-    'type' => 'button'
+    'type' => 'button',
+    'rounded' => ''
 ])
 
 @php
-$variants = [
-    'default' => 'text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 
-                font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white 
-                dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700',
+$baseClasses = 'inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 border border-gray-200 hover:bg-gray-100 
+                hover:text-blue-700 dark:bg-gray-800 dark:border-gray-700 
+                dark:text-white dark:hover:text-white dark:hover:bg-gray-700';
 
-    'primary' => 'text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 
-                dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none',
-                
-    'danger' => 'text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 
-                font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white 
-                dark:border-gray-600 hover:text-white hover:bg-red-500 dark:hover:bg-red-500' ,
+$variants = [
+
 ];
-$classes = ($variants[$variant] ?? $variants['default']);
+// ($variants[$variant] ?? $variants['default'])
+$classes =  $baseClasses . ' ' . $rounded;
 @endphp
 
 @if ($href)
