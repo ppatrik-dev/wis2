@@ -42,12 +42,12 @@ class UserController extends Controller {
             'email'      => 'required',
             'sex'        => 'required',
             'birth_date' => 'required',
-            'password' => 'required|string|min:8',
+            'password' => 'required|string|min:8confirmed',
         ]);
 
         $user = User::create($validated);
         $this->roleService->assignRole($user, "user");
-        return $user;
+        return redirect()->route('user.index')->with('success', 'User created successfully !');
     }
 
     /**

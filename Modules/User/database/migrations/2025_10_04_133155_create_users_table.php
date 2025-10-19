@@ -11,10 +11,10 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->string('degree', 64)->nullable();
             $table->string('first_name', 64);
             $table->string('last_name', 64);
-            $table->string('degree', 64)->nullable();
-            $table->enum('sex', ['male', 'female']);
+            $table->enum('gender', ['male', 'female']);
             $table->date('birth_date');
             $table->string('country', 64)->nullable();
             $table->text('bio')->nullable();
