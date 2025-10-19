@@ -27,14 +27,14 @@
                 onsubmit="return confirm('Are you sure you want to delete this user?');">
             @csrf
             @method('DELETE')
-            <x-input label="Name" value="{{ $user->first_name }}" disabled="true"></x-input>
-            <x-input label="Surname" value="{{ $user->last_name }}" disabled="true"></x-input>
-            <x-multiselect label="Roles" :user="$user" :roles="$roles" disabled="true"></x-multiselect>
-            <x-input label="Degree" value="{{ $user->degree }}" disabled="true"></x-input>
-            <x-input label="Email" value="{{ $user->email }}" disabled="true"></x-input>
-            <x-input label="Bio" value="{{ $user->bio }}" input="textarea" disabled="true"></x-input>
-            <x-input label="Country" value="{{ $user->country }}" disabled="true"></x-input>
-            <x-input label="Birth date" value="{{ $user->birth_date->format('d.m.Y') }}" disabled="true"></x-input>
+            <x-input label="Name" value="{{ $user->first_name }}" :disabled="true"></x-input>
+            <x-input label="Surname" value="{{ $user->last_name }}" :disabled="true"></x-input>
+            <x-multiselect label="Roles" :user="$user" :roles="$roles" :disabled="true"></x-multiselect>
+            <x-input label="Degree" value="{{ $user->degree }}" :disabled="true"></x-input>
+            <x-input label="Email" value="{{ $user->email }}" :disabled="true"></x-input>
+            <x-input label="Bio" value="{{ $user->bio }}" input="textarea" :disabled="true"></x-input>
+            <x-input label="Country" value="{{ $user->country }}" :disabled="true"></x-input>
+            <x-input label="Birth date" value="{{ $user->birth_date->format('d.m.Y') }}" :disabled="true"></x-input>
         </form>
     </x-user::profile>
 </x-user::layouts.master>

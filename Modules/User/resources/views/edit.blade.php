@@ -25,14 +25,14 @@
     <x-user::profile :user="$user">
         <form id="userProfileForm" action="{{ route('user.update', $user->id) }}" method="POST" class="w-full max-w-3/4 mx-auto py-10 grid grid-cols-3 gap-6">
             @csrf
-            <x-input label="Name" name="first_name" value="{{ $user->first_name }}"></x-input>
-            <x-input label="Surname" name="last_name" value="{{ $user->last_name }}"></x-input>
+            <x-input label="Name" name="first_name" value="{{ $user->first_name }}" :required="true"></x-input>
+            <x-input label="Surname" name="last_name" value="{{ $user->last_name }}" :required="true"></x-input>
             <x-multiselect label="Roles" :user="$user" :roles="$roles"></x-multiselect>
             <x-input label="Degree" name="degree" value="{{ $user->degree }}"></x-input>
-            <x-input label="Email" name="email" value="{{ $user->email }}"></x-input>
+            <x-input label="Email" name="email" value="{{ $user->email }}" :required="true"></x-input>
             <x-input label="Bio" name="bio" value="{{ $user->bio }}" input="textarea"></x-input>
             <x-input label="Country" name="country" value="{{ $user->country }}"></x-input>
-            <x-input label="Birth date" name="birth_date" value="{{ $user->birth_date->format('d.m.Y') }}"></x-input>
+            <x-input label="Birth date" name="birth_date" value="{{ $user->birth_date->format('d.m.Y') }}" :required="true"></x-input>
         </form>
     </x-user::profile>
 </x-user::layouts.master>
