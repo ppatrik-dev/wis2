@@ -3,8 +3,8 @@
     'roles' => [],  
 ])
 
-<div class="relative overflow-x-auto">
-    <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
+<div class="relative overflow-x-auto overflow-y-visible min-h-[300px]">
+    <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-3.5">
         <div>
             <button id="dropdownRoleButton" data-dropdown-toggle="dropdownRole" class="inline-flex items-center text-gray-500 bg-white border border-gray-300 hover:bg-gray-100font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
                 <span class="sr-only">Role button</span>
@@ -14,12 +14,12 @@
                 </svg>
             </button>
         
-            <div id="dropdownRole" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600">
+            <div id="dropdownRole" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-30 dark:bg-gray-700 dark:divide-gray-600">
                 <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownRoleButton">
        
                     @foreach ($roles as $role)
                         <li>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ ucfirst($role->name) }}</a>
+                            <a href="#" class="block px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ ucfirst($role->name) }}</a>
                         </li>
                     @endforeach
                 </ul>
