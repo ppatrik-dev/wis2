@@ -41,13 +41,12 @@ class UserController extends Controller {
             'first_name' => 'required',
             'last_name'  => 'required',
             'email'      => 'required',
-            'sex'        => 'required',
+            'gender'        => 'required',
             'birth_date' => 'required',
-            'password' => 'required|string|min:8confirmed',
+            'password' => 'required|string|min:8|confirmed',
         ]);
-
         $user = User::create($validated);
-        $this->roleService->assignRole($user, "user");
+        $this->roleService->assignRoles($user, $request->input('roles', []));
         return redirect()->route('user.index')->with('success', 'User created successfully !');
     }
 

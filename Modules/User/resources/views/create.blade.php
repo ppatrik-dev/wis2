@@ -23,13 +23,13 @@
             </x-button>
         </x-slot:actions>
     </x-header>
-    
+
     <x-user::profile>
-        <form id="userProfileForm" action="{{ route('user.store') }}" method="POST" class="w-full max-w-3/4 mx-auto py-10 grid grid-cols-3 gap-6">
+        <form id="userProfileForm" action="{{ route('user.store') }}" method="POST" class="grid w-full grid-cols-3 gap-6 py-10 mx-auto max-w-3/4">
             @csrf
             <x-input label="Name" name="first_name" :required="true"></x-input>
             <x-input label="Surname" name="last_name" :required="true"></x-input>
-            <x-input label="Sex" name="sex" :required="true"></x-input>
+            <x-input label="Gender" name="gender" :required="true"></x-input>
             <x-input label="Degree" name="degree"></x-input>
             <x-input label="Email" name="email" :required="true"></x-input>
             <x-multiselect label="Roles" :roles="$roles"></x-multiselect>
@@ -37,7 +37,7 @@
             <x-input label="Country" name="country"></x-input>
             <x-input label="Bio" name="bio" input="textarea"></x-input>
             <x-input label="Password" name="password" type="password" :required="true"></x-input>
-            <x-input label="Confirm password" type="password" :required="true"></x-input>
+            <x-input label="Confirm password" name="password_confirmation" type="password" :required="true"></x-input>
         </form>
     </x-user::profile>
 </x-user::layouts.master>
