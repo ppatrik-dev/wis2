@@ -67,13 +67,13 @@
                         {{ $user->degree }}
                     </td>
                     <th scope="row" class="flex items-center px-6 py-3 text-gray-900 whitespace-nowrap dark:text-white">
-                        <a href="{{ route('user.show', $user->id) }}" class="transition duration-300 ease-in-out hover:scale-105 hover:shadow-lg rounded-md">
-                            <img class="w-8 h-8 rounded-full" src="{{ asset('images/patrik.png') }}" alt="Jese image">
+                        <a href="{{ route('user.show', $user->id) }}">
+                            <x-avatar letters="{{ $user->getFullNameInitials() }}"></x-avatar>
                         </a>
-                        <div class="ps-3">
+                        <a href="{{ route('user.show', $user->id) }}" class="ps-3">
                             <div class="text-base font-semibold">{{ $user->getFullNameAttribute() }}</div>
                             <div class="font-normal text-gray-500">{{ $user->email }}</div>
-                        </div>  
+                        </a>  
                     </th>
                     <td class="px-6 py-3">
                         {{ ucfirst($user->sex) }}

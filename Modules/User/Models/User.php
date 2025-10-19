@@ -55,6 +55,11 @@ class User extends Authenticatable implements HasMedia {
     public function getFullNameAttribute(): string {
         return "{$this->first_name} {$this->last_name}";
     }
+
+    public function getFullNameInitials(): string {
+        return "{$this->first_name[0]}{$this->last_name[0]}";
+    }
+
     /**
      * Defining media collection for user's avatar
      */

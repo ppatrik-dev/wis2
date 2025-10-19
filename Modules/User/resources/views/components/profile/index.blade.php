@@ -1,11 +1,11 @@
 @props([
-    'photo' => true,
+    'user' => null
 ])
 
 <div class="max-w bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
     <div class="w-full rounded-t-lg bg-gray-50 dark:bg-gray-700 flex flex-col items-center py-4">
-        @if ($photo)
-            <img class="w-60 h-60 rounded-full shadow-lg" src="{{ asset('images/patrik.png') }}" alt="User Profile Picture"/>
+        @if ($user)
+            <x-avatar letters="{{ $user->getFullNameInitials() }}" text="xl" width='60' height='60'></x-avatar>
         @else
             <label for="dropzone-file" class="flex flex-col items-center justify-center mx-auto py-5 rounded-full w-60 h-60 border-2
                     border-gray-500 border-dashed hover:border-blue-500 dark:hover:border-blue-500 cursor-pointer dark:bg-gray-800">

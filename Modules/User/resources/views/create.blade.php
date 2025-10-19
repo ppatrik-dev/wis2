@@ -24,7 +24,7 @@
         </x-slot:actions>
     </x-header>
     
-    <x-user::profile :photo="false">
+    <x-user::profile>
         <form id="userProfileForm" action="{{ route('user.store') }}" method="POST" class="w-full max-w-3/4 mx-auto py-10 grid grid-cols-3 gap-6">
             @csrf
             <x-input label="Name" name="first_name" required="true"></x-input>

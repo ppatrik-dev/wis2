@@ -22,7 +22,7 @@
         </x-slot:actions>
     </x-header>
 
-    <x-user::profile :photo="true">
+    <x-user::profile :user="$user">
         <form id="userProfileForm" action="{{ route('user.update', $user->id) }}" method="POST" class="w-full max-w-3/4 mx-auto py-10 grid grid-cols-3 gap-6">
             @csrf
             <x-input label="Name" name="first_name" value="{{ $user->first_name }}"></x-input>

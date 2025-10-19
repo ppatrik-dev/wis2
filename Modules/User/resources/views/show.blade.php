@@ -22,7 +22,7 @@
         </x-slot:actions>
     </x-header>
     
-    <x-user::profile :photo="true">
+    <x-user::profile :user="$user">
         <form id="userProfileForm" action="{{ route('user.destroy', $user->id) }}" method="POST" class="w-full max-w-3/4 mx-auto py-10 grid grid-cols-3 gap-6"
                 onsubmit="return confirm('Are you sure you want to delete this user?');">
             @csrf

@@ -1,7 +1,7 @@
 <div class="flex items-center gap-4 pl-3">
-    <img class="w-8 h-8 rounded-full" src="{{ asset('images/patrik.png') }}" alt="Patrik">
+    <x-avatar width='8' height='8'></x-avatar>
     <div class="text-sm dark:text-white">
-        <div>Patrik Procházka</div>
+        <div>Name Surname</div>
     </div>
 
     <form method="POST" action="">
