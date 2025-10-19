@@ -29,12 +29,13 @@
             @csrf
             <x-input label="Name" name="first_name" :required="true"></x-input>
             <x-input label="Surname" name="last_name" :required="true"></x-input>
-            <x-multiselect label="Roles" :roles="$roles"></x-multiselect>
+            <x-input label="Sex" name="sex" :required="true"></x-input>
             <x-input label="Degree" name="degree"></x-input>
             <x-input label="Email" name="email" :required="true"></x-input>
-            <x-input label="Bio" name="bio" input="textarea"></x-input>
-            <x-input label="Country" name="country"></x-input>
+            <x-multiselect label="Roles" :roles="$roles"></x-multiselect>
             <x-input label="Birth date" name="birth_date" :required="true"></x-input>
+            <x-input label="Country" name="country"></x-input>
+            <x-input label="Bio" name="bio" input="textarea"></x-input>
             <x-input label="Password" name="password" type="password" :required="true"></x-input>
             <x-input label="Confirm password" type="password" :required="true"></x-input>
         </form>

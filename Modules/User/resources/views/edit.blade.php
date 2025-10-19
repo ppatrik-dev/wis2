@@ -25,6 +25,7 @@
     <x-user::profile :user="$user">
         <form id="userProfileForm" action="{{ route('user.update', $user->id) }}" method="POST" class="w-full max-w-3/4 mx-auto py-10 grid grid-cols-3 gap-6">
             @csrf
+            @method('PUT')
             <x-input label="Name" name="first_name" value="{{ $user->first_name }}" :required="true"></x-input>
             <x-input label="Surname" name="last_name" value="{{ $user->last_name }}" :required="true"></x-input>
             <x-multiselect label="Roles" :user="$user" :roles="$roles"></x-multiselect>
