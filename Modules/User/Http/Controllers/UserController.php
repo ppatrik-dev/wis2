@@ -77,10 +77,14 @@ class UserController extends Controller {
             'first_name' => 'required',
             'last_name'  => 'required',
             'email'      => 'required|email|unique:users,email,' . $id,
-            'sex'        => 'required',
+            'gender'        => 'required',
             'birth_date' => 'required',
-            'password'   => 'nullable|string|min:8',
+            'password'   => 'nullable|string|min:8|confirmed',
         ]);
+
+        if (!$request->filled('password')) {
+            unset($validated['password']);
+        }
 
         $user = User::findOrFail($id);
         $user->update($validated);

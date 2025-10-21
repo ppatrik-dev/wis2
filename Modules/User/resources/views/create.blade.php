@@ -29,15 +29,39 @@
             @csrf
             <x-input label="Name" name="first_name" :required="true"></x-input>
             <x-input label="Surname" name="last_name" :required="true"></x-input>
-            <x-input label="Gender" name="gender" :required="true"></x-input>
+            <x-multiselect label="Roles" :options="$roles"></x-multiselect>
             <x-input label="Degree" name="degree"></x-input>
             <x-input label="Email" name="email" :required="true"></x-input>
-            <x-multiselect label="Roles" :roles="$roles"></x-multiselect>
-            <x-input label="Birth date" name="birth_date" :required="true"></x-input>
-            <x-input label="Country" name="country"></x-input>
             <x-input label="Bio" name="bio" input="textarea"></x-input>
+            <x-input label="Country" name="country"></x-input>
+            <x-input label="Birth date" name="birth_date" :required="true"></x-input>
+            <x-input label="Gender" name="gender" :required="true"></x-input>
             <x-input label="Password" name="password" type="password" :required="true"></x-input>
             <x-input label="Confirm password" name="password_confirmation" type="password" :required="true"></x-input>
         </form>
+
+        <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('userProfileForm');
+            const pass = document.getElementById('input-password');
+            const confirm = document.getElementById('input-password_confirmation');
+
+            form.addEventListener('submit', e => {
+                if (pass.value.length < 8) {
+                    e.preventDefault();
+                    alert('Password must be at least 8 characters long.');
+                    pass.focus();
+                    return;
+                }
+
+                if (pass.value !== confirm.value) {
+                    e.preventDefault();
+                    alert('Passwords do not match.');
+                    confirm.focus();
+                    return;
+                }
+            });
+        });
+        </script>
     </x-user::profile>
 </x-user::layouts.master>

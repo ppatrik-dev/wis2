@@ -45,7 +45,7 @@
                     Name
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Sex
+                    Gender
                 </th>
                 <th scope="col" class="px-6 py-3">
                     Birth date
@@ -77,7 +77,7 @@
                         </a>  
                     </th>
                     <td class="px-6 py-3">
-                        {{ ucfirst($user->sex) }}
+                        {{ ucfirst($user->gender) }}
                     </td>
                     <td class="px-6 py-3">
                         {{ $user->birth_date->format('d.m.Y') }}

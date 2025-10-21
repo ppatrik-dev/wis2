@@ -31,7 +31,7 @@ class User extends Authenticatable implements HasMedia {
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = ['first_name', 'last_name', 'degree', 'sex', 'birth_date', 'country', 'bio', 'email', 'password'];
+    protected $fillable = ['first_name', 'last_name', 'degree', 'gender', 'birth_date', 'country', 'bio', 'email', 'password'];
     /**
      * The attributes that should be hidden for arrays.
      */
