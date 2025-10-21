@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Modules\User\Models\User;
 use Illuminate\Support\Facades\Log;
 use Modules\User\Services\RoleService;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller {
 
@@ -38,13 +39,17 @@ class UserController extends Controller {
     public function store(Request $request) {
 
         $validated = $request->validate([
-            'first_name' => 'required',
-            'last_name'  => 'required',
-            'email'      => 'required',
-            'gender'        => 'required',
-            'birth_date' => 'required',
-            'password' => 'required|string|min:8|confirmed',
+            'degree'      => ['nullable', 'string', 'max:64'],
+            'first_name'  => ['required', 'string', 'max:64'],
+            'last_name'   => ['required', 'string', 'max:64'],
+            'gender'      => ['required', Rule::in(['male', 'female'])],
+            'birth_date'  => ['required', 'date'],
+            'country'     => ['nullable', 'string', 'max:64'],
+            'bio'         => ['nullable', 'string'],
+            'email'       => ['required', 'email', 'max:64', 'unique:users,email'],
+            'password'    => ['nullable', 'string', 'min:8', 'confirmed'],
         ]);
+
         $user = User::create($validated);
         $this->roleService->assignRoles($user, $request->input('roles', []));
         return redirect()->route('user.index')->with('success', 'User created successfully !');
@@ -74,12 +79,15 @@ class UserController extends Controller {
     public function update(Request $request, $id) {
 
         $validated = $request->validate([
-            'first_name' => 'required',
-            'last_name'  => 'required',
-            'email'      => 'required|email|unique:users,email,' . $id,
-            'gender'        => 'required',
-            'birth_date' => 'required',
-            'password'   => 'nullable|string|min:8|confirmed',
+            'degree'      => ['nullable', 'string', 'max:64'],
+            'first_name'  => ['required', 'string', 'max:64'],
+            'last_name'   => ['required', 'string', 'max:64'],
+            'gender'      => ['required', Rule::in(['male', 'female'])],
+            'birth_date'  => ['required', 'date'],
+            'country'     => ['nullable', 'string', 'max:64'],
+            'bio'         => ['nullable', 'string'],
+            'email'       => ['required', 'email', 'max:64', Rule::unique('users', 'email')->ignore($id)],
+            'password'    => ['nullable', 'string', 'min:8', 'confirmed'],
         ]);
 
         if (!$request->filled('password')) {
@@ -89,7 +97,7 @@ class UserController extends Controller {
         $user = User::findOrFail($id);
         $user->update($validated);
         $this->roleService->assignRoles($user, $request->input('roles', []));
-        return redirect()->route('user.index')->with('success', 'User updated successfully !');
+        return redirect()->route('user.show', $user->id)->with('success', 'User updated successfully !');
     }
 
     /**
