@@ -29,7 +29,7 @@
             @csrf
             <x-input label="Name" name="first_name" :required="true"></x-input>
             <x-input label="Surname" name="last_name" :required="true"></x-input>
-            <x-multiselect label="Roles" :options="$roles"></x-multiselect>
+            <x-multiselect label="Roles" name="roles[]" :options="$roles" :selected="collect('user')"></x-multiselect>
             <x-input label="Degree" name="degree"></x-input>
             <x-input label="Email" name="email" :required="true"></x-input>
             <x-input label="Bio" name="bio" input="textarea"></x-input>

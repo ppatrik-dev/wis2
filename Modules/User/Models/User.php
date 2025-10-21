@@ -77,6 +77,7 @@ class User extends Authenticatable implements HasMedia {
     public function getHighestRole(): ?string {
         $roleHierarchy = config('user.RolesPermissions.hierarchy');
         $userRoles = $this->getRoleNames();
+        
         return collect($roleHierarchy)
             ->first(fn($role) => $userRoles->contains($role));
     }

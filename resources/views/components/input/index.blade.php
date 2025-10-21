@@ -17,7 +17,7 @@
 @if ($input == "input")
     <div>
         <label for="input-{{ $name }}" class="block mb-1 text-sm font-medium text-gray-500">{{ $label }} {!! $required ? '<span class="text-blue-500">*</span>' : '' !!}</label>
-        <input id="input-{{ $name }}" type="{{ $type }}" name="{{ $name }}" value="{{ $value }}" {{ $attributes->merge(['class' => $classes]) }} @required($required) @disabled($disabled)></input>
+        <input id="input-{{ $name }}" type="{{ $type }}" name="{{ $name }}" value="{{ $value }}" {{ $attributes->merge(['class' => $classes]) }} @required($required) @disabled($disabled)>
     </div>
 @elseif ($input == "textarea")
     <div class="row-span-2">
