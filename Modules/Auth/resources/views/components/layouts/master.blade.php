@@ -24,12 +24,12 @@
 
     <body>
         <div class="flex items-center justify-center min-h-screen bg-gray-100">
-        <div class="w-full max-w-md p-6">
+
         <!-- Tu príde tvoja komponenta -->
 
             {{ $slot }}
 
-        </div>
+
         </div>
         </div>
 
