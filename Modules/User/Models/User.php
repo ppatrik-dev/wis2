@@ -10,9 +10,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\MediaLibrary\HasMedia; // Add this import if using Spatie Media Library
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements HasMedia {
-    use HasFactory, SoftDeletes, InteractsWithMedia;
+    use HasFactory, SoftDeletes, InteractsWithMedia, HasRoles;
 
     /**
      * The table associated with the model.
@@ -20,6 +21,13 @@ class User extends Authenticatable implements HasMedia {
      * @var string|null
      */
     protected $table = 'users';
+
+    /**
+     * Guard name
+     *
+     * @var string
+     */
+    protected $guard_name = 'web';
     /**
      * The attributes that are mass assignable.
      */
@@ -55,5 +63,16 @@ class User extends Authenticatable implements HasMedia {
             ->useDisk('public')
             ->usePath('avatars/' . $this->id)
             ->singleFile();
+    }
+    /**
+     * Function for getting highest role
+     *
+     * @return string|null
+     */
+    public function getHighestRole(): ?string {
+        $roleHierarchy = config('user.RolesPermissions.hierarchy');
+        $userRoles = $this->getRoleNames();
+        return collect($roleHierarchy)
+            ->first(fn($role) => $userRoles->contains($role));
     }
 }
