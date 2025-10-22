@@ -22,7 +22,7 @@
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
         </svg>
 
-        {{ ucfirst($value) }}
+        {{ $selected->isNotEmpty() ? $selected->map(fn($s) => ucfirst($s))->join(', ') : ucfirst($default) }}
     </button>
 </div>
 
@@ -31,13 +31,18 @@
         @foreach($options as $option)
             <li>
                 <div class="flex items-center p-1.5 rounded-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                @php
+                    $checked = collect(old($name, $selected->toArray()));
+                @endphp
+
                 @if($option->name === $default)
-                    <input type="hidden" name="{{ $name }}" value="{{ $default }}">
+                    <input type="hidden" name="{{ $name }}[]" value="{{ $default }}">
                 @endif
-                <input id="checkbox-item-{{ $option->name }}" type="checkbox" name="{{ $name }}" value="{{ $option->name }}" 
+
+                <input id="checkbox-item-{{ $option->name }}" type="checkbox" name="{{ $name }}[]" value="{{ $option->name }}" 
                         class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600
                          dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                        @checked($selected->contains($option->name)) @disabled($option->name === $default)>
+                        @checked($checked->contains($option->name)) @disabled($option->name === $default)>
                 <label for="checkbox-item-{{ $option->name }}" class="w-full ms-2 text-sm font-medium text-gray-900 rounded-sm dark:text-gray-300">
                     {{ ucfirst($option->name) }}
                 </label>

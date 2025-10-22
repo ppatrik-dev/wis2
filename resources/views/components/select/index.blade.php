@@ -14,7 +14,7 @@
                 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" @required($required) @disabled($disabled)>
         <option value="" hidden></option>
         @foreach ($options as $option)
-            <option value="{{ $option }}" {{ $option === $selected ? 'selected' : '' }}>
+            <option value="{{ $option }}" {{ $option === $selected ? 'selected' : '' }} {{ old($name, $option) == $option ? 'selected' : '' }}>
                 {{ ucfirst($option) }}
             </option>
         @endforeach

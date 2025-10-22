@@ -28,7 +28,7 @@
             @method('PUT')
             <x-input label="Name" name="first_name" value="{{ $user->first_name }}" :required="true"></x-input>
             <x-input label="Surname" name="last_name" value="{{ $user->last_name }}" :required="true"></x-input>
-            <x-multiselect label="Roles" name="roles[]" default="user" value="{{ $user->getHighestRole() }}" :options="$roles" :selected="$user->getRoleNames()"></x-multiselect>
+            <x-multiselect label="Roles" name="roles" default="user" value="{{ $user->getHighestRole() }}" :options="$roles" :selected="$user->getRoleNames()"></x-multiselect>
             <x-input label="Degree" name="degree" value="{{ $user->degree }}"></x-input>
             <x-input label="Email" name="email" value="{{ $user->email }}" :required="true"></x-input>
             <x-input label="Bio" name="bio" value="{{ $user->bio }}" input="textarea"></x-input>
