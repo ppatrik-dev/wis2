@@ -1,3 +1,4 @@
+<x-auth::card>
 <form action="{{route('register')}}" method="POST">
     @csrf
     <h2>Register</h2>
@@ -68,3 +69,4 @@
         </div>
     @endif
 </form>
+</x-auth::card>
