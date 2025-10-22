@@ -19,6 +19,7 @@
 
         {{-- Vite CSS --}}
         {{-- {{ module_vite('build-auth', 'resources/assets/sass/app.scss') }} --}}
+        <link href="/src/style.css" rel="stylesheet">
     </head>
 
     <body>
