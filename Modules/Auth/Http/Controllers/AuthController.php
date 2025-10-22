@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Modules\User\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller {
     public function showRegister() {
@@ -25,7 +26,7 @@ class AuthController extends Controller {
             'country'     => ['nullable', 'string', 'max:64'],
             'bio'         => ['nullable', 'string'],
             'email'       => ['required', 'email', 'max:64', 'unique:users,email'],
-            'password'    => ['nullable', 'string', 'min:8', 'confirmed'],
+            'password'    => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
         $user = User::create($validated);
@@ -35,6 +36,22 @@ class AuthController extends Controller {
         return redirect()->route('user.index')->with('success', 'User created successfully !');
     }
     public function login(Request $request) {
+        $validated = $request->validate([
+            'email'       => ['required', 'email', 'max:64',],
+            'password'    => ['required', 'string'],
+        ]);
+        if (Auth::attempt($validated)) {
+            $request->session()->regenerate();
+            return redirect()->intended(route('user.index'));
+        }
+        throw ValidationException::withMessages((['credentials' => 'The provided credentials do not match our records.']));
         // Login logic here
+    }
+    public function logout(Request $request) {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('show.login');
+        // Logout logic here
     }
 }

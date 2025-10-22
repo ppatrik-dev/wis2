@@ -8,14 +8,21 @@
 </head>
 <body class="antialiased">
     <div class="container mx-auto p-8">
-        <h1 class="text-4xl font-bold mb-4">{{ config('app.name', 'Laravel') }}</h1>
-        <p class="mb-6">Welcome to your wis2:</p>
-
-        <ul class="space-y-2">
+                @guest
+            <p class="mb-6">Welcome to your wis2:</p>
+        @endguest
+        @auth
+    <span>Welcome, {{ Auth::user()->first_name }}!</span>
+         <ul class="space-y-2">
             <li><a href="{{ route('user.index') }}" class="text-blue-600 hover:underline">Users Module</a></li>
             <li><a href="{{ route('course.index') }}" class="text-blue-600 hover:underline">Courses Module</a></li>
             <li><a href="{{ route('term.index') }}" class="text-blue-600 hover:underline">Terms Module</a></li>
         </ul>
+        <form action="{{ route('logout')}}" method="POST">
+            @csrf
+            <button type="submit">Logout</button>
+        </form>
+        @endauth
     </div>
 </body>
 </html>

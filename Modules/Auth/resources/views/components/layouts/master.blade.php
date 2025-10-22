@@ -27,5 +27,6 @@
 
         {{-- Vite JS --}}
         {{-- {{ module_vite('build-auth', 'resources/assets/js/app.js') }} --}}
+
     </body>
 </html>

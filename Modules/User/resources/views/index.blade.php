@@ -1,8 +1,12 @@
 <x-user::layouts.master>
-    <h1>Hello World</h1>
-
-    <p>Module: {!! config('user.name') !!}</p>
-    @php
-        dd($users);
-    @endphp
+    @guest
+        "WiS2"
+    @endguest
+    @auth
+   <span>Welcome, {{ Auth::user()->first_name }}!</span>
+    <form action="{{ route('logout')}}" method="POST">
+        @csrf
+        <button type="submit">Logout</button>
+    </form>
+    @endauth
 </x-user::layouts.master>
