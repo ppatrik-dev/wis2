@@ -28,13 +28,13 @@
             @method('PUT')
             <x-input label="Name" name="first_name" value="{{ $user->first_name }}" :required="true"></x-input>
             <x-input label="Surname" name="last_name" value="{{ $user->last_name }}" :required="true"></x-input>
-            <x-multiselect label="Roles" name="roles[]" :options="$roles" :selected="$user->getRoleNames()"></x-multiselect>
+            <x-multiselect label="Roles" name="roles[]" default="user" value="{{ $user->getHighestRole() }}" :options="$roles" :selected="$user->getRoleNames()"></x-multiselect>
             <x-input label="Degree" name="degree" value="{{ $user->degree }}"></x-input>
             <x-input label="Email" name="email" value="{{ $user->email }}" :required="true"></x-input>
             <x-input label="Bio" name="bio" value="{{ $user->bio }}" input="textarea"></x-input>
+            <x-input label="Birth date" name="birth_date" type="date" value="{{ $user->birth_date->format('Y-m-d') }}" :required="true"></x-input>
+            <x-select label="Gender" name="gender" :options="array('male', 'female')" :selected="$user->gender" :required="true"></x-select>
             <x-input label="Country" name="country" value="{{ $user->country }}"></x-input>
-            <x-input label="Birth date" name="birth_date" value="{{ $user->birth_date->format('d.m.Y') }}" :required="true"></x-input>
-            <x-input label="Gender" name="gender" value="{{ $user->gender }}" :required="true"></x-input>
             <x-input label="Password" name="password" type="password"></x-input>
             <x-input label="Confirm password" name="password_confirmation" type="password"></x-input>
         </form>

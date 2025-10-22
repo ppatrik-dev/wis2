@@ -47,7 +47,7 @@ class UserController extends Controller {
             'country'     => ['nullable', 'string', 'max:64'],
             'bio'         => ['nullable', 'string'],
             'email'       => ['required', 'email', 'max:64', 'unique:users,email'],
-            'password'    => ['nullable', 'string', 'min:8', 'confirmed'],
+            'password'    => ['string', 'min:8', 'confirmed'],
         ]);
 
         $user = User::create($validated);

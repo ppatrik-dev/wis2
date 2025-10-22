@@ -80,7 +80,7 @@
                         {{ ucfirst($user->gender) }}
                     </td>
                     <td class="px-6 py-3">
-                        {{ $user->birth_date->format('d.m.Y') }}
+                        {{ $user->birth_date->format('m/d/Y') }}
                     </td>
                     <td class="px-6 py-3">
                         {{ $user->country }}
