@@ -19,11 +19,21 @@
 
         {{-- Vite CSS --}}
         {{-- {{ module_vite('build-auth', 'resources/assets/sass/app.scss') }} --}}
-        <link href="/src/style.css" rel="stylesheet">
+         @vite('resources/css/app.css')
     </head>
 
-    <body>
-        {{ $slot }}
+    <body class="bg-white dark:bg-gray-900">>
+        <div class="flex items-center justify-center min-h-screen">
+
+        <!-- Tu príde tvoja komponenta -->
+
+            {{ $slot }}
+
+
+        </div>
+        </div>
+
+
 
         {{-- Vite JS --}}
         {{-- {{ module_vite('build-auth', 'resources/assets/js/app.js') }} --}}
