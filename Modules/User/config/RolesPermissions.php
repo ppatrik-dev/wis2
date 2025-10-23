@@ -61,9 +61,7 @@ return [
             'delete_lecture_from_course',
         ],
         'admin' => [
-            'manage_users',
-            'manage_rooms',
-            'approve_course'
+            '*'
         ]
     ],
 

@@ -1,5 +1,5 @@
 <x-user::layouts.master>
-    
+
     <x-header headline="Users" >
         <x-slot:actions>
             <x-button href="{{ route('user.create') }}" rounded="rounded-lg">
