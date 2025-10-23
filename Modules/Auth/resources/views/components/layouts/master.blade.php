@@ -22,8 +22,8 @@
          @vite('resources/css/app.css')
     </head>
 
-    <body>
-        <div class="flex items-center justify-center min-h-screen bg-gray-100">
+    <body class="bg-white dark:bg-gray-900">>
+        <div class="flex items-center justify-center min-h-screen">
 
         <!-- Tu príde tvoja komponenta -->
 
