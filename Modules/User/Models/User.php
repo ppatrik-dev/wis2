@@ -56,8 +56,11 @@ class User extends Authenticatable implements HasMedia {
         return trim("{$this->degree} {$this->first_name} {$this->last_name}");
     }
 
-    public function getFullNameInitials(): string {
-        return "{$this->first_name[0]}{$this->last_name[0]}";
+    public function getInitialsAttribute(): string {
+        $firstInitial = $this->first_name ? mb_substr($this->first_name, 0, 1) : '';
+        $lastInitial  = $this->last_name ? mb_substr($this->last_name, 0, 1) : '';
+
+        return strtoupper($firstInitial . $lastInitial);
     }
 
     /**

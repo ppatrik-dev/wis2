@@ -69,7 +69,7 @@
                     </td>
                     <th scope="row" class="flex items-center px-6 py-3 text-gray-900 whitespace-nowrap dark:text-white">
                         <a href="{{ route('user.show', $user->id) }}">
-                            <x-avatar letters="{{ $user->getFullNameInitials() }}"></x-avatar>
+                            <x-avatar letters="{{ $user->initials }}"></x-avatar>
                         </a>
                         <a href="{{ route('user.show', $user->id) }}" class="ps-3">
                             <div class="text-base font-semibold">{{ $user->first_name }} {{ $user->last_name }}</div>
