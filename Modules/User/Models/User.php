@@ -31,7 +31,7 @@ class User extends Authenticatable implements HasMedia {
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = ['first_name', 'last_name', 'degree', 'sex', 'birth_date', 'country', 'bio', 'email', 'password'];
+    protected $fillable = ['first_name', 'last_name', 'degree', 'gender', 'birth_date', 'country', 'bio', 'email', 'password'];
     /**
      * The attributes that should be hidden for arrays.
      */
@@ -55,6 +55,11 @@ class User extends Authenticatable implements HasMedia {
     public function getFullNameAttribute(): string {
         return "{$this->first_name} {$this->last_name}";
     }
+
+    public function getFullNameInitials(): string {
+        return "{$this->first_name[0]}{$this->last_name[0]}";
+    }
+
     /**
      * Defining media collection for user's avatar
      */
@@ -72,6 +77,7 @@ class User extends Authenticatable implements HasMedia {
     public function getHighestRole(): ?string {
         $roleHierarchy = config('user.RolesPermissions.hierarchy');
         $userRoles = $this->getRoleNames();
+        
         return collect($roleHierarchy)
             ->first(fn($role) => $userRoles->contains($role));
     }

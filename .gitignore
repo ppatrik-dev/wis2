@@ -28,6 +28,7 @@
 /public/build
 /public/hot
 /public/storage
+package-lock.json
 
 # Storage & cache
 /storage/*.key

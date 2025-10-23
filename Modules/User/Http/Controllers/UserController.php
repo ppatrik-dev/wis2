@@ -6,26 +6,31 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\User\Models\User;
 use Illuminate\Support\Facades\Log;
+use Modules\User\Services\RoleService;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller {
+
+    protected $roleService;
+
+    public function __construct(RoleService $roleService) {
+        $this->roleService = $roleService;
+    }
     /**
      * Display a listing of the resource.
      */
     public function index() {
-        try {
-            $users = User::orderBy('created_at', 'desc')->paginate(10);
-            return view('user::index', ["users" => $users]);
-        } catch (\Exception $e) {
-            Log::error('Error fetching users: ' . $e->getMessage());
-            return back()->withError('Failed to load users.');
-        }
+        $roles = $this->roleService->getAllRoles();
+        $users = User::orderBy('created_at', 'desc')->paginate(10);
+        return view('user::index', ["users" => $users, "roles" => $roles]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create() {
-        return view('user::create');
+        $roles = $this->roleService->getAllRoles();
+        return view('user::create', ['roles' => $roles]);
     }
 
     /**
@@ -34,31 +39,38 @@ class UserController extends Controller {
     public function store(Request $request) {
 
         $validated = $request->validate([
-            'first_name' => 'required',
-            'last_name'  => 'required',
-            'email'      => 'required',
-            'sex'        => 'required',
-            'birth_date' => 'required',
-            'password' => 'required|string|min:8|confirmed',
+            'degree'      => ['nullable', 'string', 'max:64'],
+            'first_name'  => ['required', 'string', 'max:64'],
+            'last_name'   => ['required', 'string', 'max:64'],
+            'gender'      => ['required', Rule::in(['male', 'female'])],
+            'birth_date'  => ['required', 'date'],
+            'country'     => ['nullable', 'string', 'max:64'],
+            'bio'         => ['nullable', 'string'],
+            'email'       => ['required', 'email', 'max:64', 'unique:users,email'],
+            'password'    => ['string', 'min:8', 'confirmed'],
         ]);
 
-        User::create($validated);
-        return redirect()->route('users.index')->with('success', 'User created successfully');
+        $user = User::create($validated);
+        $this->roleService->assignRoles($user, $request->input('roles', []));
+        return redirect()->route('user.index')->with('success', 'User created successfully !');
     }
 
     /**
      * Show the specified resource.
      */
     public function show($id) {
-        return view('user::show');
+        $roles = $this->roleService->getAllRoles();
+        $user = User::findOrFail($id);
+        return view('user::show', ["user" => $user, "roles" => $roles]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit($id) {
+        $roles = $this->roleService->getAllRoles();
         $user = User::findOrFail($id);
-        return view('user::edit', ["user" => $user]);
+        return view('user::edit', ["user" => $user, "roles" => $roles]);
     }
 
     /**
@@ -67,28 +79,34 @@ class UserController extends Controller {
     public function update(Request $request, $id) {
 
         $validated = $request->validate([
-            'first_name' => 'required',
-            'last_name'  => 'required',
-            'email'      => 'required|email|unique:users,email,' . $id,
-            'sex'        => 'required',
-            'birth_date' => 'required',
-            'password'   => 'nullable|string|min:8|confirmed',
+            'degree'      => ['nullable', 'string', 'max:64'],
+            'first_name'  => ['required', 'string', 'max:64'],
+            'last_name'   => ['required', 'string', 'max:64'],
+            'gender'      => ['required', Rule::in(['male', 'female'])],
+            'birth_date'  => ['required', 'date'],
+            'country'     => ['nullable', 'string', 'max:64'],
+            'bio'         => ['nullable', 'string'],
+            'email'       => ['required', 'email', 'max:64', Rule::unique('users', 'email')->ignore($id)],
+            'password'    => ['nullable', 'string', 'min:8', 'confirmed'],
         ]);
+
+        if (!$request->filled('password')) {
+            unset($validated['password']);
+        }
 
         $user = User::findOrFail($id);
         $user->update($validated);
-
-        return redirect()->route('users.index')->with('success', 'User updated successfully !');
+        $this->roleService->assignRoles($user, $request->input('roles', []));
+        return redirect()->route('user.show', $user->id)->with('success', 'User updated successfully !');
     }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy($id) {
-
         $user = User::findOrFail($id);
         $user->delete();
 
-        return redirect()->route('users.index')->with('success', 'User deleted successfully!');
+        return redirect()->route('user.index')->with('success', 'User deleted successfully!');
     }
 }
