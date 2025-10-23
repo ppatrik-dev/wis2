@@ -1,5 +1,5 @@
 <x-user::layouts.master>
-    <x-header headline="Users">
+    <x-header headline="User Details">
         <x-slot:actions>
             <x-button href="{{ route('user.edit', $user->id) }}" rounded="rounded-s-lg" variant="primary">
                 <svg class="w-3 h-3 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 20 20">
@@ -21,7 +21,7 @@
             </x-button>
         </x-slot:actions>
     </x-header>
-    
+
     <x-user::profile :user="$user">
         <form id="userProfileForm" action="{{ route('user.destroy', $user->id) }}" method="POST" class="w-full max-w-3/4 mx-auto py-10 grid grid-cols-3 gap-6"
                 onsubmit="return confirm('Are you sure you want to delete this user?');">
