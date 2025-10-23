@@ -1,10 +1,13 @@
 <div class="flex items-center gap-4 pl-3">
     <x-avatar width='8' height='8'></x-avatar>
     <div class="text-sm dark:text-white">
-        <div>Name Surname</div>
+        <a href="{{ route('user.show', Auth::user()->id) }}" class="hover:underline">
+            {{ Auth::user()->full_name}}
+        </a>
     </div>
 
-    <form method="POST" action="">
+
+    <form method="POST" action="{{ route('logout')}}">
     @csrf
     <button type="submit"
         class="flex items-center w-full p-2 text-gray-900 rounded-lg hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 group">

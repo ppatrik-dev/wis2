@@ -53,7 +53,7 @@ class User extends Authenticatable implements HasMedia {
      * Accessor for full name
      */
     public function getFullNameAttribute(): string {
-        return "{$this->first_name} {$this->last_name}";
+        return trim("{$this->degree} {$this->first_name} {$this->last_name}");
     }
 
     public function getFullNameInitials(): string {
@@ -77,7 +77,7 @@ class User extends Authenticatable implements HasMedia {
     public function getHighestRole(): ?string {
         $roleHierarchy = config('user.RolesPermissions.hierarchy');
         $userRoles = $this->getRoleNames();
-        
+
         return collect($roleHierarchy)
             ->first(fn($role) => $userRoles->contains($role));
     }
