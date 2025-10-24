@@ -76,7 +76,11 @@
                             <a href="{{ route('course.student.show', [$courseId, $student->id]) }}" class="text-blue-600 hover:text-blue-900">View</a>
                             <a href="{{ route('course.student.edit', [$courseId, $student->id]) }}" class="text-yellow-600 hover:text-yellow-900">Edit</a>
                             @if(!$student->pivot->is_approved)
-                                <a href="{{ route('course.student.approve', [$courseId, $student->id]) }}" class="text-green-600 hover:text-green-900">Approve</a>
+                                <form method="POST" action="{{ route('course.student.approve', [$courseId, $student->id]) }}" style="display: inline;">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="text-green-600 hover:text-green-900">Approve</button>
+                                </form>
                             @endif
                         </div>
                     </td>

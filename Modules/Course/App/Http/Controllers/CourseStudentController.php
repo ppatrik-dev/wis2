@@ -25,8 +25,7 @@ class CourseStudentController extends Controller
 
     public function create(int $courseId): View
     {
-        $users = User::all()->pluck('first_name', 'id')->toArray();
-        return view('course::course_student.create', compact('courseId', 'users'));
+        return view('course::course_student.create', compact('courseId'));
     }
 
     public function store(Request $request, int $courseId)
@@ -109,10 +108,13 @@ class CourseStudentController extends Controller
         return view('course::course_student.pending', compact('courseStudents', 'courseId'));
     }
 
-    public function approve(int $courseId, int $id)
+    public function approve(int $courseId, int $studentId)
     {
         try {
-            $this->courseStudentService->approve($id);
+            $this->courseStudentService->update($courseId, $studentId, [
+                'is_approved' => 1,
+                'approved_at' => now()
+            ]);
             return redirect()->route('course.student.index', $courseId)
                 ->with('success', 'Student enrollment approved successfully!');
         } catch (\Exception $e) {
@@ -121,10 +123,13 @@ class CourseStudentController extends Controller
         }
     }
 
-    public function reject(int $courseId, int $id)
+    public function reject(int $courseId, int $studentId)
     {
         try {
-            $this->courseStudentService->reject($id);
+            $this->courseStudentService->update($courseId, $studentId, [
+                'is_approved' => 0,
+                'approved_at' => null
+            ]);
             return redirect()->route('course.student.index', $courseId)
                 ->with('success', 'Student enrollment rejected successfully!');
         } catch (\Exception $e) {

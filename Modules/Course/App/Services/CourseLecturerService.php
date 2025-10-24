@@ -40,6 +40,26 @@ class CourseLecturerService
     }
 
     /**
+     * Get lecturer by course ID and lecturer ID
+     */
+    public function getByCourseAndLecturer(int $courseId, int $lecturerId): CourseLecturer
+    {
+        $course = Course::findOrFail($courseId);
+        $lecturer = $course->lecturers()->where('lecturer_id', $lecturerId)->first();
+        
+        if (!$lecturer) {
+            throw new \Exception('Lecturer not found in this course.');
+        }
+        
+        // Load the lecturer data and return the pivot with lecturer relationship
+        $pivot = $lecturer->pivot;
+        $pivot->lecturer = $lecturer;
+        $pivot->course = $course;
+        
+        return $pivot;
+    }
+
+    /**
      * Add lecturer to course
      */
     public function addLecturer(int $courseId, int $lecturerId, string $role = 'lecturer'): CourseLecturer
@@ -68,12 +88,21 @@ class CourseLecturerService
     /**
      * Update lecturer role
      */
-    public function updateRole(int $id, string $role): CourseLecturer
+    public function updateRole(int $courseId, int $lecturerId, string $role): CourseLecturer
     {
-        return DB::transaction(function () use ($id, $role) {
-            $courseLecturer = CourseLecturer::findOrFail($id);
-            $courseLecturer->update(['role' => $role]);
-            return $courseLecturer->fresh(['lecturer', 'course']);
+        return DB::transaction(function () use ($courseId, $lecturerId, $role) {
+            $course = Course::findOrFail($courseId);
+            $lecturer = $course->lecturers()->where('lecturer_id', $lecturerId)->first();
+            
+            if (!$lecturer) {
+                throw new \Exception('Lecturer not found in this course.');
+            }
+            
+            // Update pivot data
+            $course->lecturers()->updateExistingPivot($lecturerId, ['role' => $role]);
+            
+            // Return updated pivot
+            return $course->lecturers()->where('lecturer_id', $lecturerId)->first()->pivot;
         });
     }
 

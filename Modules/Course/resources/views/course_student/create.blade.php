@@ -49,9 +49,9 @@
 
         <form id="studentForm" action="{{ route('course.student.store', $courseId) }}" method="POST" class="grid w-full grid-cols-3 gap-6 py-10 mx-auto max-w-3/4">
             @csrf
-            <x-select label="Student" name="student_id" :options="$users" :required="true"></x-select>
-            <x-input label="Final Score" name="final_score" type="number" min="0" max="100" placeholder="e.g., 85"></x-input>
-            <x-input type="checkbox" label="Is Approved" name="is_approved" value="1" :checked="false"/>
+            <x-input label="Student ID" name="student_id" type="number" :required="true" placeholder="Enter student ID"></x-input>
+            <x-input label="Grade" name="final_score" type="number" min="0" max="100" placeholder="Enter grade"></x-input>
+            <x-input type="checkbox" label="Approved" name="is_approved" value="1" :checked="false"/>
         </form>
     </x-course::profile>
 </x-course::layouts.master>

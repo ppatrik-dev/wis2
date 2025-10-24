@@ -31,8 +31,7 @@ class CourseLecturerController extends Controller
      */
     public function create(int $courseId): View
     {
-        $users = User::all()->pluck('first_name', 'id')->toArray();
-        return view('course::course_lecturer.create', compact('courseId', 'users'));
+        return view('course::course_lecturer.create', compact('courseId'));
     }
 
     /**
@@ -44,44 +43,56 @@ class CourseLecturerController extends Controller
             'lecturer_id' => ['required', 'exists:users,id'],
         ]);
 
-        $courseLecturer = $this->courseLecturerService->addLecturer(
-            $courseId,
-            $validated['lecturer_id']
-        );
-        return redirect()->route('course.lecturer.index', $courseId)
-            ->with('success', 'Lecturer added to course successfully!');
-
+        try {
+            $courseLecturer = $this->courseLecturerService->addLecturer(
+                $courseId,
+                $validated['lecturer_id']
+            );
+            return redirect()->route('course.lecturer.index', $courseId)
+                ->with('success', 'Lecturer added to course successfully!');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Error adding lecturer: ' . $e->getMessage())
+                ->withInput();
+        }
     }
 
     /**
      * Display the specified course lecturer
      */
-    public function show(int $courseId, int $id)
+    public function show(int $courseId, int $lecturerId)
     {
-        $courseLecturer = $this->courseLecturerService->getById($id);
-        return view('course::course_lecturer.show', compact('courseLecturer', 'courseId'));
+        $courseLecturer = $this->courseLecturerService->getByCourseAndLecturer($courseId, $lecturerId);
+        return view('course::course_lecturer.show', compact('courseLecturer', 'courseId', 'lecturerId'));
     }
 
     /**
      * Show the form for editing the specified course lecturer
      */
-    public function edit(int $courseId, int $id): View
+    public function edit(int $courseId, int $lecturerId): View
     {
-        $courseLecturer = $this->courseLecturerService->getById($id);
-        return view('course::course_lecturer.edit', compact('courseLecturer', 'courseId'));
+        $courseLecturer = $this->courseLecturerService->getByCourseAndLecturer($courseId, $lecturerId);
+        return view('course::course_lecturer.edit', compact('courseLecturer', 'courseId', 'lecturerId'));
     }
 
     /**
      * Update the specified course lecturer
      */
-    public function update(Request $request, int $courseId, int $id)
+    public function update(Request $request, int $courseId, int $lecturerId)
     {
         $validated = $request->validate([
             'role' => ['required', 'string', 'max:50'],
         ]);
-        $this->courseLecturerService->updateRole($id, $validated['role']);
-        return redirect()->route('course.lecturer.index', $courseId)
-            ->with('success', 'Lecturer role updated successfully!');
+        
+        try {
+            $this->courseLecturerService->updateRole($courseId, $lecturerId, $validated['role']);
+            return redirect()->route('course.lecturer.index', $courseId)
+                ->with('success', 'Lecturer role updated successfully!');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Error updating lecturer: ' . $e->getMessage())
+                ->withInput();
+        }
     }
 
     /**
