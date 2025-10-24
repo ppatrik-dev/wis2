@@ -4,7 +4,6 @@ namespace Modules\Course\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-// use Modules\Course\Database\Factories\CourseNewsFactory;
 
 class CourseNews extends Model
 {
