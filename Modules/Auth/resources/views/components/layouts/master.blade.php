@@ -19,14 +19,18 @@
 
         @vite('resources/css/app.css')
     </head>
-
-    <body class="bg-white dark:bg-gray-900">
-        <h1>WIS2</h1>
-        <div class="flex items-center justify-center min-h-screen">
-            {{ $slot }}
+ <body class="bg-white dark:bg-gray-900">
+    <!-- Nadpis s logo -->
+    <div class="pt-8 text-center">
+        <div class="flex items-center justify-center gap-3 mb-8">
+            <img src="{{ asset('images/JLVEZWf9_400x400.png') }}" alt="WIS2 Logo" class="w-16 h-16">
+            <h1 class="text-4xl font-bold text-gray-900 dark:text-white">WIS2</h1>
         </div>
+    </div>
 
-        {{-- Vite JS --}}
-        {{-- {{ module_vite('build-auth', 'resources/assets/js/app.js') }} --}}
-    </body>
+    <div class="flex items-center justify-center min-h-screen -mt-20">
+        {{ $slot }}
+    </div>
+</body>
+
 </html>
