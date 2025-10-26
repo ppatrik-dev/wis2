@@ -23,7 +23,7 @@
     <!-- Nadpis s logo -->
     <div class="pt-8 text-center">
         <div class="flex items-center justify-center gap-3 mb-8">
-            <img src="{{ asset('images/JLVEZWf9_400x400.png') }}" alt="WIS2 Logo" class="w-16 h-16">
+            <img src="{{ asset('images/logo.png') }}" alt="WIS2 Logo" class="w-16 h-16">
             <h1 class="text-4xl font-bold text-gray-900 dark:text-white">WIS2</h1>
         </div>
     </div>
