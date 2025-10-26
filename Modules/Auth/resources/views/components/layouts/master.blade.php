@@ -17,26 +17,20 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        {{-- Vite CSS --}}
-        {{-- {{ module_vite('build-auth', 'resources/assets/sass/app.scss') }} --}}
-         @vite('resources/css/app.css')
+        @vite('resources/css/app.css')
     </head>
-
-    <body class="bg-white dark:bg-gray-900">>
-        <div class="flex items-center justify-center min-h-screen">
-
-        <!-- Tu príde tvoja komponenta -->
-
-            {{ $slot }}
-
-
+ <body class="bg-white dark:bg-gray-900">
+    <!-- Nadpis s logo -->
+    <div class="pt-8 text-center">
+        <div class="flex items-center justify-center gap-3 mb-8">
+            <img src="{{ asset('images/JLVEZWf9_400x400.png') }}" alt="WIS2 Logo" class="w-16 h-16">
+            <h1 class="text-4xl font-bold text-gray-900 dark:text-white">WIS2</h1>
         </div>
-        </div>
+    </div>
 
+    <div class="flex items-center justify-center min-h-screen -mt-20">
+        {{ $slot }}
+    </div>
+</body>
 
-
-        {{-- Vite JS --}}
-        {{-- {{ module_vite('build-auth', 'resources/assets/js/app.js') }} --}}
-
-    </body>
 </html>
