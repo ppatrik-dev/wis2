@@ -17,26 +17,16 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        {{-- Vite CSS --}}
-        {{-- {{ module_vite('build-auth', 'resources/assets/sass/app.scss') }} --}}
-         @vite('resources/css/app.css')
+        @vite('resources/css/app.css')
     </head>
 
-    <body class="bg-white dark:bg-gray-900">>
+    <body class="bg-white dark:bg-gray-900">
+        <h1>WIS2</h1>
         <div class="flex items-center justify-center min-h-screen">
-
-        <!-- Tu príde tvoja komponenta -->
-
             {{ $slot }}
-
-
         </div>
-        </div>
-
-
 
         {{-- Vite JS --}}
         {{-- {{ module_vite('build-auth', 'resources/assets/js/app.js') }} --}}
-
     </body>
 </html>
