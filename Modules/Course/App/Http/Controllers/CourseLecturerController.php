@@ -83,7 +83,7 @@ class CourseLecturerController extends Controller
         $validated = $request->validate([
             'role' => ['required', 'string', 'max:50'],
         ]);
-        
+
         try {
             $this->courseLecturerService->updateRole($courseId, $lecturerId, $validated['role']);
             return redirect()->route('course.lecturer.index', $courseId)
@@ -100,7 +100,7 @@ class CourseLecturerController extends Controller
      */
     public function destroy(int $courseId, int $id)
     {
-        $this->courseLecturerService->delete($id);
+        $this->courseLecturerService->removeLecturer($courseId, $id);
         return redirect()->route('course.lecturer.index', $courseId)
             ->with('success', 'Lecturer removed from course successfully!');
     }

@@ -8,6 +8,9 @@ use Modules\Course\App\Http\Controllers\CourseStudentController;
 
 Route::resource('courses', CourseController::class)->names('course');
 
+Route::get('courses/{course}/students/lookup', [CourseStudentController::class, 'lookupPublic'])
+    ->name('course.student.lookup');
+
 Route::prefix('courses/{course}')->group(function () {
     // Course lecturers
     Route::resource('lecturers', CourseLecturerController::class)->names('course.lecturer');

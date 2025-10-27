@@ -16,7 +16,7 @@ class CourseStudentService
      */
     public function getByCourse(int $courseId): Collection
     {
-        $course = Course::findOrFail($courseId);
+        $course = Course::withTrashed()->findOrFail($courseId);
         return $course->students()->withPivot(['final_score', 'is_approved', 'approved_at', 'created_at', 'updated_at'])->get();
     }
 
@@ -36,18 +36,17 @@ class CourseStudentService
      */
     public function getById(int $courseId, int $studentId): CourseStudent
     {
-        $course = Course::findOrFail($courseId);
+        $course = Course::withTrashed()->findOrFail($courseId);
         $student = $course->students()->where('student_id', $studentId)->first();
-        
+
         if (!$student) {
             throw new \Exception('Student not found in this course.');
         }
-        
-        // Load the student data and return the pivot with student relationship
+
         $pivot = $student->pivot;
         $pivot->student = $student;
         $pivot->course = $course;
-        
+
         return $pivot;
     }
 
@@ -57,16 +56,14 @@ class CourseStudentService
     public function addStudent(int $courseId, int $studentId, array $data = []): CourseStudent
     {
         return DB::transaction(function () use ($courseId, $studentId, $data) {
-            $course = Course::findOrFail($courseId);
-            
-            // Check if student is already enrolled in this course
+            $course = Course::withTrashed()->findOrFail($courseId);
+
             $existing = $course->students()->where('student_id', $studentId)->first();
 
             if ($existing) {
                 throw new \Exception('Student is already enrolled in this course.');
             }
 
-            // Use the relationship to attach the student
             $course->students()->attach($studentId, [
                 'final_score' => $data['final_score'] ?? null,
                 'is_approved' => $data['is_approved'] ?? false,
@@ -83,16 +80,23 @@ class CourseStudentService
     public function update(int $courseId, int $studentId, array $data): CourseStudent
     {
         return DB::transaction(function () use ($courseId, $studentId, $data) {
-            $course = Course::findOrFail($courseId);
+            $course = Course::withTrashed()->findOrFail($courseId);
             $student = $course->students()->where('student_id', $studentId)->first();
-            
+
             if (!$student) {
                 throw new \Exception('Student not found in this course.');
             }
-            
-            // Update pivot data
-            $course->students()->updateExistingPivot($studentId, $data);
-            
+
+            // Filter out null values so we don't try to write NULL into non-nullable columns
+            $updateData = array_filter($data, function ($v) {
+                return !is_null($v);
+            });
+
+            if (!empty($updateData)) {
+                // Update pivot data
+                $course->students()->updateExistingPivot($studentId, $updateData);
+            }
+
             // Return updated pivot
             return $course->students()->where('student_id', $studentId)->first()->pivot;
         });
@@ -113,6 +117,7 @@ class CourseStudentService
     /**
      * Remove student by ID
      */
+    /*
     public function delete(int $id): bool
     {
         return DB::transaction(function () use ($id) {
@@ -120,7 +125,7 @@ class CourseStudentService
             return $courseStudent->delete();
         });
     }
-
+    */
     /**
      * Get courses by student
      */
@@ -189,11 +194,33 @@ class CourseStudentService
     /**
      * Update student final score
      */
+    /*
     public function updateScore(int $id, float $score): CourseStudent
     {
         return DB::transaction(function () use ($id, $score) {
             $courseStudent = CourseStudent::findOrFail($id);
             $courseStudent->update(['final_score' => $score]);
+            return $courseStudent->fresh(['student', 'course']);
+        });
+    }
+        */
+
+    /**
+     * Update student final score by course and student id (when pivot id isn't available)
+     */
+    public function updateScoreByCourseAndStudent(int $courseId, int $studentId, float $score): CourseStudent
+    {
+        return DB::transaction(function () use ($courseId, $studentId, $score) {
+            $courseStudent = CourseStudent::where('course_id', $courseId)
+                ->where('student_id', $studentId)
+                ->first();
+
+            if (!$courseStudent) {
+                throw new \Exception('Enrollment not found for the given course and student.');
+            }
+
+            $courseStudent->update(['final_score' => $score]);
+
             return $courseStudent->fresh(['student', 'course']);
         });
     }

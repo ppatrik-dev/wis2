@@ -46,16 +46,16 @@ class CourseLecturerService
     {
         $course = Course::findOrFail($courseId);
         $lecturer = $course->lecturers()->where('lecturer_id', $lecturerId)->first();
-        
+
         if (!$lecturer) {
             throw new \Exception('Lecturer not found in this course.');
         }
-        
+
         // Load the lecturer data and return the pivot with lecturer relationship
         $pivot = $lecturer->pivot;
         $pivot->lecturer = $lecturer;
         $pivot->course = $course;
-        
+
         return $pivot;
     }
 
@@ -67,7 +67,7 @@ class CourseLecturerService
         return DB::transaction(function () use ($courseId, $lecturerId, $role) {
             $course = Course::findOrFail($courseId);
             $user = User::findOrFail($lecturerId);
-            
+
             // Check if lecturer is already assigned to this course
             $existing = $course->lecturers()->where('lecturer_id', $lecturerId)->first();
 
@@ -93,14 +93,14 @@ class CourseLecturerService
         return DB::transaction(function () use ($courseId, $lecturerId, $role) {
             $course = Course::findOrFail($courseId);
             $lecturer = $course->lecturers()->where('lecturer_id', $lecturerId)->first();
-            
+
             if (!$lecturer) {
                 throw new \Exception('Lecturer not found in this course.');
             }
-            
+
             // Update pivot data
             $course->lecturers()->updateExistingPivot($lecturerId, ['role' => $role]);
-            
+
             // Return updated pivot
             return $course->lecturers()->where('lecturer_id', $lecturerId)->first()->pivot;
         });
@@ -121,6 +121,7 @@ class CourseLecturerService
     /**
      * Remove lecturer by ID
      */
+    /*
     public function delete(int $id): bool
     {
         return DB::transaction(function () use ($id) {
@@ -128,6 +129,7 @@ class CourseLecturerService
             return $courseLecturer->delete();
         });
     }
+    */
 
     /**
      * Get courses by lecturer

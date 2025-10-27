@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Modules\Course\App\Services\CourseStudentService;
 use Modules\User\Models\User;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Log;
 
 class CourseStudentController extends Controller
 {
@@ -66,6 +67,13 @@ class CourseStudentController extends Controller
 
     public function update(Request $request, int $courseId, int $studentId)
     {
+        Log::info('CourseStudentController.update called', [
+            'course_id' => $courseId,
+            'student_id' => $studentId,
+            'input' => $request->all(),
+            'ip' => $request->ip(),
+        ]);
+
         $validated = $request->validate([
             'final_score' => ['nullable', 'numeric', 'min:0', 'max:100'],
             'is_approved' => ['nullable', 'in:0,1'],
@@ -73,18 +81,32 @@ class CourseStudentController extends Controller
 
         try {
             $this->courseStudentService->update($courseId, $studentId, $validated);
+            Log::info('CourseStudentController.update success', [
+                'course_id' => $courseId,
+                'student_id' => $studentId,
+                'validated' => $validated,
+            ]);
+
             return redirect()->route('course.student.index', $courseId)
                 ->with('success', 'Student enrollment updated successfully!');
         } catch (\Exception $e) {
+            Log::error('CourseStudentController.update failed', [
+                'course_id' => $courseId,
+                'student_id' => $studentId,
+                'validated' => isset($validated) ? $validated : null,
+                'error' => $e->getMessage(),
+            ]);
+
             return redirect()->back()
                 ->withInput()
                 ->with('error', $e->getMessage());
         }
     }
 
-    public function destroy(int $courseId, int $id)
+    public function destroy(int $courseId, int $studentId)
     {
-        $this->courseStudentService->delete($id);
+        // Remove student by course and student id
+        $this->courseStudentService->removeStudent($courseId, $studentId);
 
         return redirect()->route('course.student.index', $courseId)
             ->with('success', 'Student removed from course successfully!');
@@ -138,20 +160,42 @@ class CourseStudentController extends Controller
         }
     }
 
-    public function updateScore(Request $request, int $courseId, int $id)
+    public function updateScore(Request $request, int $courseId, int $studentId)
     {
         $validated = $request->validate([
             'final_score' => ['required', 'numeric', 'min:0', 'max:100'],
         ]);
 
         try {
-            $this->courseStudentService->updateScore($id, $validated['final_score']);
+            $this->courseStudentService->updateScoreByCourseAndStudent($courseId, $studentId, $validated['final_score']);
             return redirect()->route('course.student.index', $courseId)
                 ->with('success', 'Student score updated successfully!');
         } catch (\Exception $e) {
             return redirect()->back()
                 ->with('error', $e->getMessage());
         }
+    }
+
+    /**
+     * Public lookup that returns plain text name (no JSON, no auth required).
+     * Useful for non-API pages where JS just needs a user name for an ID.
+     */
+    public function lookupPublic(int $courseId, Request $request)
+    {
+        $id = $request->query('id');
+        if (!$id || !is_numeric($id)) {
+            return response('', 200);
+        }
+
+        $user = User::find((int) $id);
+        if (!$user) {
+            return response('', 200);
+        }
+
+        // Prefer a `name` property if present, otherwise build from first/last name
+        $name = $user->name ?? trim((($user->first_name ?? '') . ' ' . ($user->last_name ?? '')));
+
+        return response($name ?: '', 200);
     }
 
     public function scores(int $courseId)

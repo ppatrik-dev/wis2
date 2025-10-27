@@ -40,19 +40,19 @@
                 </ul>
             </div>
         @endif
-        
+
         @if (session('error'))
             <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
                 {{ session('error') }}
             </div>
         @endif
-        
+
         @if (session('success'))
             <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
                 {{ session('success') }}
             </div>
         @endif
-        
+
         <form id="courseForm" action="{{ route('course.store') }}" method="POST"
             class="grid w-full grid-cols-3 gap-6 py-10 mx-auto max-w-3/4">
             @csrf
@@ -61,7 +61,7 @@
                 placeholder="e.g., Introduction to Computer Science"></x-input>
             <x-input label="Academic Year" name="academic_year" :required="true"
                 placeholder="e.g., 2024/2025"></x-input>
-            <x-input label="Credits" name="credits" type="number" :required="true" placeholder="e.g., 6"></x-input>
+            <x-input label="Credits" name="credits" type="number" :required="true" placeholder="e.g., 7"></x-input>
             <x-input label="Capacity" name="capacity" type="number" :required="true" placeholder="e.g., 50"></x-input>
             <x-select label="Type" name="type" :options="['mandatory' => 'Mandatory', 'optional' => 'Optional']"
                 :required="true" value="mandatory"></x-select>
