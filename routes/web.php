@@ -5,6 +5,6 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return Auth::check()
-        ? view('welcome')
+        ? view('index')
         : redirect()->route('login');
 });

@@ -62,6 +62,7 @@ class UserController extends Controller {
     public function show($id) {
         $roles = $this->roleService->getAllRoles();
         $user = User::findOrFail($id);
+        $this->authorize('view', $user);
         return view('user::show', ["user" => $user, "roles" => $roles]);
     }
 
@@ -71,6 +72,7 @@ class UserController extends Controller {
     public function edit($id) {
         $roles = $this->roleService->getAllRoles();
         $user = User::findOrFail($id);
+        $this->authorize('update', $user);
         return view('user::edit', ["user" => $user, "roles" => $roles]);
     }
 

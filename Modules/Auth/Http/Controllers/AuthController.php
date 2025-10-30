@@ -42,10 +42,9 @@ class AuthController extends Controller {
         ]);
         if (Auth::attempt($validated)) {
             $request->session()->regenerate();
-            return redirect()->intended(route('user.index'));
+            return redirect()->intended(route('index'));
         }
         throw ValidationException::withMessages((['credentials' => 'The provided credentials do not match our records.']));
-        // Login logic here
     }
     public function logout(Request $request) {
         Auth::logout();
