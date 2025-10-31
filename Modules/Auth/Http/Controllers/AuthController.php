@@ -40,7 +40,7 @@ class AuthController extends Controller {
             'email'       => ['required', 'email', 'max:64',],
             'password'    => ['required', 'string'],
         ]);
-        if (Auth::attempt($validated)) {
+        if (Auth::attempt($validated, $request->filled('remember'))) {
             $request->session()->regenerate();
             return redirect()->route('index');
         }

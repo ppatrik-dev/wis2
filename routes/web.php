@@ -7,4 +7,4 @@ Route::get('/', function () {
     return Auth::check()
         ? view('index')
         : redirect()->route('login');
-});
+})->name('index');

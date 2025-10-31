@@ -20,7 +20,7 @@ class UserController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
-        $this->authorize('viewAny', User::class);
+        // $this->authorize('viewAny', User::class);
         $roles = $this->roleService->getAllRoles();
         $users = User::orderBy('created_at', 'desc')->paginate(10);
         return view('user::index', ["users" => $users, "roles" => $roles]);
@@ -30,6 +30,7 @@ class UserController extends Controller {
      * Show the form for creating a new resource.
      */
     public function create() {
+        $this->authorize('create', User::class);
         $roles = $this->roleService->getAllRoles();
         return view('user::create', ['roles' => $roles]);
     }
@@ -38,7 +39,7 @@ class UserController extends Controller {
      * Store a newly created resource in storage.
      */
     public function store(Request $request) {
-
+        $this->authorize('create', User::class);
         $validated = $request->validate([
             'degree'      => ['nullable', 'string', 'max:64'],
             'first_name'  => ['required', 'string', 'max:64'],
@@ -62,7 +63,7 @@ class UserController extends Controller {
     public function show($id) {
         $roles = $this->roleService->getAllRoles();
         $user = User::findOrFail($id);
-        $this->authorize('view', $user);
+        // $this->authorize('view', $user);
         return view('user::show', ["user" => $user, "roles" => $roles]);
     }
 
@@ -98,6 +99,7 @@ class UserController extends Controller {
         }
 
         $user = User::findOrFail($id);
+        $this->authorize('update', $user);
         $user->update($validated);
         $this->roleService->assignRoles($user, $request->input('roles', []));
         return redirect()->route('user.show', $user->id)->with('success', 'User updated successfully !');
@@ -108,6 +110,7 @@ class UserController extends Controller {
      */
     public function destroy($id) {
         $user = User::findOrFail($id);
+        $this->authorize('delete', $user);
         $user->delete();
 
         return redirect()->route('user.index')->with('success', 'User deleted successfully!');
