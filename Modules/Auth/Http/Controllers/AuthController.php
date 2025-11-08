@@ -40,12 +40,11 @@ class AuthController extends Controller {
             'email'       => ['required', 'email', 'max:64',],
             'password'    => ['required', 'string'],
         ]);
-        if (Auth::attempt($validated)) {
+        if (Auth::attempt($validated, $request->filled('remember'))) {
             $request->session()->regenerate();
-            return redirect()->intended(route('user.index'));
+            return redirect()->route('index');
         }
         throw ValidationException::withMessages((['credentials' => 'The provided credentials do not match our records.']));
-        // Login logic here
     }
     public function logout(Request $request) {
         Auth::logout();

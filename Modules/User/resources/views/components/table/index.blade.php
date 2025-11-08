@@ -56,9 +56,11 @@
                 <th scope="col" class="px-6 py-3">
                     Role
                 </th>
+                @role('admin')
                 <th scope="col" class="px-6 py-3">
                    Actions
                 </th>
+                @endrole
             </tr>
         </thead>
         <tbody>
@@ -93,12 +95,16 @@
                             {{ ucfirst($user->getHighestRole()) }}
                         </div>
                     </td>
+                       @role('admin')
                     <td class="inline-flex px-6 py-3">
+
                         <a href="{{ route('user.edit', $user->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
                             <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                 <path fill-rule="evenodd" d="M5 8a4 4 0 1 1 7.796 1.263l-2.533 2.534A4 4 0 0 1 5 8Zm4.06 5H7a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h2.172a2.999 2.999 0 0 1-.114-1.588l.674-3.372a3 3 0 0 1 .82-1.533L9.06 13Zm9.032-5a2.907 2.907 0 0 0-2.056.852L9.967 14.92a1 1 0 0 0-.273.51l-.675 3.373a1 1 0 0 0 1.177 1.177l3.372-.675a1 1 0 0 0 .511-.273l6.07-6.07a2.91 2.91 0 0 0-.944-4.742A2.907 2.907 0 0 0 18.092 8Z" clip-rule="evenodd"/>
                             </svg>
                         </a>
+
+
                         <form action="{{ route('user.destroy', $user->id) }}" method="POST" class="inline ms-3"
                             onsubmit="return confirm('Are you sure you want to delete this user?');">
                             @csrf
@@ -109,7 +115,9 @@
                                 </svg>
                             </button>
                         </form>
+
                     </td>
+                          @endrole
                 </tr>
             @endforeach
         </tbody>
