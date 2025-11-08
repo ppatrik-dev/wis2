@@ -26,8 +26,16 @@ class CourseController extends Controller
      */
     public function index(Request $request)
     {
-        $courses = $this->courseService->getAll();
-        return view('course::course.index', compact('courses'));
+        $query = $request->get('q', '');
+
+        if (!empty($query)) {
+            // search helper in CourseService
+            $courses = $this->courseService->search($query);
+        } else {
+            $courses = $this->courseService->getAll();
+        }
+
+        return view('course::course.index', compact('courses', 'query'));
     }
 
     /**
@@ -95,3 +103,4 @@ class CourseController extends Controller
             ->with('success', 'Course deleted successfully!');
     }
 }
+
