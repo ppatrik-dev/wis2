@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\User\Models\User;
 use Modules\Term\Models\Term;
-// use Modules\Course\Database\Factories\CourseFactory;
+use Modules\Course\Models\CourseNews;
+use Modules\Course\Models\CourseStudent;
+use Modules\Course\Models\CourseLecturer;
 
 class Course extends Model
 {
@@ -38,7 +40,7 @@ class Course extends Model
     {
         return $this->belongsToMany(User::class, 'course_student', 'course_id', 'student_id')
             ->using(CourseStudent::class)
-            ->withPivot(['final_score', 'is_approved', 'approved_at']);
+            ->withPivot(['final_score', 'is_approved', 'approved_at', 'created_at', 'updated_at']);
     }
 
 
@@ -46,7 +48,7 @@ class Course extends Model
     {
         return $this->belongsToMany(User::class, 'course_lecturer', 'course_id', 'lecturer_id')
             ->using(CourseLecturer::class)
-            ->withPivot('role');
+            ->withPivot(['role', 'created_at', 'updated_at']);
     }
 
     public function terms()

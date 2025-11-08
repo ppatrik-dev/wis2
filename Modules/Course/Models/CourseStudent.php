@@ -2,12 +2,11 @@
 
 namespace Modules\Course\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-// use Modules\Course\Database\Factories\CourseStudentFactory;
 use Modules\User\Models\User;
 
-class CourseStudent extends Model
+class CourseStudent extends Pivot
 {
     use HasFactory;
 
