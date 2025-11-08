@@ -45,11 +45,6 @@ class CourseNewsController extends Controller
         ]);
 
         $authorId = auth()->id();
-        
-        // If no user is authenticated, use the first user as default
-        if (!$authorId) {
-            $authorId = User::first()->id ?? 1;
-        }
 
         $courseNews = $this->courseNewsService->create($courseId, $authorId, $validated);
 
