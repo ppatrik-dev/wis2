@@ -1,4 +1,5 @@
 <x-course::layouts.master>
+
     <x-header headline="Enroll Student">
         <x-slot:actions>
             <x-button type="submit" form="studentForm" rounded="rounded-s-lg" variant="primary">
@@ -32,7 +33,7 @@
 
     <x-course::profile>
         @if ($errors->any())
-            <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+            <div class="p-4 mb-4 text-red-700 bg-red-100 border border-red-400 rounded">
                 <ul>
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -40,30 +41,27 @@
                 </ul>
             </div>
         @endif
-
         @if (session('error'))
-            <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+            <div class="p-4 mb-4 text-red-700 bg-red-100 border border-red-400 rounded">
                 {{ session('error') }}
             </div>
         @endif
 
         @if (session('success'))
-            <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+            <div class="p-4 mb-4 text-green-700 bg-green-100 border border-green-400 rounded">
                 {{ session('success') }}
             </div>
         @endif
 
         <form id="studentForm" action="{{ route('course.student.store', $courseId) }}" method="POST"
-            class="grid w-full grid-cols-3 gap-6 py-10 mx-auto max-w-3/4">
+            class="grid w-full max-w-lg grid-cols-1 gap-6 py-10 mx-auto">
             @csrf
             <div>
-                <x-input label="Student ID" name="student_id" type="number" :required="true"
-                    placeholder="Enter student ID"></x-input>
-                <div id="student-id-hint" class="mt-2 text-sm text-gray-600">Enter an ID to see the student's name</div>
+            <x-select label="Select Student" name="student_id" :options="$users" :required="true" />
             </div>
             <x-input label="Grade" name="final_score" type="number" min="0" max="100"
                 placeholder="Enter grade"></x-input>
-            <x-input type="checkbox" label="Approved" name="is_approved" value="1" :checked="false" />
+            <x-toggle label="Approved" name="is_approved" value="1" :checked="false" />
         </form>
 
         <script>

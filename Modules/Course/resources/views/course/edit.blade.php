@@ -30,7 +30,7 @@
 
     <x-course::profile :course="$course">
         @if ($errors->any())
-            <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+            <div class="p-4 mb-4 text-red-700 bg-red-100 border border-red-400 rounded">
                 <ul>
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -38,21 +38,21 @@
                 </ul>
             </div>
         @endif
-        
+
         @if (session('error'))
-            <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+            <div class="p-4 mb-4 text-red-700 bg-red-100 border border-red-400 rounded">
                 {{ session('error') }}
             </div>
         @endif
-        
+
         @if (session('success'))
-            <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+            <div class="p-4 mb-4 text-green-700 bg-green-100 border border-green-400 rounded">
                 {{ session('success') }}
             </div>
         @endif
-        
+
         <form id="courseForm" action="{{ route('course.update', $course->id) }}" method="POST"
-            class="w-full max-w-3/4 mx-auto py-10 grid grid-cols-3 gap-6">
+            class="grid w-full max-w-3xl grid-cols-3 gap-6 py-10 mx-auto">
             @csrf
             @method('PUT')
             <x-input label="Course Code" name="code" value="{{ $course->code }}" :required="true"></x-input>
@@ -67,11 +67,10 @@
                 :selected="$course->type" :required="true"></x-select>
             <x-select label="Guarantor" name="guarantor_id" :options="$users"
                 :selected="$course->guarantor_id"></x-select>
-            <x-input type="checkbox" label="Auto Enroll Confirm" name="auto_enroll_confirm" value="1"
-                :checked="$course->auto_enroll_confirm" />
-            <x-input type="checkbox" label="Is Approved" name="is_approved" value="1" :checked="$course->is_approved" />
+                <x-toggle name="auto_enroll_confirm" label="Auto Enroll Confirm" :checked="$course->auto_enroll_confirm"/>
+                <x-toggle name="is_approved" label="Is Approved" :checked="$course->is_approved"/>
             <x-input label="Description" name="description" value="{{ $course->description }}"
-                input="textarea"></x-input>
+                input="textarea" class="col-span-3"></x-input>
         </form>
     </x-course::profile>
 </x-course::layouts.master>

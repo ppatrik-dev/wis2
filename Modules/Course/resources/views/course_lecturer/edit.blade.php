@@ -30,7 +30,7 @@
 
     <x-course::profile :courseLecturer="$courseLecturer">
         @if ($errors->any())
-            <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+            <div class="p-4 mb-4 text-red-700 bg-red-100 border border-red-400 rounded">
                 <ul>
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -40,19 +40,19 @@
         @endif
 
         @if (session('error'))
-            <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+            <div class="p-4 mb-4 text-red-700 bg-red-100 border border-red-400 rounded">
                 {{ session('error') }}
             </div>
         @endif
 
         @if (session('success'))
-            <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+            <div class="p-4 mb-4 text-green-700 bg-green-100 border border-green-400 rounded">
                 {{ session('success') }}
             </div>
         @endif
 
         <form id="lecturerForm" action="{{ route('course.lecturer.update', [$courseId, $lecturerId]) }}" method="POST"
-            class="w-full max-w-3/4 mx-auto py-10 grid grid-cols-3 gap-6">
+            class="grid w-full max-w-lg grid-cols-1 gap-6 py-10 mx-auto">
             @csrf
             @method('PUT')
             <x-input label="Lecturer Name" name="lecturer_name"

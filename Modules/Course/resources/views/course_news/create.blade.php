@@ -25,7 +25,7 @@
     </x-header>
 
     <x-course::profile>
-        <form id="newsForm" action="{{ route('course.news.store', $courseId) }}" method="POST" class="grid w-full grid-cols-3 gap-6 py-10 mx-auto max-w-3/4">
+        <form id="newsForm" action="{{ route('course.news.store', $courseId) }}" method="POST" class="grid w-full max-w-lg grid-cols-1 gap-6 py-10 mx-auto">
             @csrf
             <x-input label="Title" name="title" :required="true" placeholder="News title..."></x-input>
             <x-input label="Description" name="description" input="textarea" :required="true" placeholder="News description..."></x-input>

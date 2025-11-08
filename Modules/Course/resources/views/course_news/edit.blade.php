@@ -23,7 +23,7 @@
     </x-header>
 
     <x-course::profile :courseNews="$courseNews">
-        <form id="newsForm" action="{{ route('course.news.update', [$courseId, $courseNews->id]) }}" method="POST" class="w-full max-w-3/4 mx-auto py-10 grid grid-cols-3 gap-6">
+        <form id="newsForm" action="{{ route('course.news.update', [$courseId, $courseNews->id]) }}" method="POST" class="grid w-full grid-cols-1 gap-6 py-10 mx-auto max-w-3/4">
             @csrf
             @method('PUT')
             <x-input label="Title" name="title" value="{{ $courseNews->title }}" :required="true"></x-input>

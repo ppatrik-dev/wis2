@@ -26,7 +26,7 @@
 
     <x-course::profile>
         @if ($errors->any())
-            <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+            <div class="p-4 mb-4 text-red-700 bg-red-100 border border-red-400 rounded">
                 <ul>
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -34,22 +34,22 @@
                 </ul>
             </div>
         @endif
-        
+
         @if (session('error'))
-            <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+            <div class="p-4 mb-4 text-red-700 bg-red-100 border border-red-400 rounded">
                 {{ session('error') }}
             </div>
         @endif
-        
+
         @if (session('success'))
-            <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+            <div class="p-4 mb-4 text-green-700 bg-green-100 border border-green-400 rounded">
                 {{ session('success') }}
             </div>
         @endif
 
         <form id="lecturerForm" action="{{ route('course.lecturer.store', $courseId) }}" method="POST" class="grid w-full grid-cols-3 gap-6 py-10 mx-auto max-w-3/4">
             @csrf
-            <x-input label="Lecturer ID" name="lecturer_id" type="number" :required="true" placeholder="Enter lecturer ID"></x-input>
+              <x-select label="Select Lecture" name="lecturer_id" :options="$users" :required="true" />
         </form>
     </x-course::profile>
 </x-course::layouts.master>

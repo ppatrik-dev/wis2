@@ -23,13 +23,13 @@
     </x-header>
 
     <x-course::profile :courseStudent="$courseStudent">
-        <form id="studentForm" action="{{ route('course.student.update', [$courseId, $studentId]) }}" method="POST" class="w-full max-w-3/4 mx-auto py-10 grid grid-cols-3 gap-6">
+        <form id="studentForm" action="{{ route('course.student.update', [$courseId, $studentId]) }}" method="POST" class="grid w-full grid-cols-1 gap-6 py-10 mx-auto max-w-3/4">
             @csrf
             @method('PUT')
             <x-input label="Student Name" name="student_name" value="{{ $courseStudent->student->first_name . ' ' . $courseStudent->student->last_name }}" :disabled="true"></x-input>
             <x-input label="Course Name" name="course_name" value="{{ $courseStudent->course->name }}" :disabled="true"></x-input>
             <x-input label="Final Score" name="final_score" type="number" min="0" max="100" value="{{ $courseStudent->final_score }}"></x-input>
-            <x-input type="checkbox" label="Is Approved" name="is_approved" :checked="$courseStudent->is_approved"/>
+            <x-toggle label="Is Approved" name="is_approved" :checked="$courseStudent->is_approved"/>
         </form>
     </x-course::profile>
 </x-course::layouts.master>

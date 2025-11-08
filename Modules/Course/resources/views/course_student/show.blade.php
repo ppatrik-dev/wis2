@@ -23,7 +23,7 @@
     </x-header>
 
     <x-course::profile :courseStudent="$courseStudent">
-        <form id="studentDeleteForm" action="{{ route('course.student.destroy', [$courseId, $studentId]) }}" method="POST" class="w-full max-w-3/4 mx-auto py-10 grid grid-cols-3 gap-6"
+        <form id="studentDeleteForm" action="{{ route('course.student.destroy', [$courseId, $studentId]) }}" method="POST" class="grid w-full grid-cols-3 gap-6 py-10 mx-auto max-w-3/4"
                 onsubmit="return confirm('Are you sure you want to remove this student from the course?');">
             @csrf
             @method('DELETE')

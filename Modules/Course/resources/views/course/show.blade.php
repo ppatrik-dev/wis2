@@ -23,20 +23,17 @@
     </x-header>
 
     <x-course::profile :course="$course">
-        <form id="courseDeleteForm" action="{{ route('course.destroy', $course->id) }}" method="POST" class="w-full max-w-3/4 mx-auto py-10 grid grid-cols-3 gap-6"
+        <form id="courseDeleteForm" action="{{ route('course.destroy', $course->id) }}" method="POST" class="grid w-full grid-cols-3 gap-6 py-10 mx-auto max-w-3/4"
                 onsubmit="return confirm('Are you sure you want to delete this course?');">
             @csrf
             @method('DELETE')
-            <x-input label="Course Code" name="code" value="{{ $course->code }}" :disabled="true"></x-input>
-            <x-input label="Course Name" name="name" value="{{ $course->name }}" :disabled="true"></x-input>
-            <x-input label="Academic Year" name="academic_year" value="{{ $course->academic_year }}" :disabled="true"></x-input>
             <x-input label="Credits" name="credits" value="{{ $course->credits }}" :disabled="true"></x-input>
             <x-input label="Capacity" name="capacity" value="{{ $course->capacity }}" :disabled="true"></x-input>
             <x-input label="Type" name="type" value="{{ ucfirst($course->type) }}" :disabled="true"></x-input>
             <x-input label="Guarantor" name="guarantor" value="{{ $course->guarantor ? $course->guarantor->first_name . ' ' . $course->guarantor->last_name : 'Not assigned' }}" :disabled="true"></x-input>
             <x-input label="Auto Enroll" name="auto_enroll_confirm" value="{{ $course->auto_enroll_confirm ? 'Yes' : 'No' }}" :disabled="true"></x-input>
             <x-input label="Status" name="is_approved" value="{{ $course->is_approved ? 'Approved' : 'Pending' }}" :disabled="true"></x-input>
-            <x-input label="Description" name="description" value="{{ $course->description }}" input="textarea" :disabled="true"></x-input>
+            <x-input label="Description" name="description" value="{{ $course->description }}" input="textarea" :disabled="true" class="col-span-3"></x-input>
         </form>
     </x-course::profile>
 </x-course::layouts.master>
