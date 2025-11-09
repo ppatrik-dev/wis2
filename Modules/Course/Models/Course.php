@@ -11,6 +11,24 @@ use Modules\Course\Models\CourseNews;
 use Modules\Course\Models\CourseStudent;
 use Modules\Course\Models\CourseLecturer;
 
+/**
+ * Modules\Course\Models\Course
+ *
+ * @property int $id
+ * @property int|null $guarantor_id
+ * @property string $code
+ * @property string $name
+ * @property string|null $academic_year
+ * @property string|null $description
+ * @property string|null $type
+ * @property int|null $credits
+ * @property int|null $capacity
+ * @property bool|null $auto_enroll_confirm
+ * @property bool|null $is_approved
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @mixin \Eloquent
+ */
 class Course extends Model
 {
     use HasFactory, SoftDeletes;

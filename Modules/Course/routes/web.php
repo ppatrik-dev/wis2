@@ -29,5 +29,8 @@ Route::prefix('courses/{course}')->group(function () {
     Route::patch('students/{student}/approve', [CourseStudentController::class, 'approve'])->name('course.student.approve');
     Route::patch('students/{student}/reject', [CourseStudentController::class, 'reject'])->name('course.student.reject');
     Route::patch('students/{student}/score', [CourseStudentController::class, 'updateScore'])->name('course.student.update-score');
+    // Register current authenticated user for this course (checkbox + submit flow)
+    Route::post('students/register', [CourseStudentController::class, 'registerCurrentUser'])->name('course.student.register')->middleware('auth');
+    Route::post('students/unregister', [CourseStudentController::class, 'unregisterCurrentUser'])->name('course.student.unregister')->middleware('auth');
 });
 
