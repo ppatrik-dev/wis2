@@ -17,7 +17,7 @@ class TermSeeder extends Seeder
 
         $terms = [
             [
-                'name' => 'Intro to Programming Systems - Lecture',
+                'name' => 'IZP - Lecture',
                 'course_id' => 1,
                 'lecturer_id' => 2,
                 'room_id' => $rooms->random()->id,
@@ -29,7 +29,7 @@ class TermSeeder extends Seeder
                 'event_datetime' => '2025-12-01 10:00:00',
             ],
             [
-                'name' => 'Information Systems - Exercise',
+                'name' => 'IIS - Exercise',
                 'course_id' => 2,
                 'lecturer_id' => null,
                 'room_id' => $rooms->random()->id,
@@ -41,7 +41,7 @@ class TermSeeder extends Seeder
                 'event_datetime' => '2025-12-02 14:00:00',
             ],
             [
-                'name' => 'Practical Conversation - Assignment',
+                'name' => 'PKA - Assignment',
                 'course_id' => 3,
                 'lecturer_id' => 2,
                 'room_id' => $rooms->random()->id,
@@ -53,7 +53,7 @@ class TermSeeder extends Seeder
                 'event_datetime' => '2025-12-03 09:00:00',
             ],
             [
-                'name' => 'Network Applications - Lecture',
+                'name' => 'ISA - Lecture',
                 'course_id' => 4,
                 'lecturer_id' => 2,
                 'room_id' => $rooms->random()->id,

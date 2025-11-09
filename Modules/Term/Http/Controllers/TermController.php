@@ -3,6 +3,9 @@
 namespace Modules\Term\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Modules\Term\Models\Term;
+use Modules\Term\Models\Room;
+use Modules\Course\Models\Course;
 use Illuminate\Http\Request;
 
 class TermController extends Controller
@@ -12,7 +15,8 @@ class TermController extends Controller
      */
     public function index()
     {
-        return view('term::index');
+        $terms = Term::orderBy('created_at', 'desc')->paginate(10);
+        return view('term::term.index', ["terms" => $terms]);
     }
 
     /**
@@ -20,7 +24,9 @@ class TermController extends Controller
      */
     public function create()
     {
-        return view('term::create');
+        $rooms = Room::orderBy('capacity', 'asc');
+        $courses = Course::orderBy('created_at', 'desc');
+        return view('term::term.create', ["rooms" => $rooms, "courses" => $courses]);
     }
 
     /**
@@ -33,7 +39,8 @@ class TermController extends Controller
      */
     public function show($id)
     {
-        return view('term::show');
+        $term = Term::findOrFail($id);
+        return view('term::term.show', ["term" => $term]);
     }
 
     /**
@@ -41,7 +48,10 @@ class TermController extends Controller
      */
     public function edit($id)
     {
-        return view('term::edit');
+        $term = Term::findOrFail($id);
+        $rooms = Room::orderBy('capacity', 'asc');
+        $courses = Course::orderBy('created_at', 'desc');
+        return view('term::term.edit', ["term" => $term, "rooms" => $rooms, "courses" => $courses]);
     }
 
     /**
@@ -52,5 +62,11 @@ class TermController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id) {}
+    public function destroy($id)
+    {
+        $term = Term::findOrFail($id);
+        $term->delete();
+
+        return redirect()->route('term.index')->with('success', 'User deleted successfully!');
+    }
 }
