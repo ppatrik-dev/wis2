@@ -12,7 +12,11 @@
     <select id="select-{{ $name }}" name="{{ $name }}" class="group relative w-full h-9.5 p-2 flex items-center dark:text-white border border-gray-300 rounded-lg
                 bg-gray-50 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 
                 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" @required($required) @disabled($disabled)>
-        <option value="" hidden></option>
+        @if($required)
+            <option value="" hidden></option>
+        @else
+            <option value="">Not Selected</option>
+        @endif
         @foreach ($options as $key => $option)
             @php
                 $isSequential = ($key === $loop->index);
