@@ -24,13 +24,13 @@
                     Type
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Points
+                    Max score
                 </th>
                 <th scope="col" class="px-6 py-3">
                     Capacity
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Event datetime
+                    Datetime
                 </th>
                 <th scope="col" class="px-6 py-3">
                     Registration

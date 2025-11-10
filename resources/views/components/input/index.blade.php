@@ -4,6 +4,7 @@
     'name' => '',
     'label' => '',
     'value' => '',
+    'rows' => '5',
     'required' => false,
     'disabled' => false,
 ])
@@ -24,6 +25,6 @@
 @elseif ($input == "textarea")
     <div {{ $attributes->merge([]) }}>
         <label for="textarea-{{ $name }}" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">{{ $label }}</label>
-        <textarea id="textarea-{{ $name }}" rows="5" name="{{ $name }}" class="{{ $classes }}" @disabled($disabled)>{{ old($name, $value) }}</textarea>
+        <textarea id="textarea-{{ $name }}" rows="{{ $rows }}" name="{{ $name }}" class="{{ $classes }}" @disabled($disabled)>{{ old($name, $value) }}</textarea>
     </div>
 @endif

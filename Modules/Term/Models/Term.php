@@ -25,7 +25,7 @@ class Term extends Model
         'event_datetime' => 'datetime',
     ];
 
-    public function lecterer()
+    public function lecturer()
     {
         return $this->belongsTo(User::class, 'lecturer_id');
     }
