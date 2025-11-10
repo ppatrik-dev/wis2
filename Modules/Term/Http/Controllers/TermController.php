@@ -3,6 +3,7 @@
 namespace Modules\Term\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Modules\User\Models\User;
 use Modules\Term\Models\Term;
 use Modules\Term\Models\Room;
 use Modules\Course\Models\Course;
@@ -49,9 +50,10 @@ class TermController extends Controller
     public function edit($id)
     {
         $term = Term::findOrFail($id);
-        $rooms = Room::orderBy('capacity', 'asc');
-        $courses = Course::orderBy('created_at', 'desc');
-        return view('term::term.edit', ["term" => $term, "rooms" => $rooms, "courses" => $courses]);
+        $users = User::all()->mapWithKeys(fn($user) => [$user->id => $user->getFullNameAttribute()])->toArray();
+        $rooms = Room::all()->pluck('name', 'id')->toArray();
+        $courses = Course::all()->pluck('name', 'id')->toArray();
+        return view('term::term.edit', ["term" => $term, "users" => $users, "rooms" => $rooms, "courses" => $courses]);
     }
 
     /**
