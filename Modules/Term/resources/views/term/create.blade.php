@@ -28,14 +28,14 @@
             @csrf
             <x-input label="Name" name="name" :required="true"></x-input>
             <x-select label="Type" name="type" :options="['lecture','exercise','exam','assignment']" :required="true"></x-select>
+            <x-select label="Registration" name="registration_required" :options="['1' => 'Required', '0' => 'Not Required']" :required="true"></x-select>
             <x-input label="Datetime" name="event_datetime" type="datetime-local" :required="true"></x-input>
-            <x-input label="Max score" name="max_score" type="number" :required="true"></x-input>
             <x-input label="Capacity" name="capacity" type="number" :required="true"></x-input>
-            <x-input label="Description" name="description" input="textarea" rows="10" class="row-span-3"></x-input>
+            <x-input label="Max score" name="max_score" type="number" :required="true"></x-input>
             <x-select label="Course" name="course" :options="$courses" :required="true"></x-select>
             <x-select label="Lecturer" name="lecturer" :options="$users"></x-select>
             <x-select label="Room" name="room" :options="$rooms"></x-select>
-            <x-select label="Registration" name="registration_required" :options="['1' => 'Required', '0' => 'Not Required']" :required="true"></x-select>
+            <x-input label="Description" name="description" input="textarea" rows="3" class="col-span-3"></x-input>
         </form>
    </x-term::profile>
 </x-term::layouts.master>
