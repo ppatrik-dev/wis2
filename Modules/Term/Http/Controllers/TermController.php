@@ -26,15 +26,44 @@ class TermController extends Controller
      */
     public function create()
     {
-        $rooms = Room::orderBy('capacity', 'asc');
-        $courses = Course::orderBy('created_at', 'desc');
-        return view('term::term.create', ["rooms" => $rooms, "courses" => $courses]);
+        $users = User::all()->mapWithKeys(fn($user) => [$user->id => $user->getFullNameAttribute()])->toArray();
+        $rooms = Room::all()->pluck('name', 'id')->toArray();
+        $courses = Course::all()->pluck('name', 'id')->toArray();
+        return view('term::term.create', ["users" => $users, "rooms" => $rooms, "courses" => $courses]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {}
+    public function store(Request $request) {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'type' => ['required', 'in:lecture,exercise,exam,assignment'],
+            'event_datetime' => ['required', 'date', 'after_or_equal:today'],
+            'max_score' => ['required', 'integer', 'min:0'],
+            'capacity' => ['required', 'integer', 'min:1'],
+            'description' => ['nullable', 'string'],
+            'course' => ['required', 'exists:courses,id'],
+            'lecturer' => ['nullable', 'exists:users,id'],
+            'room' => ['nullable', 'exists:rooms,id'],
+            'registration_required' => ['required', 'boolean'],
+        ]);
+
+        $term = Term::create([
+            'name' => ucfirst($validated['name']),
+            'type' => $validated['type'],
+            'event_datetime' => $validated['event_datetime'],
+            'max_score' => $validated['max_score'],
+            'capacity' => $validated['capacity'],
+            'description' => $validated['description'] ?? null,
+            'course_id' => $validated['course'],
+            'lecturer_id' => $validated['lecturer'] ?? null,
+            'room_id' => $validated['room'] ?? null,
+            'registration_required' => $validated['registration_required'],
+        ]);
+        
+        return redirect()->route('term.index')->with('success', 'Term created successfuly!');
+    }
 
     /**
      * Show the specified resource.
@@ -99,6 +128,6 @@ class TermController extends Controller
         $term = Term::findOrFail($id);
         $term->delete();
 
-        return redirect()->route('term.index')->with('success', 'User deleted successfully!');
+        return redirect()->route('term.index')->with('success', 'Term deleted successfully!');
     }
 }
