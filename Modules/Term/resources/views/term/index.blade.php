@@ -12,4 +12,6 @@
 
     <x-term::table :terms="$terms" />
 
+
+
 </x-term::layouts.master>

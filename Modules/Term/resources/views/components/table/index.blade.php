@@ -3,7 +3,7 @@
 ])
 
 <div class="relative overflow-x-auto overflow-y-visible min-h-[300px]">
-    <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-3.5">
+    <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 mb-4">
         <label for="table-search" class="sr-only">Search</label>
         <div class="relative">
             <div class="absolute inset-y-0 flex items-center pointer-events-none rtl:inset-r-0 start-0 ps-3">
@@ -11,7 +11,7 @@
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                 </svg>
             </div>
-            <input type="text" id="table-search-users" class="block p-2 text-sm text-gray-900 border border-gray-300 rounded-lg ps-10 w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for users">
+            <input type="text" id="table-search-users" class="block p-2 text-sm text-gray-900 border border-gray-300 rounded-lg ps-10 w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for terms">
         </div>
     </div>
     <table class="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
@@ -19,6 +19,9 @@
             <tr>
                 <th scope="col" class="px-6 py-3">
                     Name
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Course
                 </th>
                 <th scope="col" class="px-6 py-3">
                     Type
@@ -45,20 +48,23 @@
                 <tr class="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
                     <td class="px-6 py-3 text-gray-900 whitespace-nowrap dark:text-white text-base font-semibold">
                         <a href="{{ route('term.show', $term->id) }}">
-                            {{  $term->name }}
+                            {{ $term->name }}
                         </a>
                     </td>
                     <td class="px-6 py-3">
-                        {{  ucfirst($term->type) }}
+                        {{ $term->course?->code }}
+                    </td>
+                    <td class="px-6 py-3">
+                        {{ ucfirst($term->type) }}
                     </td>
                     <td class="px-6 py-3">
                         {{ $term->max_score }}
                     </td>
                     <td class="px-6 py-3">
-                        {{  $term->capacity }}
+                        {{ $term->capacity }}
                     </td>
                     <td class="px-6 py-3">
-                        {{  $term->event_datetime }}
+                        {{ $term->event_datetime }}
                     </td>
                     <td class="px-6 py-3">
                         @if($term->registration_required)
