@@ -8,6 +8,7 @@ use Modules\Term\Models\Term;
 use Modules\Term\Models\Room;
 use Modules\Course\Models\Course;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class TermController extends Controller
 {
@@ -59,7 +60,36 @@ class TermController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id) {}
+    public function update(Request $request, $id) {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'type' => ['required', 'in:lecture,exercise,exam,assignment'],
+            'event_datetime' => ['required', 'date', 'after_or_equal:today'],
+            'max_score' => ['required', 'integer', 'min:0'],
+            'capacity' => ['required', 'integer', 'min:1'],
+            'description' => ['nullable', 'string'],
+            'course' => ['required', 'exists:courses,id'],
+            'lecturer' => ['nullable', 'exists:users,id'],
+            'room' => ['nullable', 'exists:rooms,id'],
+            'registration_required' => ['required', 'boolean'],
+        ]);
+
+        $term = Term::findOrFail($id);
+        $term->update([
+            'name' => ucfirst($validated['name']),
+            'type' => $validated['type'],
+            'event_datetime' => $validated['event_datetime'],
+            'max_score' => $validated['max_score'],
+            'capacity' => $validated['capacity'],
+            'description' => $validated['description'] ?? null,
+            'course_id' => $validated['course'],
+            'lecturer_id' => $validated['lecturer'] ?? null,
+            'room_id' => $validated['room'] ?? null,
+            'registration_required' => $validated['registration_required'],
+        ]);
+
+        return redirect()->route('term.index')->with('success', 'Term updated successfully!');
+    }
 
     /**
      * Remove the specified resource from storage.

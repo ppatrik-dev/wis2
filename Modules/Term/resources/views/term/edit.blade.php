@@ -34,7 +34,7 @@
             <x-select label="Course" name="course" :options="$courses" :selected="$term->course_id" :required="true"></x-select>
             <x-select label="Lecturer" name="lecturer" :options="$users" :selected="$term->lecturer_id"></x-select>
             <x-select label="Room" name="room" :options="$rooms" :selected="$term->room_id"></x-select>
-            <x-select label="Registration" name="registration_required" :options="['1' => 'Required', '0' => 'Not Required']" :selected="$term->registration_required"></x-select>
+            <x-select label="Registration" name="registration_required" :options="['1' => 'Required', '0' => 'Not Required']" :selected="$term->registration_required" :required="true"></x-select>
         </form>
     </x-term::profile>
 </x-term::layouts.master>
