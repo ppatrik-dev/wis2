@@ -8,6 +8,8 @@
     <span class="block mb-1 text-sm font-medium text-gray-500">
         {{ $label }}
     </span>
+
+      <input type="hidden" name="{{ $name }}" value="0">
     <input type="checkbox" name="{{ $name }}" value="1" class="sr-only peer"
            @if($checked) checked @endif>
     <div

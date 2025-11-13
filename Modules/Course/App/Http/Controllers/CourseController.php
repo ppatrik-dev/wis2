@@ -8,15 +8,14 @@ use Modules\Course\App\Http\Requests\StoreCourseRequest;
 use Modules\Course\App\Http\Requests\UpdateCourseRequest;
 use Modules\Course\App\Services\CourseService;
 use Modules\User\Models\User;
+use Modules\Course\Models\Course;
 use Illuminate\View\View;
 
 
-class CourseController extends Controller
-{
+class CourseController extends Controller {
 
     protected $courseService;
-    public function __construct(CourseService $courseService)
-    {
+    public function __construct(CourseService $courseService) {
         $this->courseService = $courseService;
     }
 
@@ -24,8 +23,7 @@ class CourseController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
-    {
+    public function index(Request $request) {
         $query = $request->get('q', '');
 
         if (!empty($query)) {
@@ -41,11 +39,11 @@ class CourseController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): View
-    {
-        if (!auth()->check() || !auth()->user()->hasAnyRole(['admin', 'guarantor'])) {
-            abort(403, 'Unauthorized');
-        }
+    public function create(): View {
+        $this->authorize('create', Course::class);
+        // if (!auth()->check() || !auth()->user()->hasAnyRole(['admin', 'guarantor'])) {
+        //     abort(403, 'Unauthorized');
+        // }
 
         $users = User::all()->pluck('first_name', 'id')->toArray();
         return view('course::course.create', compact('users'));
@@ -54,8 +52,8 @@ class CourseController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCourseRequest $request)
-    {
+    public function store(StoreCourseRequest $request) {
+        $this->authorize('create', Course::class);
         if (!auth()->check() || !auth()->user()->hasAnyRole(['admin', 'guarantor'])) {
             abort(403, 'Unauthorized');
         }
@@ -96,8 +94,7 @@ class CourseController extends Controller
     /**
      * Show the specified resource.
      */
-    public function show($id)
-    {
+    public function show($id) {
         $course = $this->courseService->getById((int) $id);
         return view('course::course.show', compact('course'));
     }
@@ -105,14 +102,15 @@ class CourseController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id): View
-    {
+    public function edit($id): View {
         // Only admin can edit courses
-        if (!auth()->check() || !auth()->user()->hasRole('admin')) {
-            abort(403, 'Unauthorized');
-        }
+
+        // if (!auth()->check() || !auth()->user()->hasRole('admin')) {
+        //     abort(403, 'Unauthorized');
+        // }
 
         $course = $this->courseService->getById((int) $id);
+        $this->authorize('update', $course);
         $users = User::all()->pluck('first_name', 'id')->toArray();
         return view('course::course.edit', compact('course', 'users'));
     }
@@ -120,8 +118,7 @@ class CourseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCourseRequest $request, $id)
-    {
+    public function update(UpdateCourseRequest $request, $id) {
         // Only admin can update courses
         if (!auth()->check() || !auth()->user()->hasRole('admin')) {
             abort(403, 'Unauthorized');
@@ -132,7 +129,7 @@ class CourseController extends Controller
             $oldCourse = $this->courseService->getById((int) $id);
 
             $course = $this->courseService->update((int) $id, $request->validated());
-
+            $this->authorize('update', $course);
             // If course transitioned from unapproved to approved, promote guarantor to role 'guarantor' (unless already admin/guarantor)
             if (!$oldCourse->is_approved && $course->is_approved && $course->guarantor_id) {
                 try {
@@ -175,16 +172,16 @@ class CourseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         // Only admin can delete courses
-        if (!auth()->check() || !auth()->user()->hasRole('admin')) {
-            abort(403, 'Unauthorized');
-        }
+        $course = Course::findOrFail($id);
+        $this->authorize('delete', $course);
+        // if (!auth()->check() || !auth()->user()->hasRole('admin')) {
+        //     abort(403, 'Unauthorized');
+        // }
 
         $this->courseService->delete((int) $id);
         return redirect()->route('course.index')
             ->with('success', 'Course deleted successfully!');
     }
 }
-

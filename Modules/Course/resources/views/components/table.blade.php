@@ -10,23 +10,31 @@
                     <th scope="col" class="px-6 py-3">Type</th>
                     <th scope="col" class="px-6 py-3">Status</th>
                     <th scope="col" class="px-6 py-3">Register</th>
+                    @auth
                     <th scope="col" class="px-6 py-3">Actions</th>
+                    @endauth
                 @elseif(isset($courseStudents))
                     <th scope="col" class="px-6 py-3">Student</th>
                     <th scope="col" class="px-6 py-3">Final Score</th>
                     <th scope="col" class="px-6 py-3">Status</th>
                     <th scope="col" class="px-6 py-3">Enrolled At</th>
+                    @auth
                     <th scope="col" class="px-6 py-3">Actions</th>
+                     @endauth
                 @elseif(isset($courseLecturers))
                     <th scope="col" class="px-6 py-3">Lecturer</th>
                     <th scope="col" class="px-6 py-3">Role</th>
                     <th scope="col" class="px-6 py-3">Assigned At</th>
+                     @auth
                     <th scope="col" class="px-6 py-3">Actions</th>
+                     @endauth
                 @elseif(isset($courseNews))
                     <th scope="col" class="px-6 py-3">Title</th>
                     <th scope="col" class="px-6 py-3">Author</th>
                     <th scope="col" class="px-6 py-3">Created At</th>
+                        @auth
                     <th scope="col" class="px-6 py-3">Actions</th>
+                     @endauth
                 @endif
             </tr>
         </thead>
@@ -74,9 +82,9 @@
                                         @csrf
                                         <label class="inline-flex items-center">
                                             <input type="checkbox" name="confirm" value="1"
-                                                class="mr-2 h-4 w-4 text-blue-600 border-gray-300 rounded">
+                                                class="w-4 h-4 mr-2 text-blue-600 border-gray-300 rounded">
                                             <button type="submit"
-                                                class="ml-2 px-2 py-1 text-xs font-medium text-white bg-blue-600 rounded hover:bg-blue-700">Register</button>
+                                                class="px-2 py-1 ml-2 text-xs font-medium text-white bg-blue-600 rounded hover:bg-blue-700">Register</button>
                                         </label>
                                     </form>
                                 @endif
@@ -85,8 +93,9 @@
                                     class="px-2 py-1 text-xs font-medium text-white bg-blue-600 rounded">Login to register</a>
                             @endauth
                         </td>
-                        <td class="inline-flex px-6 py-3">
-                            @if(auth()->check() && auth()->user()->hasAnyRole(['admin', 'guarantor', 'lecturer']))
+                        <td @guest hidden @endguest class="inline-flex px-6 py-3">
+                            @if(auth()->check() && auth()->user()->hasAnyRole(['admin', 'guarantor', 'lecturer','student']))
+                              @can('course.update',$course)
                                 <a href="{{ route('course.edit', $course->id) }}"
                                     class="font-medium text-blue-600 ms-3 dark:text-blue-500 hover:underline" title="Edit">
                                     <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -96,6 +105,8 @@
                                             clip-rule="evenodd" />
                                     </svg>
                                 </a>
+                                @endcan
+                                @can('course-student.viewAny',$course)
                                 <a href="{{ route('course.student.index', $course->id) }}"
                                     class="font-medium text-blue-600 ms-3 dark:text-blue-500 hover:underline" title="Students">
                                     <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -103,6 +114,8 @@
                                         <path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm-9 9a9 9 0 0 1 18 0v1H3Z" />
                                     </svg>
                                 </a>
+                                @endcan
+                                @can('course-lecturer.viewAny',$course)
                                 <a href="{{ route('course.lecturer.index', $course->id) }}"
                                     class="font-medium text-blue-600 ms-3 dark:text-blue-500 hover:underline" title="Lecturers">
                                     <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -111,6 +124,8 @@
                                             d="M7 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm10-2h2a2 2 0 0 1 2 2v10h-2V12h-2v10h-2V12a2 2 0 0 1 2-2Z" />
                                     </svg>
                                 </a>
+                                @endcan
+                                 @can('course-news.viewAny',$course)
                                 <a href="{{ route('course.news.index', $course->id) }}"
                                     class="font-medium text-blue-600 ms-3 dark:text-blue-500 hover:underline" title="News">
                                     <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -118,6 +133,7 @@
                                         <path d="M4 5h16v2H4V5Zm0 4h10v2H4V9Zm0 4h16v2H4v-2Zm0 4h10v2H4v-2Z" />
                                     </svg>
                                 </a>
+                                 @endcan
                             @endif
                         </td>
                     </tr>
@@ -143,7 +159,7 @@
                             {{ $student->pivot->created_at ? $student->pivot->created_at->format('d-m-Y') : 'N/A' }}
                         </td>
                         <td class="inline-flex px-6 py-3">
-
+                             @can('course-student.update',$course)
                             <a href="{{ route('course.student.edit', [$courseId, $student->id]) }}"
                                 class="font-medium text-blue-600 ms-3 dark:text-blue-500 hover:underline" title="Edit">
                                 <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -153,6 +169,7 @@
                                         clip-rule="evenodd" />
                                 </svg>
                             </a>
+                            @endcan
                             @if(!$student->pivot->is_approved)
                                 <form method="POST" action="{{ route('course.student.approve', [$courseId, $student->id]) }}"
                                     class="inline ms-3">
@@ -213,7 +230,7 @@
                                 {{ $news->author->last_name }}</a></td>
                         <td class="px-6 py-3">{{ $news->created_at->format('Y-m-d H:i') }}</td>
                         <td class="inline-flex px-6 py-3">
-
+                        @can('course-news.update',$news)
                             <a href="{{ route('course.news.edit', [$courseId, $news->id]) }}"
                                 class="font-medium text-blue-600 ms-3 dark:text-blue-500 hover:underline" title="Edit">
                                 <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -223,6 +240,7 @@
                                         clip-rule="evenodd" />
                                 </svg>
                             </a>
+                            @endcan
                         </td>
                     </tr>
                 @endforeach

@@ -20,7 +20,7 @@ class UserController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
-        // $this->authorize('viewAny', User::class);
+        $this->authorize('viewAny', User::class);
         $roles = $this->roleService->getAllRoles();
         $users = User::orderBy('created_at', 'desc')->paginate(10);
         return view('user::index', ["users" => $users, "roles" => $roles]);
