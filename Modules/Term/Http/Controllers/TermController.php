@@ -8,24 +8,25 @@ use Modules\Term\Models\Term;
 use Modules\Term\Models\Room;
 use Modules\Course\Models\Course;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
-class TermController extends Controller
-{
+class TermController extends Controller {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
+    public function index() {
         $terms = Term::orderBy('created_at', 'desc')->paginate(10);
+        // $user = Auth::user();
+        // $terms = $user->terms;
+        // dd($terms);
         return view('term::term.index', ["terms" => $terms]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
+    public function create() {
         $users = User::all()->mapWithKeys(fn($user) => [$user->id => $user->getFullNameAttribute()])->toArray();
         $rooms = Room::all()->pluck('name', 'id')->toArray();
         $courses = Course::all()->pluck('code', 'id')->toArray();
@@ -68,17 +69,16 @@ class TermController extends Controller
     /**
      * Show the specified resource.
      */
-    public function show($id)
-    {
+    public function show($id) {
         $term = Term::findOrFail($id);
+
         return view('term::term.show', ["term" => $term]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         $term = Term::findOrFail($id);
         $users = User::all()->mapWithKeys(fn($user) => [$user->id => $user->getFullNameAttribute()])->toArray();
         $rooms = Room::all()->pluck('name', 'id')->toArray();
@@ -123,8 +123,7 @@ class TermController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         $term = Term::findOrFail($id);
         $term->delete();
 

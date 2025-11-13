@@ -11,6 +11,7 @@ use Spatie\MediaLibrary\HasMedia; // Add this import if using Spatie Media Libra
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Permission\Traits\HasRoles;
+use  Modules\Term\Models\Term;
 
 class User extends Authenticatable implements HasMedia {
     use HasFactory, SoftDeletes, InteractsWithMedia, HasRoles;
@@ -48,6 +49,17 @@ class User extends Authenticatable implements HasMedia {
             'password' => 'hashed',
             'birth_date' => 'date',
         ];
+    }
+    public function terms() {
+        return $this->belongsToMany(
+            Term::class,
+
+            'term_student',
+            'student_id',
+            'term_id'
+        )
+            ->withPivot('score')
+            ->withTimestamps();
     }
     /**
      * Accessor for full name
