@@ -3,7 +3,7 @@
 ])
 
 <div class="relative overflow-x-auto overflow-y-visible min-h-[300px]">
-    <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 mb-4">
+    <div class="flex flex-wrap items-center justify-between mb-4 space-y-4 flex-column md:flex-row md:space-y-0">
         <label for="table-search" class="sr-only">Search</label>
         <div class="relative">
             <div class="absolute inset-y-0 flex items-center pointer-events-none rtl:inset-r-0 start-0 ps-3">
@@ -33,7 +33,10 @@
                     Capacity
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Datetime
+                    Start at
+                </th>
+                   <th scope="col" class="px-6 py-3">
+                    End at
                 </th>
                 <th scope="col" class="px-6 py-3">
                     Registration
@@ -46,7 +49,7 @@
         <tbody>
             @foreach($terms as $term)
                 <tr class="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
-                    <td class="px-6 py-3 text-gray-900 whitespace-nowrap dark:text-white text-base font-semibold">
+                    <td class="px-6 py-3 text-base font-semibold text-gray-900 whitespace-nowrap dark:text-white">
                         <a href="{{ route('term.show', $term->id) }}">
                             {{ $term->name }}
                         </a>
@@ -64,20 +67,23 @@
                         {{ $term->capacity }}
                     </td>
                     <td class="px-6 py-3">
-                        {{ $term->event_datetime }}
+                        {{ $term->start_at->format('d M Y H:i') }}
+                    </td>
+                        <td class="px-6 py-3">
+                        {{ $term->end_at->format('d M Y H:i') }}
                     </td>
                     <td class="px-6 py-3">
                         @if($term->registration_required)
-                            <span class="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
+                            <span class="px-2 py-1 text-xs font-medium text-blue-800 bg-blue-100 rounded-full">
                                 Required
                             </span>
                         @else
-                            <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
+                            <span class="px-2 py-1 text-xs font-medium text-green-800 bg-green-100 rounded-full">
                                 Not Required
                             </span>
                         @endif
                     </td>
-                    <td class="inline-flex px-6 py-3 gap-2">
+                    <td class="inline-flex gap-2 px-6 py-3">
                         <a href="{{ route('term.edit', $term->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline" title="Edit">
                             <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                 <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd"/>

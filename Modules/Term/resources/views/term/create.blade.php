@@ -29,7 +29,8 @@
             <x-input label="Name" name="name" :required="true"></x-input>
             <x-select label="Type" name="type" :options="['lecture','exercise','exam','assignment']" :required="true"></x-select>
             <x-toggle label="Registration required" name="registration_required" :required="true"></x-toggle>
-            <x-input label="Datetime" name="event_datetime" type="datetime-local" :required="true"></x-input>
+            <x-input label="Start at" name="start_at" type="datetime-local" :required="true"></x-input>
+             <x-input label="End at" name="end_at" type="datetime-local" :required="true"></x-input>
             <x-input label="Capacity" name="capacity" type="number" :required="true"></x-input>
             <x-input label="Max score" name="max_score" type="number" :required="true"></x-input>
             <x-select label="Lecturer" name="lecturer" :options="$users"></x-select>

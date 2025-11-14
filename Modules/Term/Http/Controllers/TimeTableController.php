@@ -9,15 +9,42 @@ use Modules\Term\Models\Room;
 use Modules\Course\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 
-class TermController extends Controller {
+class TimeTableController extends Controller {
     /**
      * Display a listing of the resource.
      */
-    public function index() {
-        $terms = Term::orderBy('created_at', 'desc')->paginate(10);
-        return view('term::term.index', ["terms" => $terms]);
+    public function index(Request $request) {
+        $weekDays = [
+            'monday' => [],
+            'tuesday' => [],
+            'wednesday' => [],
+            'thursday' => [],
+            'friday' => [],
+            'saturday' => [],
+            'sunday' => [],
+        ];
+        $hours = range(7, 20);
+        $date = $request->get('date', now()->toDateString());
+
+        $start = Carbon::parse($date)->startOfWeek();
+        $end = Carbon::parse($date)->endOfWeek();
+        $user = Auth::user();
+        $terms = $user->terms()
+            ->whereBetween('start_at', [$start, $end])
+            ->with(['room', 'course', 'lecturer'])
+            ->orderBy('start_at')
+            ->get();
+        foreach ($terms as $term) {
+            $dayKey = strtolower($term->day);
+
+            if (isset($weekDays[$dayKey])) {
+                $weekDays[$dayKey][] = $term;
+            }
+        }
+        return view('term::timetable.index', compact('terms', 'start', 'weekDays', 'hours'));
     }
 
     /**

@@ -28,7 +28,8 @@
             <x-input label="Name" name="name" value="{{ ucfirst($term->name) }}" :required="true"></x-input>
             <x-select label="Type" name="type" :options="['lecture','exercise','exam','assignment']" selected="{{ $term->type }}" :required="true"></x-select>
             <x-toggle label="Registration required" name="registration_required" :checked="$term->registration_required" :required="true"></x-toggle>
-            <x-input label="Datetime" name="event_datetime" :value="$term->event_datetime?->format('Y-m-d H:i')" type="datetime-local" :required="true"></x-input>
+            <x-input label="Start at" name="start_at" :value="$term->start_at?->format('Y-m-d H:i')" type="datetime-local" :required="true"></x-input>
+             <x-input label="End at" name="end_at" :value="$term->end_at?->format('Y-m-d H:i')" type="datetime-local" :required="true"></x-input>
             <x-input label="Capacity" name="capacity" value="{{ $term->capacity }}" type="number" :required="true"></x-input>
             <x-input label="Max score" name="max_score" value="{{ $term->max_score }}" type="number" :required="true"></x-input>
             <x-select label="Lecturer" name="lecturer" :options="$users" :selected="$term->lecturer_id"></x-select>

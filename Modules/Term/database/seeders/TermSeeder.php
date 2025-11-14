@@ -6,13 +6,11 @@ use Illuminate\Database\Seeder;
 use Modules\Term\Models\Term;
 use Modules\Term\Models\Room;
 
-class TermSeeder extends Seeder
-{
+class TermSeeder extends Seeder {
     /**
      * Run the database seeds.
      */
-    public function run(): void
-    {
+    public function run(): void {
         $rooms = Room::all();
 
         $terms = [
@@ -26,7 +24,8 @@ class TermSeeder extends Seeder
                 'registration_required' => true,
                 'max_score' => 100,
                 'capacity' => 30,
-                'event_datetime' => '2025-12-01 10:00:00',
+                'start_at' => '2025-12-01 10:00:00',
+                'end_at' => '2025-12-01 11:00:00',
             ],
             [
                 'name' => 'Project WIS2',
@@ -38,7 +37,8 @@ class TermSeeder extends Seeder
                 'registration_required' => true,
                 'max_score' => 50,
                 'capacity' => 25,
-                'event_datetime' => '2025-12-02 14:00:00',
+                'start_at' => '2025-12-02 14:00:00',
+                'end_at' => '2025-12-02 15:00:00',
             ],
             [
                 'name' => 'Homework (dialog)',
@@ -50,7 +50,8 @@ class TermSeeder extends Seeder
                 'registration_required' => false,
                 'max_score' => 30,
                 'capacity' => 20,
-                'event_datetime' => '2025-12-03 09:00:00',
+                'start_at' => '2025-12-03 09:00:00',
+                'end_at' => '2025-12-03 10:00:00',
             ],
             [
                 'name' => 'Network Lab',
@@ -62,7 +63,8 @@ class TermSeeder extends Seeder
                 'registration_required' => true,
                 'max_score' => 100,
                 'capacity' => 40,
-                'event_datetime' => '2025-12-04 11:00:00',
+                'start_at' => '2025-12-04 11:00:00',
+                'end_at' => '2025-12-04 12:00:00',
             ],
             [
                 'name' => 'Main term',
@@ -74,7 +76,8 @@ class TermSeeder extends Seeder
                 'registration_required' => true,
                 'max_score' => 100,
                 'capacity' => 40,
-                'event_datetime' => '2025-12-05 13:00:00',
+                'start_at' => '2025-12-05 13:00:00',
+                'end_at' => '2025-12-05 14:00:00',
             ],
         ];
 
