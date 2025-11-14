@@ -11,6 +11,15 @@ Route::resource('courses', CourseController::class)->names('course');
 Route::get('courses/{course}/students/lookup', [CourseStudentController::class, 'lookupPublic'])
     ->name('course.student.lookup');
 
+// Bulk register/unregister for the currently authenticated user (from course listing)
+Route::post('courses/students/register-multiple', [CourseStudentController::class, 'registerMultiple'])
+    ->name('course.student.register-multiple')->middleware('auth');
+Route::post('courses/students/unregister-multiple', [CourseStudentController::class, 'unregisterMultiple'])
+    ->name('course.student.unregister-multiple')->middleware('auth');
+// Single endpoint to update registration states for multiple courses (0 = unregister, 1 = register)
+Route::post('courses/students/update-registrations', [CourseStudentController::class, 'updateRegistrations'])
+    ->name('course.student.update-registrations')->middleware('auth');
+
 Route::prefix('courses/{course}')->group(function () {
     // Course lecturers
     Route::resource('lecturers', CourseLecturerController::class)->names('course.lecturer');

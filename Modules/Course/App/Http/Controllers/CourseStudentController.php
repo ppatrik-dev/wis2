@@ -10,25 +10,25 @@ use Illuminate\View\View;
 use Illuminate\Support\Facades\Log;
 use Modules\Course\Models\Course;
 
-class CourseStudentController extends Controller {
+class CourseStudentController extends Controller
+{
     private $courseStudentService;
 
-    public function __construct(CourseStudentService $courseStudentService) {
+    public function __construct(CourseStudentService $courseStudentService)
+    {
         $this->courseStudentService = $courseStudentService;
     }
 
-    public function index(Request $request, int $courseId) {
-        // Only allow admin, guarantor, or lecturers assigned to this course
+    public function index(Request $request, int $courseId)
+    {
         if (!auth()->check()) {
             return redirect()->route('login');
         }
 
         $user = auth()->user();
-
         $course = Course::findOrFail($courseId);
-
         $isLecturerForCourse = $course->lecturers()->where('lecturer_id', $user->id)->exists();
-        // $this->authorize('viewAny', $course);
+
         if (!($user->hasAnyRole(['admin', 'guarantor']) || $isLecturerForCourse)) {
             abort(403, 'Unauthorized');
         }
@@ -37,7 +37,8 @@ class CourseStudentController extends Controller {
         return view('course::course_student.index', compact('courseStudents', 'courseId', 'course'));
     }
 
-    public function create(int $courseId) {
+    public function create(int $courseId)
+    {
         if (!auth()->check()) {
             return redirect()->route('login');
         }
@@ -57,7 +58,8 @@ class CourseStudentController extends Controller {
         return view('course::course_student.create', compact('courseId', 'users'));
     }
 
-    public function store(Request $request, int $courseId) {
+    public function store(Request $request, int $courseId)
+    {
         if (!auth()->check()) {
             return redirect()->route('login');
         }
@@ -92,21 +94,20 @@ class CourseStudentController extends Controller {
         }
     }
 
-    public function show(int $courseId, int $studentId) {
+    public function show(int $courseId, int $studentId)
+    {
         $courseStudent = $this->courseStudentService->getById($courseId, $studentId);
-        $course = Course::findOrFail($courseId);
-        $this->authorize('view', $course);
-        return view('course::course_student.show', compact('courseStudent', 'courseId', 'studentId', 'course'));
+        return view('course::course_student.show', compact('courseStudent', 'courseId', 'studentId'));
     }
 
-    public function edit(int $courseId, int $studentId) {
+    public function edit(int $courseId, int $studentId)
+    {
         $courseStudent = $this->courseStudentService->getById($courseId, $studentId);
-        $course = Course::findOrFail($courseId);
-        $this->authorize('update', $course);
         return view('course::course_student.edit', compact('courseStudent', 'courseId', 'studentId'));
     }
 
-    public function update(Request $request, int $courseId, int $studentId) {
+    public function update(Request $request, int $courseId, int $studentId)
+    {
         Log::info('CourseStudentController.update called', [
             'course_id' => $courseId,
             'student_id' => $studentId,
@@ -119,7 +120,6 @@ class CourseStudentController extends Controller {
             'is_approved' => ['nullable', 'in:0,1'],
         ]);
 
-        // Authorization: only admin/guarantor can change approval status. Lecturers can update scores
         if (!auth()->check()) {
             return redirect()->route('login');
         }
@@ -127,12 +127,11 @@ class CourseStudentController extends Controller {
         $user = auth()->user();
         $course = Course::findOrFail($courseId);
         $isLecturerForCourse = $course->lecturers()->where('lecturer_id', $user->id)->exists();
-        $this->authorize('update', $course);
-        // if (!($user->hasAnyRole(['admin', 'guarantor']) || $isLecturerForCourse)) {
-        //     abort(403, 'Unauthorized');
-        // }
 
-        // If the user is a lecturer (but not guarantor/admin), prevent changing approval
+        if (!($user->hasAnyRole(['admin', 'guarantor']) || $isLecturerForCourse)) {
+            abort(403, 'Unauthorized');
+        }
+
         if ($user->hasRole('lecturer') && !$user->hasAnyRole(['admin', 'guarantor'])) {
             unset($validated['is_approved']);
         }
@@ -161,37 +160,39 @@ class CourseStudentController extends Controller {
         }
     }
 
-    public function destroy(int $courseId, int $studentId) {
-        // Remove student by course and student id
+    public function destroy(int $courseId, int $studentId)
+    {
         $this->courseStudentService->removeStudent($courseId, $studentId);
-        $course = Course::findOrFail($courseId);
-        $this->authorize('delete', $course);
+
         return redirect()->route('course.student.index', $courseId)
             ->with('success', 'Student removed from course successfully!');
     }
 
-    public function getCoursesByStudent(Request $request, int $studentId) {
+    public function getCoursesByStudent(Request $request, int $studentId)
+    {
         $courses = $this->courseStudentService->getCoursesByStudent($studentId);
         return view('course::course_student.student_course', compact('courses', 'studentId'));
     }
 
-    public function approved(int $courseId) {
+    public function approved(int $courseId)
+    {
         $courseStudents = $this->courseStudentService->getApprovedByCourse($courseId);
         return view('course::course_student.approved', compact('courseStudents', 'courseId'));
     }
 
-    public function pending(int $courseId) {
+    public function pending(int $courseId)
+    {
         $courseStudents = $this->courseStudentService->getPendingByCourse($courseId);
         return view('course::course_student.pending', compact('courseStudents', 'courseId'));
     }
 
-    public function approve(int $courseId, int $studentId) {
+    public function approve(int $courseId, int $studentId)
+    {
         if (!auth()->check()) {
             return redirect()->route('login');
         }
 
         $user = auth()->user();
-        // Only guarantor or admin can approve
         if (!$user->hasAnyRole(['admin', 'guarantor'])) {
             abort(403, 'Unauthorized');
         }
@@ -204,18 +205,17 @@ class CourseStudentController extends Controller {
             return redirect()->route('course.student.index', $courseId)
                 ->with('success', 'Student enrollment approved successfully!');
         } catch (\Exception $e) {
-            return redirect()->back()
-                ->with('error', $e->getMessage());
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
 
-    public function reject(int $courseId, int $studentId) {
+    public function reject(int $courseId, int $studentId)
+    {
         if (!auth()->check()) {
             return redirect()->route('login');
         }
 
         $user = auth()->user();
-        // Only guarantor or admin can reject
         if (!$user->hasAnyRole(['admin', 'guarantor'])) {
             abort(403, 'Unauthorized');
         }
@@ -228,12 +228,12 @@ class CourseStudentController extends Controller {
             return redirect()->route('course.student.index', $courseId)
                 ->with('success', 'Student enrollment rejected successfully!');
         } catch (\Exception $e) {
-            return redirect()->back()
-                ->with('error', $e->getMessage());
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
 
-    public function updateScore(Request $request, int $courseId, int $studentId) {
+    public function updateScore(Request $request, int $courseId, int $studentId)
+    {
         $validated = $request->validate([
             'final_score' => ['required', 'numeric', 'min:0', 'max:100'],
         ]);
@@ -255,16 +255,12 @@ class CourseStudentController extends Controller {
             return redirect()->route('course.student.index', $courseId)
                 ->with('success', 'Student score updated successfully!');
         } catch (\Exception $e) {
-            return redirect()->back()
-                ->with('error', $e->getMessage());
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
 
-    /**
-     * Public lookup that returns plain text name (no JSON, no auth required).
-     * Useful for non-API pages where JS just needs a user name for an ID.
-     */
-    public function lookupPublic(int $courseId, Request $request) {
+    public function lookupPublic(int $courseId, Request $request)
+    {
         $id = $request->query('id');
         if (!$id || !is_numeric($id)) {
             return response('', 200);
@@ -280,7 +276,8 @@ class CourseStudentController extends Controller {
         return response($name ?: '', 200);
     }
 
-    public function scores(int $courseId) {
+    public function scores(int $courseId)
+    {
         if (!auth()->check()) {
             return redirect()->route('login');
         }
@@ -297,10 +294,8 @@ class CourseStudentController extends Controller {
         return view('course::course_student.scores', compact('courseStudents', 'courseId'));
     }
 
-    /**
-     * Bulk approve students
-     */
-    public function bulkApprove(Request $request, int $courseId) {
+    public function bulkApprove(Request $request, int $courseId)
+    {
         $validated = $request->validate([
             'student_ids' => ['required', 'array'],
             'student_ids.*' => ['integer', 'exists:course_student,id'],
@@ -311,15 +306,12 @@ class CourseStudentController extends Controller {
             return redirect()->route('course.student.index', $courseId)
                 ->with('success', "Successfully approved {$count} students!");
         } catch (\Exception $e) {
-            return redirect()->back()
-                ->with('error', $e->getMessage());
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
 
-    /**
-     * Bulk reject students
-     */
-    public function bulkReject(Request $request, int $courseId) {
+    public function bulkReject(Request $request, int $courseId)
+    {
         $validated = $request->validate([
             'student_ids' => ['required', 'array'],
             'student_ids.*' => ['integer', 'exists:course_student,id'],
@@ -330,17 +322,13 @@ class CourseStudentController extends Controller {
             return redirect()->route('course.student.index', $courseId)
                 ->with('success', "Successfully rejected {$count} students!");
         } catch (\Exception $e) {
-            return redirect()->back()
-                ->with('error', $e->getMessage());
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
 
-    /**
-     * Register the currently authenticated user to the course.
-     */
-    public function registerCurrentUser(Request $request, int $courseId) {
+    public function registerCurrentUser(Request $request, int $courseId)
+    {
         if (!auth()->check()) {
-            // Not authenticated: redirect to login
             return redirect()->route('login');
         }
 
@@ -351,9 +339,20 @@ class CourseStudentController extends Controller {
         $user = auth()->user();
 
         try {
+            $course = Course::findOrFail($courseId);
+            
             try {
-                $this->courseStudentService->addStudent($courseId, $user->id, []);
-                $enrolledMessage = 'You have been registered for this course.';
+                $courseStudent = $this->courseStudentService->addStudent($courseId, $user->id, []);
+                
+                if ($courseStudent->is_approved) {
+                    $enrolledMessage = 'You have been registered and automatically approved for this course.';
+                } else {
+                    if ($course->isFull()) {
+                        $enrolledMessage = "Course is full (capacity: {$course->capacity}). You have been registered and are pending approval. The guarantor will review your registration.";
+                    } else {
+                        $enrolledMessage = 'You have been registered for this course (pending approval).';
+                    }
+                }
             } catch (\Exception $e) {
                 if (stripos($e->getMessage(), 'already enrolled') !== false) {
                     $enrolledMessage = 'You are already registered for this course.';
@@ -375,10 +374,8 @@ class CourseStudentController extends Controller {
         }
     }
 
-    /**
-     * Unregister the currently authenticated user from the course. Does not change role.
-     */
-    public function unregisterCurrentUser(Request $request, int $courseId) {
+    public function unregisterCurrentUser(Request $request, int $courseId)
+    {
         if (!auth()->check()) {
             return redirect()->route('login');
         }
@@ -396,5 +393,148 @@ class CourseStudentController extends Controller {
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
+    }
+
+    public function registerMultiple(Request $request)
+    {
+        if (!auth()->check()) {
+            return redirect()->route('login');
+        }
+
+        $validated = $request->validate([
+            'course_ids' => ['required', 'array'],
+            'course_ids.*' => ['integer', 'exists:courses,id'],
+            'confirm' => ['nullable'],
+        ]);
+
+        $user = auth()->user();
+        $messages = [];
+
+        foreach ($validated['course_ids'] as $courseId) {
+            try {
+                $this->courseStudentService->addStudent($courseId, $user->id, []);
+                $messages[] = "Registered for course #{$courseId}";
+            } catch (\Exception $e) {
+                $messages[] = "Course #{$courseId}: " . $e->getMessage();
+            }
+        }
+
+        $highest = $user->getHighestRole();
+        $higherRoles = ['admin', 'guarantor', 'lecturer'];
+        if (!in_array($highest, $higherRoles, true) && !$user->hasRole('student')) {
+            $user->assignRole('student');
+        }
+
+        return redirect()->back()->with('success', implode('; ', array_slice($messages, 0, 5)));
+    }
+
+    public function unregisterMultiple(Request $request)
+    {
+        if (!auth()->check()) {
+            return redirect()->route('login');
+        }
+
+        $validated = $request->validate([
+            'course_ids' => ['required', 'array'],
+            'course_ids.*' => ['integer', 'exists:courses,id'],
+        ]);
+
+        $user = auth()->user();
+        $messages = [];
+
+        foreach ($validated['course_ids'] as $courseId) {
+            try {
+                $removed = $this->courseStudentService->removeStudent($courseId, $user->id);
+                $messages[] = $removed ? "Unregistered from course #{$courseId}" : "Not registered for course #{$courseId}";
+            } catch (\Exception $e) {
+                $messages[] = "Course #{$courseId}: " . $e->getMessage();
+            }
+        }
+
+        return redirect()->back()->with('success', implode('; ', array_slice($messages, 0, 5)));
+    }
+
+    /**
+     * Update registrations in bulk: accepts visible_course_ids[] and selected_course_ids[] (selected means register)
+     */
+    public function updateRegistrations(Request $request)
+    {
+        if (!auth()->check()) {
+            return redirect()->route('login');
+        }
+
+        $validated = $request->validate([
+            'visible_course_ids' => ['required', 'array'],
+            'visible_course_ids.*' => ['integer', 'exists:courses,id'],
+            'selected_course_ids' => ['nullable', 'array'],
+            'selected_course_ids.*' => ['integer', 'exists:courses,id'],
+        ]);
+
+        $user = auth()->user();
+        $visible = array_map('intval', $validated['visible_course_ids']);
+        $selected = isset($validated['selected_course_ids']) ? array_map('intval', $validated['selected_course_ids']) : [];
+
+        // Diagnostic logging to help debug why registrations may not be applied
+        Log::info('updateRegistrations: incoming', [
+            'user_id' => $user->id,
+            'visible' => $visible,
+            'selected' => $selected,
+            'raw_request' => $request->all(),
+        ]);
+
+        $currentEnrollments = $this->courseStudentService->getCoursesByStudent($user->id)->pluck('course_id')->map(fn($v) => (int) $v)->toArray();
+
+        $toRegister = array_values(array_diff($selected, $currentEnrollments));
+        $visibleCurrent = array_values(array_intersect($currentEnrollments, $visible));
+        $toUnregister = array_values(array_diff($visibleCurrent, $selected));
+
+        Log::info('updateRegistrations: computed diffs', [
+            'current_enrollments' => $currentEnrollments,
+            'to_register' => $toRegister,
+            'to_unregister' => $toUnregister,
+        ]);
+
+        $messages = [];
+
+        foreach ($toRegister as $courseId) {
+            try {
+                $course = Course::findOrFail($courseId);
+                
+                // Allow registration even if full - it will go to pending status
+                $courseStudent = $this->courseStudentService->addStudent($courseId, $user->id, []);
+                
+                if ($courseStudent->is_approved) {
+                    $messages[] = "Registered and approved for course '{$course->name}'";
+                } else {
+                    if ($course->isFull()) {
+                        $messages[] = "Course '{$course->name}' is full. Registered (pending guarantor approval)";
+                    } else {
+                        $messages[] = "Registered for course '{$course->name}' (pending approval)";
+                    }
+                }
+            } catch (\Exception $e) {
+                $courseName = Course::find($courseId)->name ?? "Course #{$courseId}";
+                $messages[] = "{$courseName}: " . $e->getMessage();
+            }
+        }
+
+        foreach ($toUnregister as $courseId) {
+            try {
+                $removed = $this->courseStudentService->removeStudent($courseId, $user->id);
+                $messages[] = $removed ? "Unregistered from course #{$courseId}" : "Not registered for course #{$courseId}";
+            } catch (\Exception $e) {
+                $messages[] = "Course #{$courseId}: " . $e->getMessage();
+            }
+        }
+
+        if (!empty($toRegister)) {
+            $highest = $user->getHighestRole();
+            $higherRoles = ['admin', 'guarantor', 'lecturer'];
+            if (!in_array($highest, $higherRoles, true) && !$user->hasRole('student')) {
+                $user->assignRole('student');
+            }
+        }
+
+        return redirect()->back()->with('success', implode('; ', array_slice($messages, 0, 12)));
     }
 }

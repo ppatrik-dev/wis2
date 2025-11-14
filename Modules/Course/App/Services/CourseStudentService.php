@@ -47,7 +47,31 @@ class CourseStudentService {
     }
 
     /**
-     * Add student to course
+     * Get current approved enrollment count for a course
+     */
+    public function getApprovedEnrollmentCount(int $courseId): int {
+        return CourseStudent::where('course_id', $courseId)
+            ->where('is_approved', true)
+            ->count();
+    }
+
+    /**
+     * Check if course has available capacity
+     */
+    public function hasAvailableCapacity(int $courseId): bool {
+        $course = Course::withTrashed()->findOrFail($courseId);
+        
+        if (!$course->capacity || $course->capacity <= 0) {
+            // No capacity limit
+            return true;
+        }
+
+        $approvedCount = $this->getApprovedEnrollmentCount($courseId);
+        return $approvedCount < $course->capacity;
+    }
+
+    /**
+     * Add student to course with automatic approval if capacity allows
      */
     public function addStudent(int $courseId, int $studentId, array $data = []): CourseStudent {
         return DB::transaction(function () use ($courseId, $studentId, $data) {
@@ -59,9 +83,28 @@ class CourseStudentService {
                 throw new \Exception('Student is already enrolled in this course.');
             }
 
+            // Determine if student should be automatically approved
+            $shouldAutoApprove = false;
+            
+            // If is_approved is explicitly set in data, use that (for admin/guarantor manual enrollment)
+            if (isset($data['is_approved'])) {
+                $shouldAutoApprove = (bool) $data['is_approved'];
+            } else {
+                // Automatic approval logic:
+                // Only auto-approve if:
+                // 1. Course has auto_enroll_confirm enabled
+                // 2. Course has available capacity
+                if ($course->auto_enroll_confirm && $this->hasAvailableCapacity($courseId)) {
+                    $shouldAutoApprove = true;
+                }
+                // If capacity is full, student will be registered but pending approval
+                // (shouldAutoApprove remains false)
+            }
+
             $course->students()->attach($studentId, [
                 'final_score' => $data['final_score'] ?? null,
-                'is_approved' => $data['is_approved'] ?? false,
+                'is_approved' => $shouldAutoApprove,
+                'approved_at' => $shouldAutoApprove ? now() : null,
             ]);
 
             // Return the pivot model

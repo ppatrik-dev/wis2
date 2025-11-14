@@ -1,19 +1,23 @@
 <x-course::layouts.master>
     <x-header headline="Lecturer Details">
         <x-slot:actions>
-            {{-- Edit not needed for lecturers; only allow removal by admin or course guarantor --}}
-            @php $course = \Modules\Course\Models\Course::find($courseId); @endphp
-            @if(auth()->check() && (auth()->user()->hasRole('admin') || ($course && $course->guarantor_id === auth()->id())))
-                <x-button form="lecturerDeleteForm" type="submit" variant="danger">
-                    <svg class="w-3 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                        fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd"
-                            d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
-                            clip-rule="evenodd" />
-                    </svg>
-                    Remove
-                </x-button>
-            @endif
+            @auth
+                @php 
+                    $course = \Modules\Course\Models\Course::find($courseId);
+                    $user = auth()->user();
+                @endphp
+                @if(!$user->hasRole('student') && ($user->hasRole('admin') || ($course && $course->guarantor_id === $user->id)))
+                    <x-button form="lecturerDeleteForm" type="submit" variant="danger">
+                        <svg class="w-3 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                            fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        Remove
+                    </x-button>
+                @endif
+            @endauth
             <x-button href="{{ route('course.lecturer.index', $courseId) }}" rounded="rounded-e-lg">
                 <svg class="w-3 h-3 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                     fill="none" viewBox="0 0 20 20">

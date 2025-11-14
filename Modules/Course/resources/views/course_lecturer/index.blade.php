@@ -1,17 +1,22 @@
 <x-course::layouts.master>
     <x-header headline="Course Lecturers">
         <x-slot:actions>
-            @php $course = \Modules\Course\Models\Course::find($courseId); @endphp
-            @if(auth()->check() && (auth()->user()->hasRole('admin') || ($course && $course->guarantor_id === auth()->id())))
-                <x-button href="{{ route('course.lecturer.create', $courseId) }}" rounded="rounded-lg">
-                    <svg class="w-4 h-3 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                        fill="none" viewBox="0 0 20 20">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M5 12h14m-7 7V5" />
-                    </svg>
-                    Add Lecturer
-                </x-button>
-            @endif
+            @auth
+                @php 
+                    $course = \Modules\Course\Models\Course::find($courseId);
+                    $user = auth()->user();
+                @endphp
+                @if(!$user->hasRole('student') && ($user->hasRole('admin') || ($course && $course->guarantor_id === $user->id)))
+                    <x-button href="{{ route('course.lecturer.create', $courseId) }}" rounded="rounded-lg">
+                        <svg class="w-4 h-3 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                            fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M5 12h14m-7 7V5" />
+                        </svg>
+                        Add Lecturer
+                    </x-button>
+                @endif
+            @endauth
         </x-slot:actions>
     </x-header>
 
