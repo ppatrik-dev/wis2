@@ -26,7 +26,7 @@ class TermController extends Controller {
     public function create() {
         $users = User::all()->mapWithKeys(fn($user) => [$user->id => $user->getFullNameAttribute()])->toArray();
         $rooms = Room::all()->pluck('name', 'id')->toArray();
-        $courses = Course::all()->pluck('code', 'id')->toArray();
+        $courses = Course::all()->pluck('name', 'id')->toArray();
         return view('term::term.create', ["users" => $users, "rooms" => $rooms, "courses" => $courses]);
     }
 
@@ -81,7 +81,7 @@ class TermController extends Controller {
         $term = Term::findOrFail($id);
         $users = User::all()->mapWithKeys(fn($user) => [$user->id => $user->getFullNameAttribute()])->toArray();
         $rooms = Room::all()->pluck('name', 'id')->toArray();
-        $courses = Course::all()->pluck('code', 'id')->toArray();
+        $courses = Course::all()->pluck('name', 'id')->toArray();
         return view('term::term.edit', ["term" => $term, "users" => $users, "rooms" => $rooms, "courses" => $courses]);
     }
 
