@@ -28,7 +28,8 @@ class TimeTableController extends Controller {
         ];
         $hours = range(7, 20);
         $date = $request->get('date', now()->toDateString());
-
+        $prevWeek = Carbon::parse($date)->subWeek()->toDateString();
+        $nextWeek = Carbon::parse($date)->addWeek()->toDateString();
         $start = Carbon::parse($date)->startOfWeek();
         $end = Carbon::parse($date)->endOfWeek();
         $user = Auth::user();
@@ -44,7 +45,7 @@ class TimeTableController extends Controller {
                 $weekDays[$dayKey][] = $term;
             }
         }
-        return view('term::timetable.index', compact('terms', 'start', 'weekDays', 'hours'));
+        return view('term::timetable.index', compact('terms', 'start', 'end', 'weekDays', 'hours', 'prevWeek', 'nextWeek', 'date'));
     }
 
     /**
