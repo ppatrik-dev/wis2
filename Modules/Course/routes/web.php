@@ -7,6 +7,7 @@ use Modules\Course\App\Http\Controllers\CourseNewsController;
 use Modules\Course\App\Http\Controllers\CourseStudentController;
 
 Route::resource('courses', CourseController::class)->names('course');
+Route::patch('courses/{course}/approve', [CourseController::class, 'approve'])->name('course.approve');
 
 Route::get('courses/{course}/students/lookup', [CourseStudentController::class, 'lookupPublic'])
     ->name('course.student.lookup');

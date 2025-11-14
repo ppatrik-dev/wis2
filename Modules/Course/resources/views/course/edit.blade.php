@@ -68,7 +68,9 @@
             <x-select label="Guarantor" name="guarantor_id" :options="$users"
                 :selected="$course->guarantor_id"></x-select>
                 <x-toggle name="auto_enroll_confirm" label="Auto Enroll Confirm" :checked="$course->auto_enroll_confirm"/>
-                <x-toggle name="is_approved" label="Is Approved" :checked="$course->is_approved"/>
+                @if(auth()->check() && auth()->user()->hasRole('admin'))
+                    <x-toggle name="is_approved" label="Is Approved" :checked="$course->is_approved"/>
+                @endif
             <x-input label="Description" name="description" value="{{ $course->description }}"
                 input="textarea" class="col-span-3"></x-input>
         </form>

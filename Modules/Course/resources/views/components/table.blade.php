@@ -111,7 +111,7 @@
                                         </a>
                                     @endif
                                     {{-- Admin actions: only show if user can update course (policy check) --}}
-                                    @can('update', $course)
+                                    @can('course.update', $course)
                                         <a href="{{ route('course.edit', $course->id) }}"
                                             class="font-medium text-blue-600 {{ $isEnrolled ? 'ms-3' : '' }} dark:text-blue-500 hover:underline" title="Edit">
                                             <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -261,7 +261,7 @@
                                 {{ $news->author->last_name }}</a></td>
                         <td class="px-6 py-3">{{ $news->created_at->format('Y-m-d H:i') }}</td>
                         <td class="inline-flex px-6 py-3">
-                            @can('update', $news)
+                            @can('course-news.update', $news)
                                 <a href="{{ route('course.news.edit', [$courseId, $news->id]) }}"
                                     class="font-medium text-blue-600 dark:text-blue-500 hover:underline" title="Edit">
                                     <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -272,7 +272,7 @@
                                     </svg>
                                 </a>
                             @endcan
-                            @can('delete', $news)
+                            @can('course-news.delete', $news)
                                 <form method="POST" action="{{ route('course.news.destroy', [$courseId, $news->id]) }}"
                                     class="inline ms-3"
                                     onsubmit="return confirm('Are you sure you want to delete this news?');">

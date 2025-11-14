@@ -27,12 +27,26 @@ class CourseController extends Controller
     public function index(Request $request)
     {
         $query = $request->get('q', '');
+        $user = auth()->user();
+        $isAdmin = $user && $user->hasRole('admin');
 
         if (!empty($query)) {
             // search helper in CourseService
             $courses = $this->courseService->search($query);
+            // Filter: non-admin users only see approved courses in search results
+            if (!$isAdmin) {
+                $courses = $courses->filter(function ($course) {
+                    return $course->is_approved;
+                });
+            }
         } else {
             $courses = $this->courseService->getAll();
+            // Filter: non-admin users only see approved courses
+            if (!$isAdmin) {
+                $courses = $courses->filter(function ($course) {
+                    return $course->is_approved;
+                });
+            }
         }
 
         return view('course::course.index', compact('courses', 'query'));
@@ -43,21 +57,7 @@ class CourseController extends Controller
      */
     public function create(): View
     {
-        if (!auth()->check()) {
-            abort(403, 'Unauthorized');
-        }
-        
-        $user = auth()->user();
-        
-        // Explicitly block students
-        if ($user->hasRole('student')) {
-            abort(403, 'Students cannot create courses');
-        }
-        
-        // Only allow admin and guarantor
-        if (!$user->hasAnyRole(['admin', 'guarantor'])) {
-            abort(403, 'Unauthorized');
-        }
+        $this->authorize('course.create');
 
         $users = User::all()->pluck('first_name', 'id')->toArray();
         return view('course::course.create', compact('users'));
@@ -68,29 +68,20 @@ class CourseController extends Controller
      */
     public function store(StoreCourseRequest $request)
     {
-        if (!auth()->check()) {
-            abort(403, 'Unauthorized');
-        }
-        
-        $user = auth()->user();
-        
-        // Explicitly block students
-        if ($user->hasRole('student')) {
-            abort(403, 'Students cannot create courses');
-        }
-        
-        // Only allow admin and guarantor
-        if (!$user->hasAnyRole(['admin', 'guarantor'])) {
-            abort(403, 'Unauthorized');
-        }
+        $this->authorize('course.create');
 
         try {
             $data = $request->validated();
+            $user = auth()->user();
 
-            // If guarantor creates the course, treat it as a suggestion: set guarantor_id to current user and ensure not approved
-            if (auth()->user()->hasRole('guarantor') && !auth()->user()->hasRole('admin')) {
-                $data['guarantor_id'] = auth()->id();
+            // Only admin can create approved courses. All others create unapproved courses.
+            if (!$user->hasRole('admin')) {
                 $data['is_approved'] = false;
+            }
+
+            // If guarantor creates the course, set guarantor_id to current user
+            if ($user->hasRole('guarantor') && !$user->hasRole('admin')) {
+                $data['guarantor_id'] = auth()->id();
             }
 
             $course = $this->courseService->create($data);
@@ -209,6 +200,24 @@ class CourseController extends Controller
         $this->courseService->delete((int) $id);
         return redirect()->route('course.index')
             ->with('success', 'Course deleted successfully!');
+    }
+
+    /**
+     * Approve a course (admin only).
+     */
+    public function approve($id)
+    {
+        if (!auth()->check() || !auth()->user()->hasRole('admin')) {
+            abort(403, 'Unauthorized');
+        }
+
+        try {
+            $this->courseService->approve((int) $id);
+            return redirect()->route('course.show', $id)
+                ->with('success', 'Course approved successfully!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error approving course: ' . $e->getMessage());
+        }
     }
 }
 

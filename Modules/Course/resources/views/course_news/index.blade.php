@@ -1,23 +1,15 @@
 <x-course::layouts.master>
     <x-header headline="Course News">
         <x-slot:actions>
-            @php 
-                $course = \Modules\Course\Models\Course::find($courseId);
-                $user = auth()->user();
-                $canCreateNews = $user && (
-                    $user->hasRole('admin') 
-                    || ($user->hasRole('guarantor') && $course && $course->guarantor_id === $user->id)
-                    || ($user->hasRole('lecturer') && $course && $course->lecturers()->where('lecturer_id', $user->id)->exists())
-                );
-            @endphp
-            @if($canCreateNews)
+            @php $course = \Modules\Course\Models\Course::find($courseId); @endphp
+            @can('course-news.create', $course)
                 <x-button href="{{ route('course.news.create', $courseId) }}" rounded="rounded-lg">
                     <svg class="w-4 h-3 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 20 20">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
                     </svg>
                     Create News
                 </x-button>
-            @endif
+            @endcan
         </x-slot:actions>
     </x-header>
 

@@ -1,7 +1,8 @@
 <x-course::layouts.master>
     <x-header headline="Courses">
         <x-slot:actions>
-            @can('create', \Modules\Course\Models\Course::class)
+            @auth
+            @can('course.create')
                 <x-button href="{{ route('course.create') }}" rounded="rounded-lg">
                     <svg class="w-4 h-3 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                         fill="none" viewBox="0 0 20 20">
@@ -10,7 +11,8 @@
                     </svg>
                     Create Course
                 </x-button>
-            @endcan
+                @endcan
+            @endauth
         </x-slot:actions>
     </x-header>
 

@@ -15,11 +15,8 @@ class CoursePolicy {
         return $user->hasRole(['admin', 'guarantor', 'lecturer', 'student']);
     }
     public function create(User $user) {
-        // Students CANNOT create courses
-        if ($user->hasRole('student')) {
-            return false;
-        }
-        return $user->hasAnyRole(['admin', 'guarantor', 'lecturer']);
+        // All authenticated users can create courses
+        return true;
     }
     public function update(User $user, Course $course) {
         return $user->hasRole('admin')

@@ -67,7 +67,9 @@
                 :required="true" value="mandatory"></x-select>
             <x-select label="Guarantor" name="guarantor_id" :options="$users" :required="false"></x-select>
                <x-toggle name="auto_enroll_confirm" label="Auto Enroll Confirm" :checked="1"/>
-                <x-toggle name="is_approved" label="Is Approved" :checked="1"/>
+                @if(auth()->check() && auth()->user()->hasRole('admin'))
+                    <x-toggle name="is_approved" label="Is Approved" :checked="1"/>
+                @endif
             <x-input label="Description" name="description" input="textarea"
                 placeholder="Course description..." class="col-span-3"></x-input>
         </form>
