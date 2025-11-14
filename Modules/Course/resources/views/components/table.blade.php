@@ -82,7 +82,7 @@
                                     <input type="hidden" name="visible_course_ids[]" value="{{ $course->id }}">
                                     <label class="inline-flex items-center">
                                         <input type="checkbox" name="selected_course_ids[]" value="{{ $course->id }}"
-                                            class="mr-2 h-4 w-4 text-blue-600 border-gray-300 rounded course-checkbox"
+                                            class="w-4 h-4 mr-2 text-blue-600 border-gray-300 rounded course-checkbox"
                                             data-initial="{{ $isEnrolled ? '1' : '0' }}" {{ $isEnrolled ? 'checked' : '' }}>
                                         <span class="text-sm">{{ $isEnrolled ? 'Registered' : 'Register' }}</span>
                                     </label>
@@ -124,7 +124,7 @@
                                     @endcan
                                     {{-- Students/Lecturers management: only for admin/guarantor --}}
                                     @php
-                                        $canViewStudents = auth()->user()->hasRole('admin') 
+                                        $canViewStudents = auth()->user()->hasRole('admin')
                                             || (auth()->user()->hasRole('guarantor') && $course->guarantor_id === auth()->id())
                                             || (auth()->user()->hasRole('lecturer') && $course->lecturers()->where('lecturer_id', auth()->id())->exists());
                                         $canViewLecturers = auth()->user()->hasRole('admin')
@@ -154,10 +154,10 @@
                         </tr>
                     @endforeach
                     @auth
-                        <div class="p-4 flex justify-end">
+                        <div class="flex justify-end p-4">
                             <button id="update-registrations-btn" type="submit"
                                 formaction="{{ route('course.student.update-registrations') }}"
-                                class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-indigo-600 transition-colors"
+                                class="px-4 py-2 text-sm font-medium text-white transition-colors bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-indigo-600"
                                 disabled>Update registrations</button>
                         </div>
                         </form>
@@ -232,7 +232,7 @@
                         </td>
                         <td class="inline-flex px-6 py-3">
                             @auth
-                                @php 
+                                @php
                                     $course = \Modules\Course\Models\Course::find($courseId);
                                     $user = auth()->user();
                                 @endphp
@@ -298,53 +298,53 @@
 @auth
     <script>
         console.log('Registration button script loading...');
-        
+
         function initRegistrationButton() {
             console.log('Initializing registration button...');
-            
+
             const form = document.getElementById('courses-action-form');
             const btn = document.getElementById('update-registrations-btn');
-            
+
             console.log('Form found:', !!form);
             console.log('Button found:', !!btn);
-            
+
             if (!form) {
                 console.warn('Form not found, retrying...');
                 setTimeout(initRegistrationButton, 200);
                 return;
             }
-            
+
             if (!btn) {
                 console.warn('Button not found, retrying...');
                 setTimeout(initRegistrationButton, 200);
                 return;
             }
-            
+
             // Find checkboxes - try both inside form and globally
             let checkboxes = form.querySelectorAll('.course-checkbox');
             if (checkboxes.length === 0) {
                 checkboxes = document.querySelectorAll('.course-checkbox');
             }
-            
+
             console.log('Checkboxes found:', checkboxes.length);
-            
+
             if (checkboxes.length === 0) {
                 console.warn('No checkboxes found, retrying...');
                 setTimeout(initRegistrationButton, 200);
                 return;
             }
-            
+
             // Store initial states
             const initialStates = Array.from(checkboxes).map(cb => cb.checked);
             console.log('Initial checkbox states:', initialStates);
-            
+
             function updateButtonState() {
                 const currentStates = Array.from(checkboxes).map(cb => cb.checked);
                 const hasChanged = currentStates.some((checked, i) => checked !== initialStates[i]);
-                
+
                 console.log('Current states:', currentStates);
                 console.log('Has changed:', hasChanged);
-                
+
                 if (hasChanged) {
                     btn.disabled = false;
                     btn.removeAttribute('disabled');
@@ -361,7 +361,7 @@
                     console.log('Button DISABLED');
                 }
             }
-            
+
             // Add click listener to verify button works
             btn.addEventListener('click', function(e) {
                 console.log('Button clicked!', e);
@@ -371,7 +371,7 @@
                     return false;
                 }
             });
-            
+
             // Use event delegation - listen on document to catch all changes
             document.addEventListener('change', function(e) {
                 if (e.target && e.target.classList.contains('course-checkbox')) {
@@ -379,7 +379,7 @@
                     updateButtonState();
                 }
             });
-            
+
             // Also listen directly on form
             form.addEventListener('change', function(e) {
                 if (e.target && e.target.classList.contains('course-checkbox')) {
@@ -387,12 +387,12 @@
                     updateButtonState();
                 }
             });
-            
+
             // Initial state
             updateButtonState();
             console.log('Registration button initialized successfully');
         }
-        
+
         // Try multiple initialization methods
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', function() {
@@ -403,7 +403,7 @@
             console.log('DOM already ready');
             initRegistrationButton();
         }
-        
+
         // Also try after a delay as fallback
         setTimeout(function() {
             const btn = document.getElementById('update-registrations-btn');
