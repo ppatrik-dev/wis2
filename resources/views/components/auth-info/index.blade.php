@@ -1,12 +1,17 @@
 <div class="flex items-center gap-4 pl-3">
     @auth
         {{-- Avatar + meno --}}
-        <x-avatar width="8" height="8" />
-        <div class="text-sm dark:text-white">
-            <a href="{{ route('user.show', auth()->id()) }}" class="font-medium hover:underline">
-                {{ auth()->user()->full_name }}
-            </a>
-        </div>
+            <div class="flex items-center space-x-3">
+                <x-avatar width="8" height="8" />
+
+                <div class="text-sm leading-tight dark:text-white">
+                    <a href="{{ route('user.show', auth()->id()) }}"
+                    class="block font-medium hover:underline">
+                        {{ auth()->user()->full_name }}
+                    </a>
+                </div>
+            </div>
+
 
         {{-- Logout button --}}
         <form method="POST" action="{{ route('logout') }}">
