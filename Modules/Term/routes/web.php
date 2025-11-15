@@ -9,10 +9,17 @@ use Modules\Term\Http\Controllers\TermStudentController;
 Route::resource('terms', TermController::class)->names('term');
 
 Route::prefix('terms/{term}')->group(function () {
+    Route::post('students/register', [TermStudentController::class, 'register'])
+        ->name('term.student.register');
+        
     Route::resource('students', TermStudentController::class)
         ->parameters(['students' => 'student'])
         ->names('term.student');
+
 });
+
+Route::post('/terms/{term}/register', [TermController::class, 'register'])
+    ->name('term.register');
 
 Route::resource('rooms', RoomController::class)->names('room');
 

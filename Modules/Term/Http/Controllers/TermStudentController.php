@@ -5,6 +5,7 @@ namespace Modules\Term\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Modules\Term\Models\TermStudent;
 use Modules\Term\Models\Term;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class TermStudentController extends Controller
@@ -41,7 +42,7 @@ class TermStudentController extends Controller
         if (!array_key_exists($validated['student_id'], $courseStudents)) {
             return redirect()
                 ->back()
-                ->withErrors(['student_id' => 'Selected student does not belong to this term\'s course.'])
+                ->withErrors(['student_id' => 'Selected student does not belong to this term course.'])
                 ->withInput();
         }
 
@@ -126,5 +127,32 @@ class TermStudentController extends Controller
 
         return redirect()->route('term.student.index', $term->id)
             ->with('success', 'Student removed from term successfully!');
+    }
+
+    public function register(Term $term) {
+        $user = Auth::user();
+        
+        $courseStudents = $term->course_students;
+
+        if (!array_key_exists($user->id, $courseStudents)) {
+            return redirect()
+                ->back()
+                ->withErrors('Logged user does not belong to this term course.')
+                ->withInput();
+        }
+
+        $termStudent = TermStudent::create(
+            [
+                'term_id' => $term->id,
+                'student_id' => $user->id,
+            ],
+            [
+                'score' => null,
+            ]
+        );
+        
+        return redirect()
+            ->route('term.student.index', $term)
+            ->with('success', 'Logged user registered to the term successfully!'); 
     }
 }

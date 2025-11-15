@@ -19,7 +19,6 @@ class TermStudent extends Model
     protected $table = "term_student";
     protected $fillable = ['term_id', 'student_id', 'score'];
 
-
     public function student()
     {
         return $this->belongsTo(User::class, 'student_id');

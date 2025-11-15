@@ -24,7 +24,7 @@
 
     <x-term::profile :student="$student">
         <form id="termStudentForm" action="{{ route('term.student.destroy', [$term, $student->id]) }}" method="POST"
-                class="py-10 mx-auto max-w-3/4">
+                class="py-10 mx-auto max-w-3/4" onsubmit="return confirm('Are you sure you want to delete this student from the term?');">
             @csrf
             @method('DELETE')
             {{-- <x-input label="Student" name="student_id" value="{{ $student->full_name }}" :disabled="true" class="col-span-2"></x-select> --}}

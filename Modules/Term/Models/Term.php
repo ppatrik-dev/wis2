@@ -80,6 +80,8 @@ class Term extends Model {
                     'id'        => $ts->student->id,
                     'full_name' => $ts->student->full_name,
                     'score'     => $ts->score,
+                    'registred_at'  => $ts->created_at,
+                    'modified_at'  => $ts->updated_at,
                 ];
             }
         );
