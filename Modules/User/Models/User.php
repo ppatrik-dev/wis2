@@ -7,13 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Modules\User\Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Spatie\MediaLibrary\HasMedia; // Add this import if using Spatie Media Library
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements HasMedia {
-    use HasFactory, SoftDeletes, InteractsWithMedia, HasRoles;
+class User extends Authenticatable {
+    use HasFactory, SoftDeletes, HasRoles;
 
     /**
      * The table associated with the model.
@@ -61,16 +58,6 @@ class User extends Authenticatable implements HasMedia {
         $lastInitial  = $this->last_name ? mb_substr($this->last_name, 0, 1) : '';
 
         return strtoupper($firstInitial . $lastInitial);
-    }
-
-    /**
-     * Defining media collection for user's avatar
-     */
-    public function registerMediaCollections(): void {
-        $this->addMediaCollection('avatar')
-            ->useDisk('public')
-            ->usePath('avatars/' . $this->id)
-            ->singleFile();
     }
     /**
      * Function for getting highest role
