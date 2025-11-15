@@ -57,15 +57,38 @@ class Term extends Model {
 
     // To get all students registered for this term
     public function students() {
-        return $this->hasManyThrough(
+        return $this->belongsToMany(
             User::class,
-            TermStudent::class,
+            'term_student',
             'term_id',
-            'id',
-            'id',
             'student_id'
+        )->withPivot('score');
+    }
+
+    public function getCourseStudentsAttribute(): array {
+        $students = $this->course->students ?? collect();
+
+        return $students->mapWithKeys(
+            fn($student) => [$student->id => $student->getFullNameAttribute()]
+        )->toArray();
+    }
+
+    public function getTermStudentsAttribute() {
+        return $this->termStudents()->with('student')->get()
+            ->map(function ($ts) {
+                return (object)[
+                    'id'        => $ts->student->id,
+                    'full_name' => $ts->student->full_name,
+                    'score'     => $ts->score,
+                ];
+            }
         );
     }
+
+    public function termStudentBy($studentId) {
+        return $this->term_students->firstWhere('id', $studentId);
+    }
+
     public function getDayAttribute() {
         return $this->start_at->format('l');
     }
