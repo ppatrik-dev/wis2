@@ -5,11 +5,13 @@ namespace Modules\User\database\seeders;
 use Illuminate\Database\Seeder;
 use Modules\User\Models\User;
 
-class UserSeeder extends Seeder {
+class UserSeeder extends Seeder
+{
     /**
      * Run the database seeds.
      */
-    public function run(): void {
+    public function run(): void
+    {
         $admin = User::firstOrCreate(
             [
                 'first_name' => 'System',
@@ -78,6 +80,119 @@ class UserSeeder extends Seeder {
         $student->assignRole('student');
         $student->assignRole('user');
 
+        $student1 = User::firstOrCreate(
+            [
+                'first_name' => 'Anna',
+                'last_name' => 'Kovacova',
+                'email' => 'anna.kovacova@student.example',
+                'degree' => 'Bc.',
+                'sex' => 'female',
+                'birth_date' => '1999-02-14',
+                'country' => 'Slovakia',
+                'bio' => 'Test student Anna',
+                'password' => 'studentpass1',
+            ]
+        );
+        $student1->assignRole('student');
+        $student1->assignRole('user');
+
+        $student2 = User::firstOrCreate(
+            [
+                'first_name' => 'Marek',
+                'last_name' => 'Novak',
+                'email' => 'marek.novak@student.example',
+                'degree' => 'Ing.',
+                'sex' => 'male',
+                'birth_date' => '1997-08-03',
+                'country' => 'Slovakia',
+                'bio' => 'Test student Marek',
+                'password' => 'studentpass2',
+            ]
+        );
+        $student2->assignRole('student');
+        $student2->assignRole('user');
+
+        $student3 = User::firstOrCreate(
+            [
+                'first_name' => 'Lucia',
+                'last_name' => 'Horvathova',
+                'email' => 'lucia.horvathova@student.example',
+                'degree' => 'MSc.',
+                'sex' => 'female',
+                'birth_date' => '1996-11-22',
+                'country' => 'Slovakia',
+                'bio' => 'Test student Lucia',
+                'password' => 'studentpass3',
+            ]
+        );
+        $student3->assignRole('student');
+        $student3->assignRole('user');
+
+        $student4 = User::firstOrCreate(
+            [
+                'first_name' => 'Peter',
+                'last_name' => 'Svec',
+                'email' => 'peter.svec@student.example',
+                'degree' => 'Bc.',
+                'sex' => 'male',
+                'birth_date' => '2000-06-30',
+                'country' => 'Slovakia',
+                'bio' => 'Test student Peter',
+                'password' => 'studentpass4',
+            ]
+        );
+        $student4->assignRole('student');
+        $student4->assignRole('user');
+
+        $student5 = User::firstOrCreate(
+            [
+                'first_name' => 'Zuzana',
+                'last_name' => 'Mikova',
+                'email' => 'zuzana.mikova@student.example',
+                'degree' => 'Ing.',
+                'sex' => 'female',
+                'birth_date' => '1998-04-12',
+                'country' => 'Slovakia',
+                'bio' => 'Test student Zuzana',
+                'password' => 'studentpass5',
+            ]
+        );
+        $student5->assignRole('student');
+        $student5->assignRole('user');
+
+        $student6 = User::firstOrCreate(
+            [
+                'first_name' => 'Tomas',
+                'last_name' => 'Varga',
+                'email' => 'tomas.varga@student.example',
+                'degree' => 'Bc.',
+                'sex' => 'male',
+                'birth_date' => '1995-12-01',
+                'country' => 'Slovakia',
+                'bio' => 'Test student Tomas',
+                'password' => 'studentpass6',
+            ]
+        );
+        $student6->assignRole('student');
+        $student6->assignRole('user');
+
+        $student7 = User::firstOrCreate(
+            [
+                'first_name' => 'Petra',
+                'last_name' => 'Kralova',
+                'email' => 'petra.kralova@student.example',
+                'degree' => 'Bc.',
+                'sex' => 'female',
+                'birth_date' => '1999-09-09',
+                'country' => 'Slovakia',
+                'bio' => 'Test student Petra',
+                'password' => 'studentpass7',
+            ]
+        );
+        $student7->assignRole('student');
+        $student7->assignRole('user');
+
+
         $user = User::firstOrCreate(
             [
                 'first_name' => 'Default',
@@ -92,5 +207,7 @@ class UserSeeder extends Seeder {
             ]
         );
         $user->assignRole('user');
+
+
     }
 }

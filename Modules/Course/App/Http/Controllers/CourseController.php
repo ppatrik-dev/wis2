@@ -59,7 +59,11 @@ class CourseController extends Controller
     {
         $this->authorize('course.create');
 
-        $users = User::all()->pluck('first_name', 'id')->toArray();
+        $users = User::select('id', 'first_name', 'last_name')
+            ->orderBy('first_name')
+            ->get()
+            ->mapWithKeys(fn($u) => [$u->id => trim($u->first_name . ' ' . $u->last_name)])
+            ->toArray();
         return view('course::course.create', compact('users'));
     }
 
@@ -128,7 +132,11 @@ class CourseController extends Controller
         }
 
         $course = $this->courseService->getById((int) $id);
-        $users = User::all()->pluck('first_name', 'id')->toArray();
+        $users = User::select('id', 'first_name', 'last_name')
+            ->orderBy('first_name')
+            ->get()
+            ->mapWithKeys(fn($u) => [$u->id => trim($u->first_name . ' ' . $u->last_name)])
+            ->toArray();
         return view('course::course.edit', compact('course', 'users'));
     }
 
@@ -159,13 +167,9 @@ class CourseController extends Controller
                         }
                     }
                 } catch (\Exception $e) {
-                    // Ignore role assignment failure
                 }
             }
 
-            // Also ensure that if an admin assigns a guarantor to a course that is already approved,
-            // the assigned guarantor receives the 'guarantor' role. This covers the case where
-            // the guarantor is set/changed after the course was approved.
             if ($course->is_approved && $course->guarantor_id) {
                 try {
                     $guarantorUser = User::find($course->guarantor_id);
