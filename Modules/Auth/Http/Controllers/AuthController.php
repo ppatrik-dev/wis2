@@ -33,7 +33,7 @@ class AuthController extends Controller {
         $user->assignRole('user');
         Auth::login($user);
         // $this->roleService->assignRoles($user, $request->input('roles', []));
-        return redirect()->route('user.index')->with('success', 'User created successfully !');
+        return redirect()->route('course.index')->with('success', 'User created successfully !');
     }
     public function login(Request $request) {
         $validated = $request->validate([
