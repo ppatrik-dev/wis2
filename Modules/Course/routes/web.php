@@ -5,8 +5,10 @@ use Modules\Course\App\Http\Controllers\CourseController;
 use Modules\Course\App\Http\Controllers\CourseLecturerController;
 use Modules\Course\App\Http\Controllers\CourseNewsController;
 use Modules\Course\App\Http\Controllers\CourseStudentController;
+use Modules\Course\App\Http\Controllers\MyCourseController;
 
 Route::resource('courses', CourseController::class)->names('course');
+Route::get('my-courses', [MyCourseController::class, 'index'])->name('course.my-courses')->middleware('auth');
 Route::patch('courses/{course}/approve', [CourseController::class, 'approve'])->name('course.approve');
 
 Route::get('courses/{course}/students/lookup', [CourseStudentController::class, 'lookupPublic'])
@@ -43,4 +45,3 @@ Route::prefix('courses/{course}')->group(function () {
     Route::post('students/register', [CourseStudentController::class, 'registerCurrentUser'])->name('course.student.register')->middleware('auth');
     Route::post('students/unregister', [CourseStudentController::class, 'unregisterCurrentUser'])->name('course.student.unregister')->middleware('auth');
 });
-

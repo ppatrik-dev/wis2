@@ -27,6 +27,15 @@
                     <th scope="col" class="px-6 py-3">Author</th>
                     <th scope="col" class="px-6 py-3">Created At</th>
                     <th scope="col" class="px-6 py-3">Actions</th>
+                @elseif (isset($myCourses))
+                    <th scope="col" class="px-6 py-3">Code</th>
+                    <th scope="col" class="px-6 py-3">Name</th>
+                    <th scope="col" class="px-6 py-3">Academic Year</th>
+                    <th scope="col" class="px-6 py-3">Credits</th>
+                     <th scope="col" class="px-6 py-3">Type</th>
+                    <th scope="col" class="px-6 py-3">Points</th>
+                    <th scope="col" class="px-6 py-3">Grade</th>
+                    <th scope="col" class="px-6 py-3">Completed</th>
                 @endif
             </tr>
         </thead>
@@ -291,7 +300,29 @@
                         </td>
                     </tr>
                 @endforeach
-            @endif
+
+             @elseif(isset($myCourses))
+                    @foreach($myCourses as $course)
+                    <?php dd($course->terms) ?>
+                        <tr
+                            class="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
+
+                            <td class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"> <a
+                                    href="{{ route('course.show', $course->id) }}">{{ $course->code }}</a></td>
+
+                            <td class="px-6 py-3"><a href="{{ route('course.show', $course->id) }}">{{ $course->name }}</a></td>
+
+                            <td class="px-6 py-3">{{ $course->academic_year }}</td>
+                            <td class="px-6 py-3">{{ $course->credits }}</td>
+                            <td class="px-6 py-4">
+                                <span
+                                    class="px-2 py-1 text-xs font-medium rounded-full {{ $course->type === 'mandatory' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800' }}">
+                                    {{ ucfirst($course->type) }}
+                                </span>
+                            </td>
+                        </tr>
+                    @endforeach
+                      @endif
         </tbody>
     </table>
 </div>
