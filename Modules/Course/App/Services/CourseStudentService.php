@@ -14,7 +14,7 @@ class CourseStudentService {
      * Get all students for a specific course
      */
     public function getByCourse(int $courseId): Collection {
-        $course = Course::withTrashed()->findOrFail($courseId);
+        $course = Course::findOrFail($courseId);
         return $course->students()->withPivot(['final_score', 'is_approved', 'approved_at', 'created_at', 'updated_at'])->get();
     }
 
@@ -32,7 +32,7 @@ class CourseStudentService {
      * Get student by ID
      */
     public function getById(int $courseId, int $studentId): CourseStudent {
-        $course = Course::withTrashed()->findOrFail($courseId);
+        $course = Course::findOrFail($courseId);
         $student = $course->students()->where('student_id', $studentId)->first();
 
         if (!$student) {
@@ -59,8 +59,8 @@ class CourseStudentService {
      * Check if course has available capacity
      */
     public function hasAvailableCapacity(int $courseId): bool {
-        $course = Course::withTrashed()->findOrFail($courseId);
-        
+        $course = Course::findOrFail($courseId);
+
         if (!$course->capacity || $course->capacity <= 0) {
             // No capacity limit
             return true;
@@ -75,7 +75,7 @@ class CourseStudentService {
      */
     public function addStudent(int $courseId, int $studentId, array $data = []): CourseStudent {
         return DB::transaction(function () use ($courseId, $studentId, $data) {
-            $course = Course::withTrashed()->findOrFail($courseId);
+            $course = Course::findOrFail($courseId);
 
             $existing = $course->students()->where('student_id', $studentId)->first();
 
@@ -85,7 +85,7 @@ class CourseStudentService {
 
             // Determine if student should be automatically approved
             $shouldAutoApprove = false;
-            
+
             // If is_approved is explicitly set in data, use that (for admin/guarantor manual enrollment)
             if (isset($data['is_approved'])) {
                 $shouldAutoApprove = (bool) $data['is_approved'];
@@ -117,7 +117,7 @@ class CourseStudentService {
      */
     public function update(int $courseId, int $studentId, array $data): CourseStudent {
         return DB::transaction(function () use ($courseId, $studentId, $data) {
-            $course = Course::withTrashed()->findOrFail($courseId);
+            $course = Course::findOrFail($courseId);
             $student = $course->students()->where('student_id', $studentId)->first();
 
             if (!$student) {

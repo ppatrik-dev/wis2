@@ -5,6 +5,6 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return Auth::check()
-        ? view('index')
+        ? redirect()->route('course.my-courses')
         : redirect()->route('course.index');
 })->name('index');

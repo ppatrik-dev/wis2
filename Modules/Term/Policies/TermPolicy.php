@@ -37,12 +37,18 @@ class TermPolicy {
         return $user->hasAnyRole(['admin', 'guarantor']);
     }
     public function update(User $user, Term $term) {
+        if ($user->hasRole('admin')) {
+            return true;
+        }
         if ($term->course && ($user->hasRole('guarantor') && $term->course->guarantor_id === $user->id)) {
             return true;
         }
         return false;
     }
     public function delete(User $user, Term $term) {
+        if ($user->hasRole('admin')) {
+            return true;
+        }
         if ($term->course && ($user->hasRole('guarantor') && $term->course->guarantor_id === $user->id)) {
             return true;
         }
