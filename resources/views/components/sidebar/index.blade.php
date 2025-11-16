@@ -8,6 +8,8 @@
         </a>
 
         <ul class="space-y-2 font-medium">
+            {{-- @auth --}}
+            <li>
             {{-- <li>
                 <a href="{{route('index')}}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 group">
                 <svg class="w-6 h-6 text-gray-800 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -16,6 +18,8 @@
 
                 <span class="ms-3">Dashboard</span>
                 </a>
+            </li>
+            @endauth
             </li> --}}
 
             @role('admin')
@@ -39,6 +43,15 @@
                 </a>
             </li>
 
+            <li>
+                <a href="{{ route('course.my-courses') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 group">
+             <svg class="w-6 h-6 text-gray-800 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 6H5m2 3H5m2 3H5m2 3H5m2 3H5m11-1a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2M7 3h11a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm8 7a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"/>
+                </svg>
+
+                <span class="ms-3">My courses</span>
+                </a>
+            </li>
             <li>
                 <a href="{{ route('term.index') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 group">
                 <svg class="w-6 h-6 text-gray-800 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">

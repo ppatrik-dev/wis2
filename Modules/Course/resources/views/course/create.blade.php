@@ -32,7 +32,7 @@
 
     <x-course::profile>
         @if ($errors->any())
-            <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+            <div class="p-4 mb-4 text-red-700 bg-red-100 border border-red-400 rounded">
                 <ul>
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -42,13 +42,13 @@
         @endif
 
         @if (session('error'))
-            <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+            <div class="p-4 mb-4 text-red-700 bg-red-100 border border-red-400 rounded">
                 {{ session('error') }}
             </div>
         @endif
 
         @if (session('success'))
-            <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+            <div class="p-4 mb-4 text-green-700 bg-green-100 border border-green-400 rounded">
                 {{ session('success') }}
             </div>
         @endif
@@ -66,10 +66,12 @@
             <x-select label="Type" name="type" :options="['mandatory' => 'Mandatory', 'optional' => 'Optional']"
                 :required="true" value="mandatory"></x-select>
             <x-select label="Guarantor" name="guarantor_id" :options="$users" :required="false"></x-select>
-            <x-input type="checkbox" label="Auto Enroll Confirm" name="auto_enroll_confirm" value="1" />
-            <x-input type="checkbox" label="Is Approved" name="is_approved" value="1" />
+               <x-toggle name="auto_enroll_confirm" label="Auto Enroll Confirm" :checked="1"/>
+                @if(auth()->check() && auth()->user()->hasRole('admin'))
+                    <x-toggle name="is_approved" label="Is Approved" :checked="1"/>
+                @endif
             <x-input label="Description" name="description" input="textarea"
-                placeholder="Course description..."></x-input>
+                placeholder="Course description..." class="col-span-3"></x-input>
         </form>
     </x-course::profile>
 </x-course::layouts.master>

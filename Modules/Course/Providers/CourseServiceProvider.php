@@ -5,35 +5,56 @@ namespace Modules\Course\Providers;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Nwidart\Modules\Traits\PathNamespace;
+use Modules\Course\Models\Course;
+use Modules\Course\Models\CourseNews;
+use Modules\Course\Models\CourseStudent;
+use Modules\Course\Models\CourseLecturer;
+use Modules\Course\Policies\CoursePolicy;
+use Modules\Course\Policies\CourseNewsPolicy;
+use Modules\Course\Policies\CourseStudentPolicy;
+use Modules\Course\Policies\CourseLecturerPolicy;
+use Illuminate\Support\Facades\Gate;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
-class CourseServiceProvider extends ServiceProvider
-{
+class CourseServiceProvider extends ServiceProvider {
     use PathNamespace;
 
     protected string $name = 'Course';
 
     protected string $nameLower = 'course';
 
+    protected array $policies = [
+        Course::class => CoursePolicy::class,
+        CourseNews::class => CourseNewsPolicy::class,
+        CourseStudent::class => CourseStudentPolicy::class,
+        CourseLecturer::class => CourseLecturerPolicy::class
+    ];
+
     /**
      * Boot the application events.
      */
-    public function boot(): void
-    {
+    public function boot(): void {
         $this->registerCommands();
         $this->registerCommandSchedules();
         $this->registerTranslations();
         $this->registerConfig();
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
+
+        foreach ($this->policies as $model => $policy) {
+            Gate::policy($model, $policy);
+        }
+        Gate::resource('course', CoursePolicy::class);
+        Gate::resource('course-student', CourseStudentPolicy::class);
+        Gate::resource('course-lecturer', CourseLecturerPolicy::class);
+        Gate::resource('course-news', CourseNewsPolicy::class);
     }
 
     /**
      * Register the service provider.
      */
-    public function register(): void
-    {
+    public function register(): void {
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
     }
@@ -41,16 +62,14 @@ class CourseServiceProvider extends ServiceProvider
     /**
      * Register commands in the format of Command::class
      */
-    protected function registerCommands(): void
-    {
+    protected function registerCommands(): void {
         // $this->commands([]);
     }
 
     /**
      * Register command Schedules.
      */
-    protected function registerCommandSchedules(): void
-    {
+    protected function registerCommandSchedules(): void {
         // $this->app->booted(function () {
         //     $schedule = $this->app->make(Schedule::class);
         //     $schedule->command('inspire')->hourly();
@@ -60,9 +79,8 @@ class CourseServiceProvider extends ServiceProvider
     /**
      * Register translations.
      */
-    public function registerTranslations(): void
-    {
-        $langPath = resource_path('lang/modules/'.$this->nameLower);
+    public function registerTranslations(): void {
+        $langPath = resource_path('lang/modules/' . $this->nameLower);
 
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, $this->nameLower);
@@ -76,8 +94,7 @@ class CourseServiceProvider extends ServiceProvider
     /**
      * Register config.
      */
-    protected function registerConfig(): void
-    {
+    protected function registerConfig(): void {
         $configPath = module_path($this->name, config('modules.paths.generator.config.path'));
 
         if (is_dir($configPath)) {
@@ -85,9 +102,9 @@ class CourseServiceProvider extends ServiceProvider
 
             foreach ($iterator as $file) {
                 if ($file->isFile() && $file->getExtension() === 'php') {
-                    $config = str_replace($configPath.DIRECTORY_SEPARATOR, '', $file->getPathname());
+                    $config = str_replace($configPath . DIRECTORY_SEPARATOR, '', $file->getPathname());
                     $config_key = str_replace([DIRECTORY_SEPARATOR, '.php'], ['.', ''], $config);
-                    $segments = explode('.', $this->nameLower.'.'.$config_key);
+                    $segments = explode('.', $this->nameLower . '.' . $config_key);
 
                     // Remove duplicated adjacent segments
                     $normalized = [];
@@ -109,8 +126,7 @@ class CourseServiceProvider extends ServiceProvider
     /**
      * Merge config from the given path recursively.
      */
-    protected function merge_config_from(string $path, string $key): void
-    {
+    protected function merge_config_from(string $path, string $key): void {
         $existing = config($key, []);
         $module_config = require $path;
 
@@ -120,32 +136,29 @@ class CourseServiceProvider extends ServiceProvider
     /**
      * Register views.
      */
-    public function registerViews(): void
-    {
-        $viewPath = resource_path('views/modules/'.$this->nameLower);
+    public function registerViews(): void {
+        $viewPath = resource_path('views/modules/' . $this->nameLower);
         $sourcePath = module_path($this->name, 'resources/views');
 
-        $this->publishes([$sourcePath => $viewPath], ['views', $this->nameLower.'-module-views']);
+        $this->publishes([$sourcePath => $viewPath], ['views', $this->nameLower . '-module-views']);
 
         $this->loadViewsFrom(array_merge($this->getPublishableViewPaths(), [$sourcePath]), $this->nameLower);
 
-        Blade::componentNamespace(config('modules.namespace').'\\' . $this->name . '\\View\\Components', $this->nameLower);
+        Blade::componentNamespace(config('modules.namespace') . '\\' . $this->name . '\\View\\Components', $this->nameLower);
     }
 
     /**
      * Get the services provided by the provider.
      */
-    public function provides(): array
-    {
+    public function provides(): array {
         return [];
     }
 
-    private function getPublishableViewPaths(): array
-    {
+    private function getPublishableViewPaths(): array {
         $paths = [];
         foreach (config('view.paths') as $path) {
-            if (is_dir($path.'/modules/'.$this->nameLower)) {
-                $paths[] = $path.'/modules/'.$this->nameLower;
+            if (is_dir($path . '/modules/' . $this->nameLower)) {
+                $paths[] = $path . '/modules/' . $this->nameLower;
             }
         }
 

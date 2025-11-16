@@ -9,14 +9,15 @@ use Modules\Course\App\Http\Requests\UpdateCourseRequest;
 use Modules\Course\App\Services\CourseService;
 use Modules\User\Models\User;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 
-class CourseController extends Controller
-{
+
+class MyCourseController extends Controller {
 
     protected $courseService;
-    public function __construct(CourseService $courseService)
-    {
+    public function __construct(CourseService $courseService) {
         $this->courseService = $courseService;
     }
 
@@ -24,39 +25,15 @@ class CourseController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
-    {
-        $query = $request->get('q', '');
-        $user = auth()->user();
-        $isAdmin = $user && $user->hasRole('admin');
-
-        if (!empty($query)) {
-            // search helper in CourseService
-            $courses = $this->courseService->search($query);
-            // Filter: non-admin users only see approved courses in search results
-            if (!$isAdmin) {
-                $courses = $courses->filter(function ($course) {
-                    return $course->is_approved;
-                });
-            }
-        } else {
-            $courses = $this->courseService->getAll();
-            // Filter: non-admin users only see approved courses
-            if (!$isAdmin) {
-                $courses = $courses->filter(function ($course) {
-                    return $course->is_approved;
-                });
-            }
-        }
-
-        return view('course::course.index', compact('courses', 'query'));
+    public function index(Request $request) {
+        $courses = Auth::user()->courses;
+        return view('course::my_course.index', compact('courses'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): View
-    {
+    public function create(): View {
         $this->authorize('course.create');
 
         $users = User::select('id', 'first_name', 'last_name')
@@ -70,8 +47,7 @@ class CourseController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCourseRequest $request)
-    {
+    public function store(StoreCourseRequest $request) {
         $this->authorize('course.create');
 
         try {
@@ -115,8 +91,7 @@ class CourseController extends Controller
     /**
      * Show the specified resource.
      */
-    public function show($id)
-    {
+    public function show($id) {
         $course = $this->courseService->getById((int) $id);
         return view('course::course.show', compact('course'));
     }
@@ -124,8 +99,7 @@ class CourseController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id): View
-    {
+    public function edit($id): View {
         // Only admin can edit courses
         if (!auth()->check() || !auth()->user()->hasRole('admin')) {
             abort(403, 'Unauthorized');
@@ -143,8 +117,7 @@ class CourseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCourseRequest $request, $id)
-    {
+    public function update(UpdateCourseRequest $request, $id) {
         // Only admin can update courses
         if (!auth()->check() || !auth()->user()->hasRole('admin')) {
             abort(403, 'Unauthorized');
@@ -194,8 +167,7 @@ class CourseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         // Only admin can delete courses
         if (!auth()->check() || !auth()->user()->hasRole('admin')) {
             abort(403, 'Unauthorized');
@@ -209,8 +181,7 @@ class CourseController extends Controller
     /**
      * Approve a course (admin only).
      */
-    public function approve($id)
-    {
+    public function approve($id) {
         if (!auth()->check() || !auth()->user()->hasRole('admin')) {
             abort(403, 'Unauthorized');
         }
@@ -224,4 +195,3 @@ class CourseController extends Controller
         }
     }
 }
-

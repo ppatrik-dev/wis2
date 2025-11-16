@@ -11,6 +11,24 @@ use Modules\Course\Models\CourseNews;
 use Modules\Course\Models\CourseStudent;
 use Modules\Course\Models\CourseLecturer;
 
+/**
+ * Modules\Course\Models\Course
+ *
+ * @property int $id
+ * @property int|null $guarantor_id
+ * @property string $code
+ * @property string $name
+ * @property string|null $academic_year
+ * @property string|null $description
+ * @property string|null $type
+ * @property int|null $credits
+ * @property int|null $capacity
+ * @property bool|null $auto_enroll_confirm
+ * @property bool|null $is_approved
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @mixin \Eloquent
+ */
 class Course extends Model
 {
     use HasFactory, SoftDeletes;
@@ -54,6 +72,39 @@ class Course extends Model
     public function terms()
     {
         return $this->hasMany(Term::class);
+    }
+
+    /**
+     * Get the number of approved students enrolled
+     */
+    public function getApprovedEnrollmentCount(): int
+    {
+        return $this->students()->wherePivot('is_approved', true)->count();
+    }
+
+    /**
+     * Get remaining capacity
+     */
+    public function getRemainingCapacity(): ?int
+    {
+        if (!$this->capacity || $this->capacity <= 0) {
+            return null; // No limit
+        }
+        
+        $approved = $this->getApprovedEnrollmentCount();
+        return max(0, $this->capacity - $approved);
+    }
+
+    /**
+     * Check if course is full
+     */
+    public function isFull(): bool
+    {
+        if (!$this->capacity || $this->capacity <= 0) {
+            return false; // No limit, never full
+        }
+        
+        return $this->getApprovedEnrollmentCount() >= $this->capacity;
     }
 
     // protected static function newFactory(): CourseFactory
