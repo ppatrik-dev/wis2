@@ -76,7 +76,7 @@ class TermController extends Controller {
      */
     public function show($id) {
         $term = Term::findOrFail($id);
-
+        $this->authorize('view', $term);
         return view('term::term.show', ["term" => $term]);
     }
 
@@ -88,6 +88,7 @@ class TermController extends Controller {
         $users = User::all()->mapWithKeys(fn($user) => [$user->id => $user->getFullNameAttribute()])->toArray();
         $rooms = Room::all()->pluck('name', 'id')->toArray();
         $courses = Course::all()->pluck('name', 'id')->toArray();
+        $this->authorize('update', $term);
         return view('term::term.edit', ["term" => $term, "users" => $users, "rooms" => $rooms, "courses" => $courses]);
     }
 
@@ -110,6 +111,7 @@ class TermController extends Controller {
         ]);
 
         $term = Term::findOrFail($id);
+        $this->authorize('update', $term);
         $term->update([
             'name' => ucfirst($validated['name']),
             'type' => $validated['type'],
@@ -135,8 +137,8 @@ class TermController extends Controller {
      */
     public function destroy($id) {
         $term = Term::findOrFail($id);
+        $this->authorize('delete', $term);
         $term->delete();
-
         return redirect()->route('term.index')->with('success', 'Term deleted successfully!');
     }
 }

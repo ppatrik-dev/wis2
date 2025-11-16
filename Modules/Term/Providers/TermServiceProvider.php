@@ -11,6 +11,8 @@ use Modules\Term\Policies\RoomPolicy;
 use Modules\Term\Models\Room;
 use Illuminate\Support\Facades\Gate;
 use Modules\Term\Policies\TermPolicy;
+use Modules\Term\Policies\TermStudentPolicy;
+use Modules\Term\Models\TermStudent;
 use Modules\Term\Models\Term;
 
 class TermServiceProvider extends ServiceProvider {
@@ -23,6 +25,7 @@ class TermServiceProvider extends ServiceProvider {
     protected array $policies = [
         Room::class => RoomPolicy::class,
         Term::class => TermPolicy::class,
+        TermStudent::class => TermStudentPolicy::class,
     ];
     /**
      * Boot the application events.
@@ -40,6 +43,7 @@ class TermServiceProvider extends ServiceProvider {
         }
         Gate::resource('term', TermPolicy::class);
         Gate::resource('room', RoomPolicy::class);
+        Gate::resource('term-student', TermStudentPolicy::class);
     }
 
     /**
