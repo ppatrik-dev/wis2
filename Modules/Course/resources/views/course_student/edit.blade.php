@@ -28,7 +28,7 @@
             @method('PUT')
             <x-input label="Student Name" name="student_name" value="{{ $courseStudent->student->first_name . ' ' . $courseStudent->student->last_name }}" :disabled="true"></x-input>
             <x-input label="Course Name" name="course_name" value="{{ $courseStudent->course->name }}" :disabled="true"></x-input>
-            <x-input label="Final Score" name="final_score" type="number" min="0" max="100" value="{{ $courseStudent->final_score }}"></x-input>
+            <x-input label="Final Score" name="final_score" type="number" min="0" max="100" value="{{ $courseStudent->final_score }}" :placeholder="$courseStudent->course->terms->sum('pivot.score')"></x-input>
             <x-toggle label="Is Approved" name="is_approved" :checked="$courseStudent->is_approved"/>
         </form>
     </x-course::profile>

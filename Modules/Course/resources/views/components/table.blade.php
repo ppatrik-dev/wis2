@@ -304,9 +304,10 @@
              @elseif(isset($myCourses))
                     @foreach($myCourses as $course)
                         @php
-                            $score = $course->terms
-                                ->where('student_id', auth()->id())
-                                ->sum('pivot.score');
+                         $score = $course->pivot->final_score ?? 0;
+                            // $score = $course->terms
+                            //     ->where('student_id', auth()->id())
+                            //     ->sum('pivot.score');
                                 switch(true) {
                                 case $score >= 90:
                                     $grade = 'A';
