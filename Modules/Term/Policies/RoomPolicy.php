@@ -3,7 +3,7 @@
 namespace Modules\Term\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Modules\User\Models\Term;
+use Modules\Term\Models\Term;
 use Modules\User\Models\User;
 use Modules\Term\Models\Room;
 

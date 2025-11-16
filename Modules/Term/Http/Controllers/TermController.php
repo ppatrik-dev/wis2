@@ -16,6 +16,7 @@ class TermController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
+        $this->authorize('viewAny', Term::class);
         $terms = Term::orderBy('created_at', 'desc')->paginate(10);
         return view('term::term.index', ["terms" => $terms]);
     }
@@ -24,6 +25,7 @@ class TermController extends Controller {
      * Show the form for creating a new resource.
      */
     public function create() {
+        $this->authorize('create', Term::class);
         $users = User::all()->mapWithKeys(fn($user) => [$user->id => $user->getFullNameAttribute()])->toArray();
         $rooms = Room::all()->pluck('name', 'id')->toArray();
         $courses = Course::where('guarantor_id', Auth::id())->pluck('name', 'id')->toArray();
@@ -34,6 +36,7 @@ class TermController extends Controller {
      * Store a newly created resource in storage.
      */
     public function store(Request $request) {
+        $this->authorize('create', Term::class);
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'type' => ['required', 'in:lecture,exercise,exam,assignment'],

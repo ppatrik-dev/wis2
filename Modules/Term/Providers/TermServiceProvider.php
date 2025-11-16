@@ -10,6 +10,8 @@ use RecursiveIteratorIterator;
 use Modules\Term\Policies\RoomPolicy;
 use Modules\Term\Models\Room;
 use Illuminate\Support\Facades\Gate;
+use Modules\Term\Policies\TermPolicy;
+use Modules\Term\Models\Term;
 
 class TermServiceProvider extends ServiceProvider {
     use PathNamespace;
@@ -20,6 +22,7 @@ class TermServiceProvider extends ServiceProvider {
 
     protected array $policies = [
         Room::class => RoomPolicy::class,
+        Term::class => TermPolicy::class,
     ];
     /**
      * Boot the application events.
@@ -35,6 +38,8 @@ class TermServiceProvider extends ServiceProvider {
         foreach ($this->policies as $model => $policy) {
             Gate::policy($model, $policy);
         }
+        Gate::resource('term', TermPolicy::class);
+        Gate::resource('room', RoomPolicy::class);
     }
 
     /**
