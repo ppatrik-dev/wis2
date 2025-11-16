@@ -30,7 +30,7 @@
             {{ $hour }}:00
         </div>
         @foreach($weekDays as $day => $termsForDay)
-            <div class="border border-gray-400 p-2 min-h-[60px] dark:bg-gray-800 dark:hover:bg-gray-700 ">
+            <div class="border border-gray-400 p-2 min-h-[50px] dark:bg-gray-800 dark:hover:bg-gray-700 ">
                     @foreach($termsForDay as $term)
                     @php
                         $startHour = (int) $term->start_at->format('H');
@@ -56,7 +56,7 @@
 
                     @if($hour >= $startHour && $hour < $endHour)
                          <a href="{{ route('term.show', $term->id) }}">
-                        <div class="p-3  bg-blue-500 {{ $color }} rounded-md">
+                        <div class="p-2  bg-blue-500 {{ $color }} rounded-md">
                             {{ $term->name }}
                         </div>
                          </a>
