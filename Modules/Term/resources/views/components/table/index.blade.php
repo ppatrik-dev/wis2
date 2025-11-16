@@ -85,20 +85,28 @@
                         @endif
                     </td>
                     <td class="inline-flex gap-3 py-3 pl-1">
+                        <form action="{{ route('term.student.register', $term) }}" method="POST" class="inline">
+                            @csrf
+                            <button type="submit"
+                                    class="px-0 py-0 text-blue-600 underline bg-transparent border-none ">
+                                Register
+                            </button>
+                        </form>
+
                         <a href="{{ route('term.edit', $term->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline" title="Edit">
                             <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                 <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd"/>
                                 <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd"/>
                             </svg>
                         </a>
-                        <form action="{{ route('term.student.register', $term) }}" method="POST" class="inline">
+                        {{-- <form action="{{ route('term.student.register', $term) }}" method="POST" class="inline">
                         @csrf
                         <button type="submit" title="Register" class="font-medium hover:cursor-pointer">
                             <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                 <path fill-rule="evenodd" d="M9 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4H7Zm8-1a1 1 0 0 1 1-1h1v-1a1 1 0 1 1 2 0v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 0 1-1-1Z" clip-rule="evenodd"/>
                             </svg>
                         </button>
-                        </form>
+                        </form> --}}
 
                         <a href="{{ route('term.student.index', $term) }}" title="Students">
                             <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">

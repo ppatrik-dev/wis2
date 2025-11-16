@@ -26,7 +26,7 @@ class TermController extends Controller {
     public function create() {
         $users = User::all()->mapWithKeys(fn($user) => [$user->id => $user->getFullNameAttribute()])->toArray();
         $rooms = Room::all()->pluck('name', 'id')->toArray();
-        $courses = Course::all()->pluck('name', 'id')->toArray();
+        $courses = Course::where('guarantor_id', Auth::id())->pluck('name', 'id')->toArray();
         return view('term::term.create', ["users" => $users, "rooms" => $rooms, "courses" => $courses]);
     }
 
@@ -61,6 +61,9 @@ class TermController extends Controller {
             'room_id' => $validated['room'] ?? null,
             'registration_required' => $validated['registration_required'],
         ]);
+
+        $user = User::findOrFail(($validated['lecturer']));
+        $user->assignRole('lecturer');
 
         return redirect()->route('term.index')->with('success', 'Term created successfuly!');
     }
@@ -117,6 +120,9 @@ class TermController extends Controller {
             'room_id' => $validated['room'] ?? null,
             'registration_required' => $validated['registration_required'],
         ]);
+
+        $user = User::findOrFail(($validated['lecturer']));
+        $user->assignRole('lecturer');
 
         return redirect()->route('term.index')->with('success', 'Term updated successfully!');
     }
