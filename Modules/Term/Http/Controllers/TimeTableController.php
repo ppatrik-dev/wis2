@@ -9,26 +9,52 @@ use Modules\Term\Models\Room;
 use Modules\Course\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 
-class TermController extends Controller {
+class TimeTableController extends Controller {
     /**
      * Display a listing of the resource.
      */
-    public function index() {
-        $this->authorize('viewAny', Term::class);
-        $terms = Term::orderBy('created_at', 'desc')->paginate(10);
-        return view('term::term.index', ["terms" => $terms]);
+    public function index(Request $request) {
+        $weekDays = [
+            'monday' => [],
+            'tuesday' => [],
+            'wednesday' => [],
+            'thursday' => [],
+            'friday' => [],
+            'saturday' => [],
+            'sunday' => [],
+        ];
+        $hours = range(7, 20);
+        $date = $request->get('date', now()->toDateString());
+        $prevWeek = Carbon::parse($date)->subWeek()->toDateString();
+        $nextWeek = Carbon::parse($date)->addWeek()->toDateString();
+        $start = Carbon::parse($date)->startOfWeek();
+        $end = Carbon::parse($date)->endOfWeek();
+        $user = Auth::user();
+        $terms = $user->terms()
+            ->whereBetween('start_at', [$start, $end])
+            ->with(['room', 'course', 'lecturer'])
+            ->orderBy('start_at')
+            ->get();
+        foreach ($terms as $term) {
+            $dayKey = strtolower($term->day);
+
+            if (isset($weekDays[$dayKey])) {
+                $weekDays[$dayKey][] = $term;
+            }
+        }
+        return view('term::timetable.index', compact('terms', 'start', 'end', 'weekDays', 'hours', 'prevWeek', 'nextWeek', 'date'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create() {
-        $this->authorize('create', Term::class);
         $users = User::all()->mapWithKeys(fn($user) => [$user->id => $user->getFullNameAttribute()])->toArray();
         $rooms = Room::all()->pluck('name', 'id')->toArray();
-        $courses = Course::where('guarantor_id', Auth::id())->pluck('name', 'id')->toArray();
+        $courses = Course::all()->pluck('code', 'id')->toArray();
         return view('term::term.create', ["users" => $users, "rooms" => $rooms, "courses" => $courses]);
     }
 
@@ -36,7 +62,6 @@ class TermController extends Controller {
      * Store a newly created resource in storage.
      */
     public function store(Request $request) {
-        $this->authorize('create', Term::class);
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'type' => ['required', 'in:lecture,exercise,exam,assignment'],
@@ -65,9 +90,6 @@ class TermController extends Controller {
             'registration_required' => $validated['registration_required'],
         ]);
 
-        $user = User::findOrFail(($validated['lecturer']));
-        $user->assignRole('lecturer');
-
         return redirect()->route('term.index')->with('success', 'Term created successfuly!');
     }
 
@@ -76,7 +98,7 @@ class TermController extends Controller {
      */
     public function show($id) {
         $term = Term::findOrFail($id);
-        $this->authorize('view', $term);
+
         return view('term::term.show', ["term" => $term]);
     }
 
@@ -87,8 +109,7 @@ class TermController extends Controller {
         $term = Term::findOrFail($id);
         $users = User::all()->mapWithKeys(fn($user) => [$user->id => $user->getFullNameAttribute()])->toArray();
         $rooms = Room::all()->pluck('name', 'id')->toArray();
-        $courses = Course::all()->pluck('name', 'id')->toArray();
-        $this->authorize('update', $term);
+        $courses = Course::all()->pluck('code', 'id')->toArray();
         return view('term::term.edit', ["term" => $term, "users" => $users, "rooms" => $rooms, "courses" => $courses]);
     }
 
@@ -111,7 +132,6 @@ class TermController extends Controller {
         ]);
 
         $term = Term::findOrFail($id);
-        $this->authorize('update', $term);
         $term->update([
             'name' => ucfirst($validated['name']),
             'type' => $validated['type'],
@@ -126,9 +146,6 @@ class TermController extends Controller {
             'registration_required' => $validated['registration_required'],
         ]);
 
-        $user = User::findOrFail(($validated['lecturer']));
-        $user->assignRole('lecturer');
-
         return redirect()->route('term.index')->with('success', 'Term updated successfully!');
     }
 
@@ -137,8 +154,8 @@ class TermController extends Controller {
      */
     public function destroy($id) {
         $term = Term::findOrFail($id);
-        $this->authorize('delete', $term);
         $term->delete();
+
         return redirect()->route('term.index')->with('success', 'Term deleted successfully!');
     }
 }

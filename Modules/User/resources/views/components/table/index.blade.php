@@ -70,7 +70,7 @@
                         {{ $user->degree }}
                     </td>
                     <th scope="row" class="flex items-center px-6 py-3 text-gray-900 whitespace-nowrap dark:text-white">
-                        <a href="{{ route('user.show', $user->id) }}">
+                        <a href="{{ route('user.show', $user->id) }}" class="w-10 h-10" >
                             <x-avatar letters="{{ $user->initials }}"></x-avatar>
                         </a>
                         <a href="{{ route('user.show', $user->id) }}" class="ps-3">

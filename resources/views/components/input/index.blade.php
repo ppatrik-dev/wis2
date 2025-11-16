@@ -4,6 +4,8 @@
     'name' => '',
     'label' => '',
     'value' => '',
+    'placeholder'=> '',
+    'rows' => '5',
     'required' => false,
     'disabled' => false,
 ])
@@ -16,14 +18,14 @@
 
 @if ($input == "input")
     <div {{ $attributes->merge([]) }}>
-        <label for="input-{{ $name }}" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">
+        <label for="input-{{ $name }}" class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-500">
             {{ $label }} {!! $required ? '<span class="text-blue-500">*</span>' : '' !!}
         </label>
-        <input id="input-{{ $name }}" type="{{ $type }}" name="{{ $name }}" value="{{ old($name, $value) }}" class="{{ $classes }}" @required($required) @disabled($disabled)>
+        <input id="input-{{ $name }}" type="{{ $type }}" name="{{ $name }}" value="{{ old($name, $value) }}" placeholder="{{ $placeholder }}" class="{{ $classes }}" @required($required) @disabled($disabled)>
     </div>
 @elseif ($input == "textarea")
     <div {{ $attributes->merge([]) }}>
-        <label for="textarea-{{ $name }}" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">{{ $label }}</label>
-        <textarea id="textarea-{{ $name }}" rows="5" name="{{ $name }}" class="{{ $classes }}" @disabled($disabled)>{{ old($name, $value) }}</textarea>
+        <label for="textarea-{{ $name }}" class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-500">{{ $label }}</label>
+        <textarea id="textarea-{{ $name }}" rows="{{ $rows }}" name="{{ $name }}" class="{{ $classes }}" @disabled($disabled)>{{ old($name, $value) }}</textarea>
     </div>
 @endif

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
-use Modules\Course\Models\Course;
+use  Modules\Term\Models\Term;
 
 class User extends Authenticatable {
     use HasFactory, SoftDeletes, HasRoles;
@@ -46,6 +46,17 @@ class User extends Authenticatable {
             'password' => 'hashed',
             'birth_date' => 'date',
         ];
+    }
+    public function terms() {
+        return $this->belongsToMany(
+            Term::class,
+
+            'term_student',
+            'student_id',
+            'term_id'
+        )
+            ->withPivot('score')
+            ->withTimestamps();
     }
     /**
      * The courses that belong to the user.
