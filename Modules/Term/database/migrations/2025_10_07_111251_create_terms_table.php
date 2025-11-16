@@ -23,7 +23,6 @@ return new class extends Migration {
             $table->dateTime('event_datetime');
             $table->timestamp('approved_at')->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

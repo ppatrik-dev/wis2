@@ -21,7 +21,6 @@ return new class extends Migration {
             $table->string('email', 64)->unique();
             $table->string('password', 255);
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

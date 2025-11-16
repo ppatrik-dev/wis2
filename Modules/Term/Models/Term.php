@@ -4,7 +4,6 @@ namespace Modules\Term\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\User\Models\User;
 use Modules\Term\Models\Room;
 use Modules\Term\Models\TermStudent;
@@ -12,7 +11,7 @@ use Modules\Course\Models\Course;
 // use Modules\Term\Database\Factories\TermFactory;
 
 class Term extends Model {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     /**
      * The attributes that are mass assignable.

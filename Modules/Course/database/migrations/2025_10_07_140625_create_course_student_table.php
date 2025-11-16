@@ -18,7 +18,6 @@ return new class extends Migration {
             $table->boolean('is_approved')->default(false);
             $table->timestamp('approved_at')->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

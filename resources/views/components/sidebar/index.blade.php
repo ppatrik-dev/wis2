@@ -42,7 +42,7 @@
                 <span class="ms-3">Courses</span>
                 </a>
             </li>
-
+            @auth
             <li>
                 <a href="{{ route('course.my-courses') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 group">
              <svg class="w-6 h-6 text-gray-800 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -79,7 +79,7 @@
                 <span class="ms-3">Timetable</span>
                 </a>
             </li>
-
+        @endauth
         </ul>
 
         <div class="absolute bottom-0 left-0 w-full px-3 py-4">

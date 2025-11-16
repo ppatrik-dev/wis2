@@ -17,7 +17,6 @@ return new class extends Migration {
             $table->string('role', 32)->default('lecturer');
             $table->timestamp('approved_at')->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

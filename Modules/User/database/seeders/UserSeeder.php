@@ -5,13 +5,11 @@ namespace Modules\User\database\seeders;
 use Illuminate\Database\Seeder;
 use Modules\User\Models\User;
 
-class UserSeeder extends Seeder
-{
+class UserSeeder extends Seeder {
     /**
      * Run the database seeds.
      */
-    public function run(): void
-    {
+    public function run(): void {
         $admin = User::firstOrCreate(
             [
                 'first_name' => 'System',
@@ -86,7 +84,7 @@ class UserSeeder extends Seeder
                 'last_name' => 'Kovacova',
                 'email' => 'anna.kovacova@student.example',
                 'degree' => 'Bc.',
-                'sex' => 'female',
+                'gender' => 'female',
                 'birth_date' => '1999-02-14',
                 'country' => 'Slovakia',
                 'bio' => 'Test student Anna',
@@ -102,7 +100,7 @@ class UserSeeder extends Seeder
                 'last_name' => 'Novak',
                 'email' => 'marek.novak@student.example',
                 'degree' => 'Ing.',
-                'sex' => 'male',
+                'gender' => 'male',
                 'birth_date' => '1997-08-03',
                 'country' => 'Slovakia',
                 'bio' => 'Test student Marek',
@@ -118,7 +116,7 @@ class UserSeeder extends Seeder
                 'last_name' => 'Horvathova',
                 'email' => 'lucia.horvathova@student.example',
                 'degree' => 'MSc.',
-                'sex' => 'female',
+                'gender' => 'female',
                 'birth_date' => '1996-11-22',
                 'country' => 'Slovakia',
                 'bio' => 'Test student Lucia',
@@ -134,7 +132,7 @@ class UserSeeder extends Seeder
                 'last_name' => 'Svec',
                 'email' => 'peter.svec@student.example',
                 'degree' => 'Bc.',
-                'sex' => 'male',
+                'gender' => 'male',
                 'birth_date' => '2000-06-30',
                 'country' => 'Slovakia',
                 'bio' => 'Test student Peter',
@@ -150,7 +148,7 @@ class UserSeeder extends Seeder
                 'last_name' => 'Mikova',
                 'email' => 'zuzana.mikova@student.example',
                 'degree' => 'Ing.',
-                'sex' => 'female',
+                'gender' => 'female',
                 'birth_date' => '1998-04-12',
                 'country' => 'Slovakia',
                 'bio' => 'Test student Zuzana',
@@ -166,7 +164,7 @@ class UserSeeder extends Seeder
                 'last_name' => 'Varga',
                 'email' => 'tomas.varga@student.example',
                 'degree' => 'Bc.',
-                'sex' => 'male',
+                'gender' => 'male',
                 'birth_date' => '1995-12-01',
                 'country' => 'Slovakia',
                 'bio' => 'Test student Tomas',
@@ -182,7 +180,7 @@ class UserSeeder extends Seeder
                 'last_name' => 'Kralova',
                 'email' => 'petra.kralova@student.example',
                 'degree' => 'Bc.',
-                'sex' => 'female',
+                'gender' => 'female',
                 'birth_date' => '1999-09-09',
                 'country' => 'Slovakia',
                 'bio' => 'Test student Petra',
@@ -207,7 +205,5 @@ class UserSeeder extends Seeder
             ]
         );
         $user->assignRole('user');
-
-
     }
 }

@@ -8,8 +8,7 @@ return new class extends Migration {
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
+    public function up(): void {
         Schema::create('term_student', function (Blueprint $table) {
             $table->id();
             $table->foreignId('term_id')->constrained('terms')->onDelete('cascade');
@@ -18,15 +17,13 @@ return new class extends Migration {
             $table->integer('score')->nullable();
             $table->timestamp('approved_at')->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
     /**
      * Reverse the migrations.
      */
-    public function down(): void
-    {
+    public function down(): void {
         Schema::dropIfExists('term_student');
     }
 };

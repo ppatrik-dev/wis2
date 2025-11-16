@@ -17,7 +17,6 @@ return new class extends Migration {
             $table->text('description');
             $table->timestamp('approved_at')->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

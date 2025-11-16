@@ -5,14 +5,13 @@ namespace Modules\User\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Modules\User\Database\Factories\UserFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 use  Modules\Term\Models\Term;
 use Modules\Course\Models\Course;
 
 class User extends Authenticatable {
-    use HasFactory, SoftDeletes, HasRoles;
+    use HasFactory, HasRoles;
 
     /**
      * The table associated with the model.
