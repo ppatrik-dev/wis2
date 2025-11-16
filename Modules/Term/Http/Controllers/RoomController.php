@@ -6,13 +6,12 @@ use App\Http\Controllers\Controller;
 use Modules\Term\Models\Room;
 use Illuminate\Http\Request;
 
-class RoomController extends Controller
-{
+class RoomController extends Controller {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
+    public function index() {
+        $this->authorize('viewAny', Room::class);
         $rooms = Room::orderby('created_at', 'desc')->paginate(10);
         return view('term::room.index', ["rooms" => $rooms]);
     }
@@ -20,16 +19,15 @@ class RoomController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
+    public function create() {
+        $this->authorize('create', Room::class);
         return view('term::room.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'location' => ['nullable', 'string', 'max:255'],
@@ -44,8 +42,8 @@ class RoomController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
-    {
+    public function show($id) {
+        $this->authorize('view', Room::class);
         $room = Room::findOrFail($id);
 
         return view('term::room.show', ["room" => $room]);
@@ -54,8 +52,8 @@ class RoomController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
-    {
+    public function edit($id) {
+        $this->authorize('update', Room::class);
         $room = Room::findOrFail($id);
 
         return view('term::room.edit', ["room" => $room]);
@@ -64,8 +62,8 @@ class RoomController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
+        $this->authorize('update', Room::class);
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'location' => ['nullable', 'string', 'max:255'],
@@ -81,8 +79,8 @@ class RoomController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
+        $this->authorize('delete', Room::class);
         $room = Room::findOrFail($id);
         $room->delete();
 
