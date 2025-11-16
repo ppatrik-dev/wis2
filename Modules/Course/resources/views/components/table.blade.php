@@ -303,7 +303,30 @@
 
              @elseif(isset($myCourses))
                     @foreach($myCourses as $course)
-                    <?php dd($course->terms) ?>
+                        @php
+                            $score = $course->terms
+                                ->where('student_id', auth()->id())
+                                ->sum('pivot.score');
+                                switch(true) {
+                                case $score >= 90:
+                                    $grade = 'A';
+                                    break;
+                                case $score >= 80:
+                                    $grade = 'B';
+                                    break;
+                                case $score >= 70:
+                                    $grade = 'C';
+                                    break;
+                                case $score >= 60:
+                                    $grade = 'D';
+                                    break;
+                                case $score >= 50:
+                                    $grade = 'E';
+                                    break;
+                                default:
+                                    $grade = 'F';
+                            }
+                        @endphp
                         <tr
                             class="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
 
@@ -320,6 +343,23 @@
                                     {{ ucfirst($course->type) }}
                                 </span>
                             </td>
+                            <td class="px-6 py-3">{{$score}}</td>
+                            <td class="px-6 py-3 font-bold text-lg {{ $score < 50 ? 'text-red-800' : 'text-green-800' }}"">{{$grade}}</td>
+                            <td class="px-6 py-3">
+                                @if($score >= 50)
+                                <svg class="w-6 h-6 text-gray-800 dark:text-green-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5"/>
+                                </svg>
+                                @else
+                                <svg class="w-6 h-6 text-gray-800 dark:text-red-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                                </svg>
+
+                                @endif
+                            </td>
+                            @php
+
+                            @endphp
                         </tr>
                     @endforeach
                       @endif

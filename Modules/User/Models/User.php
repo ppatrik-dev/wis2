@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 use  Modules\Term\Models\Term;
+use Modules\Course\Models\Course;
 
 class User extends Authenticatable {
     use HasFactory, SoftDeletes, HasRoles;
