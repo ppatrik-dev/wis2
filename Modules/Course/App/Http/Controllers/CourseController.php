@@ -81,16 +81,12 @@ class CourseController extends Controller
             // Only admin can create approved courses. All others create unapproved courses.
             if (!$user->hasRole('admin')) {
                 $data['is_approved'] = false;
-            }
-
-            // If guarantor creates the course, set guarantor_id to current user
-            if ($user->hasRole('guarantor') && !$user->hasRole('admin')) {
                 $data['guarantor_id'] = auth()->id();
             }
 
             $course = $this->courseService->create($data);
 
-            // If the course is approved on creation (admin action) and a guarantor is set,
+            // If the course is approved on creation and a guarantor is set,
             // promote the guarantor user to 'guarantor' role unless they already have admin/guarantor.
             if ($course->is_approved && $course->guarantor_id) {
                 try {

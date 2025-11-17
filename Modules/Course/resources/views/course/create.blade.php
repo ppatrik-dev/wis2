@@ -65,7 +65,9 @@
             <x-input label="Capacity" name="capacity" type="number" :required="true" placeholder="e.g., 50"></x-input>
             <x-select label="Type" name="type" :options="['mandatory' => 'Mandatory', 'optional' => 'Optional']"
                 :required="true" value="mandatory"></x-select>
-            <x-select label="Guarantor" name="guarantor_id" :options="$users" :required="false"></x-select>
+            @if(auth()->check() && auth()->user()->hasRole('admin'))
+                <x-select label="Guarantor" name="guarantor_id" :options="$users" :required="false"></x-select>
+            @endif
                <x-toggle name="auto_enroll_confirm" label="Auto Enroll Confirm" :checked="1"/>
                 @if(auth()->check() && auth()->user()->hasRole('admin'))
                     <x-toggle name="is_approved" label="Is Approved" :checked="1"/>
