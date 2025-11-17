@@ -135,6 +135,9 @@
             @endforeach
         </tbody>
     </table>
+    <div class="mt-4">
+    {{ $terms->links() }}
+    </div>
     @endisset
 
     @isset($rooms)
@@ -215,6 +218,9 @@
             @endforeach
         </tbody>
     </table>
+       <div class="mt-4">
+    {{ $rooms->links() }}
+    </div>
     @endisset
 
     @isset($students)
@@ -298,5 +304,8 @@
             @endforeach
         </tbody>
     </table>
+     <div class="mt-4">
+    {{ $students->links() }}
+    </div>
     @endisset
 </div>
