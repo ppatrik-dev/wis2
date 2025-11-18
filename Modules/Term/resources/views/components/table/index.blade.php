@@ -86,13 +86,23 @@
                     </td>
                     <td class="inline-flex gap-3 py-3 pl-1">
                         @can('register', $term)
+                        @if ($term->termStudents()->where('student_id', Auth::user()->id)->exists())
+                        <form action="{{ route('term.student.unregister', $term) }}" method="POST" class="inline">
+                            @csrf
+                            <button type="submit"
+                                    class="w-20 text-left text-red-600 bg-transparent border-none hover:cursor-pointer">
+                                Unregister
+                            </button>
+                        </form>
+                        @else
                         <form action="{{ route('term.student.register', $term) }}" method="POST" class="inline">
                             @csrf
                             <button type="submit"
-                                    class="px-0 py-0 text-blue-600 underline bg-transparent border-none ">
+                                    class="w-20 text-left text-blue-600 bg-transparent border-none hover:cursor-pointer">
                                 Register
                             </button>
                         </form>
+                        @endif
                         @endcan
                         @can('term.update', $term)
                         <a href="{{ route('term.edit', $term->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline" title="Edit">

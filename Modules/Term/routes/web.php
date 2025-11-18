@@ -11,6 +11,9 @@ Route::resource('terms', TermController::class)->names('term');
 Route::prefix('terms/{term}')->group(function () {
     Route::post('students/register', [TermStudentController::class, 'register'])
         ->name('term.student.register');
+
+    Route::post('students/unregister', [TermStudentController::class, 'unregister'])
+        ->name('term.student.unregister');
         
     Route::resource('students', TermStudentController::class)
         ->parameters(['students' => 'student'])

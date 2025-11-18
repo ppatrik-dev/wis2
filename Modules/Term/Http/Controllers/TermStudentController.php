@@ -126,15 +126,6 @@ class TermStudentController extends Controller {
     public function register(Term $term) {
         $user = Auth::user();
 
-        $courseStudents = $term->course_students;
-
-        if (!array_key_exists($user->id, $courseStudents)) {
-            return redirect()
-                ->back()
-                ->withErrors('Logged user does not belong to this term course.')
-                ->withInput();
-        }
-
         $termStudent = TermStudent::create(
             [
                 'term_id' => $term->id,
@@ -145,8 +136,20 @@ class TermStudentController extends Controller {
             ]
         );
 
-        return redirect()
-            ->route('term.student.index', $term)
+        return redirect()->route('term.index')
             ->with('success', 'Logged user registered to the term successfully!');
+    }
+
+    public function unregister(Term $term) {
+        $user = Auth::user();
+
+        $termStudent = TermStudent::where([
+            'term_id' => $term->id, 'student_id' => $user->id
+        ])->firstOrFail();
+
+        $termStudent->delete();
+
+        return redirect()->route('term.index')
+            ->with('success', 'Logged user unregistered from the term successfully!');
     }
 }
