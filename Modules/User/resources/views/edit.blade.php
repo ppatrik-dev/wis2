@@ -23,16 +23,20 @@
     </x-header>
 
     <x-user::profile :user="$user">
-        <form id="userProfileForm" action="{{ route('user.update', $user->id) }}" method="POST" class="w-full max-w-3/4 mx-auto py-10 grid grid-cols-3 gap-6">
+        <form id="userProfileForm" action="{{ route('user.update', $user->id) }}" method="POST" class="grid w-full grid-cols-3 gap-6 py-10 mx-auto max-w-3/4">
             @csrf
             @method('PUT')
+            <x-input label="Degree" name="degree" value="{{ $user->degree }}"></x-input>
             <x-input label="Name" name="first_name" value="{{ $user->first_name }}" :required="true"></x-input>
             <x-input label="Surname" name="last_name" value="{{ $user->last_name }}" :required="true"></x-input>
-            <x-multiselect label="Roles" name="roles" default="user" value="{{ $user->getHighestRole() }}" :options="$roles" :selected="$user->getRoleNames()"></x-multiselect>
-            <x-input label="Degree" name="degree" value="{{ $user->degree }}"></x-input>
             <x-input label="Email" name="email" value="{{ $user->email }}" :required="true"></x-input>
+             <x-input label="Birth date" name="birth_date" type="date" value="{{ $user->birth_date->format('Y-m-d') }}" :required="true"></x-input>
+            @role('admin')
+            <x-multiselect label="Roles" name="roles" default="user" value="{{ $user->getHighestRole() }}" :options="$roles" :selected="$user->getRoleNames()"></x-multiselect>
+            @endrole
+
             <x-input label="Bio" name="bio" value="{{ $user->bio }}" input="textarea" class="row-span-2"></x-input>
-            <x-input label="Birth date" name="birth_date" type="date" value="{{ $user->birth_date->format('Y-m-d') }}" :required="true"></x-input>
+
             <x-select label="Gender" name="gender" :options="array('male', 'female')" :selected="$user->gender" :required="true"></x-select>
             <x-input label="Country" name="country" value="{{ $user->country }}"></x-input>
             <x-input label="Password" name="password" type="password"></x-input>

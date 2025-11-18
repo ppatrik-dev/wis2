@@ -85,7 +85,7 @@
                         @endif
                     </td>
                     <td class="inline-flex gap-3 py-3 pl-1">
-                        @can('term.register', $term)
+                        @can('register', $term)
                         <form action="{{ route('term.student.register', $term) }}" method="POST" class="inline">
                             @csrf
                             <button type="submit"
@@ -167,11 +167,9 @@
                 <th scope="col" class="px-6 py-3">
                    Location
                 </th>
-                @can('room.update' || 'room.delete')
                 <th scope="col" class="px-6 py-3 text-right">
                    Actions
                 </th>
-                @endcan
             </tr>
         </thead>
         <tbody>
@@ -188,7 +186,6 @@
                     <td class="px-6 py-3">
                         {{ $room->location }}
                     </td>
-                    @can('room.update' || 'room.delete')
                     <td class="px-6 py-3 text-right">
                         <div class="inline-flex gap-3">
                             @can('room.update')
@@ -210,7 +207,6 @@
                                     </svg>
                                 </button>
                             </form>
-                            @endcan
                         </div>
                     </td>
                     @endcan
@@ -304,8 +300,5 @@
             @endforeach
         </tbody>
     </table>
-     <div class="mt-4">
-    {{ $students->links() }}
-    </div>
     @endisset
 </div>

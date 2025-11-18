@@ -5,6 +5,7 @@ namespace Modules\Term\Policies;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Modules\Term\Models\Term;
 use Modules\User\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class TermPolicy {
     use HandlesAuthorization;
@@ -18,19 +19,14 @@ class TermPolicy {
         if ($term->course && ($user->hasRole('guarantor') && $term->course->guarantor_id === $user->id)) {
             return true;
         }
+
         if ($user->hasRole('lecturer') && $term->lecturer_id === $user->id) {
             return true;
         }
-        if ($user->hasRole('student') && $term->students()->where('users.id', $user->id)->exists()) {
+        if ($term->course && ($user->hasRole('student') && $term->course->students()->where('users.id', $user->id)->exists())) {
             return true;
         }
 
-        return false;
-    }
-    public function register(User $user, Term $term) {
-        if ($user->hasRole('student') && $term->students()->where('users.id', $user->id)->exists()) {
-            return true;
-        }
         return false;
     }
     public function create(User $user) {
@@ -50,6 +46,13 @@ class TermPolicy {
             return true;
         }
         if ($term->course && ($user->hasRole('guarantor') && $term->course->guarantor_id === $user->id)) {
+            return true;
+        }
+        return false;
+    }
+
+    public function register(User $user, Term $term) {
+        if ($user->hasRole('student') && $term->course->students()->where('users.id', $user->id)->exists()) {
             return true;
         }
         return false;
