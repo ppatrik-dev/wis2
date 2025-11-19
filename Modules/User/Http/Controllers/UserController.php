@@ -18,6 +18,7 @@ class UserController extends Controller {
     public function __construct(RoleService $roleService) {
         $this->roleService = $roleService;
     }
+    
     /**
      * Display a listing of the resource.
      */
@@ -25,23 +26,21 @@ class UserController extends Controller {
         $this->authorize('viewAny', User::class);
         $roles = $this->roleService->getAllRoles();
 
-        $query = $request['query'];
+        $perPage = 6;
+        $query = $request->input('query', '');
+        $role  = $request->input('role', null);
 
-        $users = User::query()
+        $usersQuery = User::query()
             ->where('first_name', 'like', "%{$query}%")
             ->orWhere('last_name', 'like', "%{$query}%")
-            ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%{$query}%"])
-            ->paginate(10);
+            ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%{$query}%"]);
 
-        $role = $request['role'];
-        
+        $users = $usersQuery->paginate($perPage);
+
         if (!empty($role)) {
-            $users = $users->filter(function ($user) use ($role) {
-                return $user->hasRole($role);
-            });
+            $filteredUsers = $users->getCollection()->filter(fn($user) => $user->hasRole($role))->values();
+            $users->setCollection($filteredUsers);
         }
-
-        $users = $users->values();
 
         return view('user::index',
             ["users" => $users, "roles" => $roles, "query" => $query, "selectedRole" => $role]

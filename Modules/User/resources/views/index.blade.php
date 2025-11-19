@@ -12,7 +12,7 @@
             @endrole
         </x-slot:actions>
     </x-header>
-    <div class="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-2">
+    <div class="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between my-2">
         <form method="GET" action="{{ route('user.index') }}"
                 class="w-full flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-3.5">
             <div class="flex items-center gap-2">
