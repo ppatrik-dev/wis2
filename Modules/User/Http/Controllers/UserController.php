@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Log;
 use Modules\User\Services\RoleService;
 use Illuminate\Validation\Rule;
 
+use function PHPUnit\Framework\isEmpty;
+
 class UserController extends Controller {
 
     protected $roleService;
@@ -19,11 +21,31 @@ class UserController extends Controller {
     /**
      * Display a listing of the resource.
      */
-    public function index() {
+    public function index(Request $request) {
         $this->authorize('viewAny', User::class);
         $roles = $this->roleService->getAllRoles();
-        $users = User::orderBy('created_at', 'desc')->paginate(10);
-        return view('user::index', ["users" => $users, "roles" => $roles]);
+
+        $query = $request['query'];
+
+        $users = User::query()
+            ->where('first_name', 'like', "%{$query}%")
+            ->orWhere('last_name', 'like', "%{$query}%")
+            ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%{$query}%"])
+            ->paginate(10);
+
+        $role = $request['role'];
+        
+        if (!empty($role)) {
+            $users = $users->filter(function ($user) use ($role) {
+                return $user->hasRole($role);
+            });
+        }
+
+        $users = $users->values();
+
+        return view('user::index',
+            ["users" => $users, "roles" => $roles, "query" => $query, "selectedRole" => $role]
+        );
     }
 
     /**
