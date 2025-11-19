@@ -90,7 +90,7 @@
                         <form action="{{ route('term.student.unregister', $term) }}" method="POST" class="inline">
                             @csrf
                             <button type="submit"
-                                    class="w-20 text-left text-red-600 bg-transparent border-none hover:cursor-pointer">
+                                    class="w-20 text-left text-red-600 underline bg-transparent border-none hover:cursor-pointer">
                                 Unregister
                             </button>
                         </form>
@@ -98,7 +98,7 @@
                         <form action="{{ route('term.student.register', $term) }}" method="POST" class="inline">
                             @csrf
                             <button type="submit"
-                                    class="w-20 text-left text-blue-600 bg-transparent border-none hover:cursor-pointer">
+                                    class="w-20 text-left text-blue-600 underline bg-transparent border-none hover:cursor-pointer">
                                 Register
                             </button>
                         </form>
