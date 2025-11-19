@@ -97,12 +97,9 @@ class MyCourseController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit($id): View {
-        // Only admin can edit courses
-        if (!auth()->check() || !auth()->user()->hasRole('admin')) {
-            abort(403, 'Unauthorized');
-        }
-
         $course = $this->courseService->getById((int) $id);
+        $this->authorize('course.update', $course);
+
         $users = User::select('id', 'first_name', 'last_name')
             ->orderBy('first_name')
             ->get()
@@ -115,16 +112,20 @@ class MyCourseController extends Controller {
      * Update the specified resource in storage.
      */
     public function update(UpdateCourseRequest $request, $id) {
-        // Only admin can update courses
-        if (!auth()->check() || !auth()->user()->hasRole('admin')) {
-            abort(403, 'Unauthorized');
-        }
+        $oldCourse = $this->courseService->getById((int) $id);
+        $this->authorize('course.update', $oldCourse);
 
         try {
-            // Load the previous state to detect approval transition
-            $oldCourse = $this->courseService->getById((int) $id);
+            $data = $request->validated();
+            $user = auth()->user();
 
-            $course = $this->courseService->update((int) $id, $request->validated());
+            // Only admin can change is_approved and guarantor_id
+            if (!$user->hasRole('admin')) {
+                unset($data['is_approved']);
+                unset($data['guarantor_id']);
+            }
+
+            $course = $this->courseService->update((int) $id, $data);
 
             // If course transitioned from unapproved to approved, promote guarantor to role 'guarantor' (unless already admin/guarantor)
             if (!$oldCourse->is_approved && $course->is_approved && $course->guarantor_id) {
