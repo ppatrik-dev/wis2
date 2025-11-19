@@ -1,5 +1,5 @@
 <x-term::layouts.master>
-    <x-header headline="Edit Student Term">
+    <x-header headline="Student Term Score">
         <x-slot:actions>
             <x-button type="submit" form="termStudentForm" rounded="rounded-s-lg" variant="primary">
                 <svg class="w-4 h-3 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 20 20">

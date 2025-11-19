@@ -13,6 +13,9 @@
                     Type
                 </th>
                 <th scope="col" class="px-6 py-3">
+                    Your score
+                </th>
+                <th scope="col" class="px-6 py-3">
                     Max score
                 </th>
                 <th scope="col" class="px-6 py-3">
@@ -35,6 +38,10 @@
         <tbody>
             @foreach($terms as $term)
             @can('term.view', $term)
+                @php
+                    $pivot = $term->termStudents()->where('student_id', Auth::id())->first();
+                @endphp
+
                 <tr class="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
                     <td class="px-6 py-3 text-base font-semibold text-gray-900 whitespace-nowrap dark:text-white">
                         <a href="{{ route('term.show', $term->id) }}">
@@ -46,6 +53,9 @@
                     </td>
                     <td class="px-6 py-3">
                         {{ ucfirst($term->type) }}
+                    </td>
+                    <td class="px-6 py-3">
+                        {{ $pivot->score ?? '-' }}
                     </td>
                     <td class="px-6 py-3">
                         {{ $term->max_score }}
@@ -72,22 +82,26 @@
                     </td>
                     <td class="inline-flex gap-3 py-3 pl-1">
                         @can('register', $term)
-                        @if ($term->termStudents()->where('student_id', Auth::user()->id)->exists())
-                        <form action="{{ route('term.student.unregister', $term) }}" method="POST" class="inline">
-                            @csrf
-                            <button type="submit"
-                                    class="w-20 text-left text-red-600 underline bg-transparent border-none hover:cursor-pointer">
-                                Unregister
-                            </button>
-                        </form>
+                        @if ($pivot)
+                            @if(isset($pivot->score))
+                                <span>Evaluated</span>
+                            @else
+                                <form action="{{ route('term.student.unregister', $term) }}" method="POST" class="inline">
+                                    @csrf
+                                    <button type="submit"
+                                            class="w-20 text-left text-red-600 underline bg-transparent border-none hover:cursor-pointer">
+                                        Unregister
+                                    </button>
+                                </form>
+                            @endif
                         @else
-                        <form action="{{ route('term.student.register', $term) }}" method="POST" class="inline">
-                            @csrf
-                            <button type="submit"
-                                    class="w-20 text-left text-blue-600 underline bg-transparent border-none hover:cursor-pointer">
-                                Register
-                            </button>
-                        </form>
+                            <form action="{{ route('term.student.register', $term) }}" method="POST" class="inline">
+                                @csrf
+                                <button type="submit"
+                                        class="w-20 text-left text-blue-600 underline bg-transparent border-none hover:cursor-pointer">
+                                    Register
+                                </button>
+                            </form>
                         @endif
                         @endcan
                         @can('term.update', $term)
@@ -224,7 +238,6 @@
         </thead>
         <tbody>
             @foreach($students as $student)
-           {{-- <?php dd($student->student)?> --}}
                 <tr class="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
                     <td class="px-6 py-3 text-base font-semibold text-gray-900 whitespace-nowrap dark:text-white">
                         <a href="{{ route('term.student.show', [$term, $student->student_id]) }}">
@@ -235,10 +248,10 @@
                         {{ $student->score ?? 'Not assigned'}}
                     </td>
                     <td class="px-6 py-3">
-                        {{ $student->student->registred_at}}
+                        {{ $student->created_at}}
                     </td>
                     <td class="px-6 py-3">
-                        {{ $student->student->modified_at}}
+                        {{ $student->updated_at}}
                     </td>
                     <td class="px-6 py-3">
                         <div class="inline-flex gap-3">
