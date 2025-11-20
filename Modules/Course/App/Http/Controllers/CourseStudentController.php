@@ -102,6 +102,9 @@ class CourseStudentController extends Controller
 
     public function edit(int $courseId, int $studentId)
     {
+        $course = Course::findOrFail($courseId);
+        $this->authorize('course-student.update', $course);
+        
         $courseStudent = $this->courseStudentService->getById($courseId, $studentId);
         return view('course::course_student.edit', compact('courseStudent', 'courseId', 'studentId'));
     }
@@ -126,12 +129,11 @@ class CourseStudentController extends Controller
 
         $user = auth()->user();
         $course = Course::findOrFail($courseId);
-        $isLecturerForCourse = $course->lecturers()->where('lecturer_id', $user->id)->exists();
+        
+        // Authorize using policy
+        $this->authorize('course-student.update', $course);
 
-        if (!($user->hasAnyRole(['admin', 'guarantor']) || $isLecturerForCourse)) {
-            abort(403, 'Unauthorized');
-        }
-
+        // Lecturers can only update grades, not approval status
         if ($user->hasRole('lecturer') && !$user->hasAnyRole(['admin', 'guarantor'])) {
             unset($validated['is_approved']);
         }
