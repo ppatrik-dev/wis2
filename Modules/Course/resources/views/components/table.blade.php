@@ -1,4 +1,4 @@
-<div class="relative overflow-x-auto overflow-y-visible min-h-[300px]">
+<div class="overflow-x-auto overflow-y-visible">
     <table class="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -163,7 +163,7 @@
                         </tr>
                     @endforeach
                     @auth
-                        <div class="flex justify-end p-4">
+                        <div class="absolute right-15 top-24.5">
                             <button id="update-registrations-btn" type="submit"
                                 formaction="{{ route('course.student.update-registrations') }}"
                                 class="px-4 py-2 text-sm font-medium text-white transition-colors bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-indigo-600"
