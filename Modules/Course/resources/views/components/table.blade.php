@@ -115,14 +115,7 @@
                                         </a>
                                     @endcan
                                     {{-- Students/Lecturers management: only for admin/guarantor --}}
-                                    @php
-                                        $canViewStudents = auth()->user()->hasRole('admin')
-                                            || (auth()->user()->hasRole('guarantor') && $course->guarantor_id === auth()->id())
-                                            || (auth()->user()->hasRole('lecturer') && $course->lecturers()->where('lecturer_id', auth()->id())->exists());
-                                        $canViewLecturers = auth()->user()->hasRole('admin')
-                                            || (auth()->user()->hasRole('guarantor') && $course->guarantor_id === auth()->id());
-                                    @endphp
-                                    @if($canViewStudents)
+                                    @can('course.viewStudents',$course)
                                         <a href="{{ route('course.student.index', $course->id) }}"
                                             class="font-medium text-blue-600 ms-3 dark:text-blue-500 hover:underline" title="Students">
                                             <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -130,8 +123,8 @@
                                                 <path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm-9 9a9 9 0 0 1 18 0v1H3Z" />
                                             </svg>
                                         </a>
-                                    @endif
-                                    @if($canViewLecturers)
+                                    @endcan
+                                    @can('course.viewLecturers',$course)
                                         <a href="{{ route('course.lecturer.index', $course->id) }}"
                                             class="font-medium text-blue-600 ms-3 dark:text-blue-500 hover:underline" title="Lecturers">
                                             <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -140,16 +133,9 @@
                                                     d="M7 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm10-2h2a2 2 0 0 1 2 2v10h-2V12h-2v10h-2V12a2 2 0 0 1 2-2Z" />
                                             </svg>
                                         </a>
-                                    @endif
-                                    @php
-                                        $user = auth()->user();
-                                        $isEnrolled = isset($course->students) && $course->students->contains('id', $user->id) && $course->isStudentApproved($user);
-                                        $isGuarantor = $user->hasRole('guarantor') && $course->guarantor_id === $user->id;
-                                        $isLecturer = $user->hasRole('lecturer') && $course->lecturers()->where('lecturer_id', $user->id)->exists();
-                                        $canViewNews = $isEnrolled || $isGuarantor || $isLecturer || $user->hasRole('admin');
-                                    @endphp
+                                    @endcan
                                     {{-- News icon: show if enrolled, is guarantor, is lecturer, or is admin --}}
-                                    @if($canViewNews)
+                                    @can('course.viewNews',$course)
                                         <a href="{{ route('course.news.index', $course->id) }}"
                                             class="font-medium text-blue-600 dark:text-blue-500 hover:underline" title="View News">
                                             <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -157,7 +143,7 @@
                                                 <path d="M4 5h16v2H4V5Zm0 4h16v2H4V9Zm0 4h16v2H4v-2Zm0 4h10v2H4v-2Z" />
                                             </svg>
                                         </a>
-                                    @endif
+                                    @endcan
                                 @endauth
                             </td>
                         </tr>

@@ -28,6 +28,22 @@ class CoursePolicy {
     }
     public function register(User $user, Course $course) {
         return ($user->hasRole('admin')
+            || ($user->hasRole('guarantor') && $course->guarantor_id === $user->id)
+            || ($user->hasRole('lecturer') && $course->lecturers()->where('lecturer_id', $user->id)->exists()));
+    }
+    public function viewStudents(User $user, Course $course) {
+        return ($user->hasRole('admin')
+            || ($user->hasRole('guarantor') && $course->guarantor_id === $user->id)
+            || ($user->hasRole('lecturer') && $course->lecturers()->where('lecturer_id', $user->id)->exists()));
+    }
+    public function viewLecturers(User $user, Course $course) {
+        return ($user->hasRole('admin')
             || ($user->hasRole('guarantor') && $course->guarantor_id === $user->id));
+    }
+    public function viewNews(User $user, Course $course) {
+        $isEnrolled = isset($course->students) && $course->students->contains('id', $user->id) && $course->isStudentApproved($user);
+        $isGuarantor = $user->hasRole('guarantor') && $course->guarantor_id === $user->id;
+        $isLecturer = $user->hasRole('lecturer') && $course->lecturers()->where('lecturer_id', $user->id)->exists();
+        return $isEnrolled || $isGuarantor || $isLecturer || $user->hasRole('admin');
     }
 }
