@@ -143,7 +143,7 @@
                                     @endif
                                     @php
                                         $user = auth()->user();
-                                        $isEnrolled = isset($course->students) && $course->students->contains('id', $user->id);
+                                        $isEnrolled = isset($course->students) && $course->students->contains('id', $user->id) && $course->isStudentApproved($user);
                                         $isGuarantor = $user->hasRole('guarantor') && $course->guarantor_id === $user->id;
                                         $isLecturer = $user->hasRole('lecturer') && $course->lecturers()->where('lecturer_id', $user->id)->exists();
                                         $canViewNews = $isEnrolled || $isGuarantor || $isLecturer || $user->hasRole('admin');
@@ -193,7 +193,7 @@
                         </td>
                         <td class="inline-flex px-6 py-3">
                             @auth
-                                @if(!auth()->user()->hasRole('student') && auth()->user()->hasAnyRole(['admin', 'guarantor', 'lecturer']))
+                               @can('course-student.update',$course)
                                     <a href="{{ route('course.student.edit', [$courseId, $student->id]) }}"
                                         class="font-medium text-blue-600 dark:text-blue-500 hover:underline" title="Edit">
                                         <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -241,18 +241,14 @@
                         </td>
                         <td class="inline-flex px-6 py-3">
                             @auth
-                                @php
-                                    $course = \Modules\Course\Models\Course::find($courseId);
-                                    $user = auth()->user();
-                                @endphp
-                                @if(!$user->hasRole('student') && ($user->hasRole('admin') || ($course && $course->guarantor_id === $user->id)))
+                               @can('course-lecturer.delete',$course)
                                     <form method="POST" action="{{ route('course.lecturer.destroy', [$courseId, $lecturer->id]) }}"
                                         onsubmit="return confirm('Are you sure you want to remove this lecturer from the course?');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="text-red-600 hover:underline">Remove</button>
                                     </form>
-                                @endif
+                                @endcan
                             @endauth
                         </td>
                     </tr>
@@ -305,9 +301,6 @@
                     @foreach($myCourses as $course)
                         @php
                          $score = $course->pivot->final_score ?? 0;
-                            // $score = $course->terms
-                            //     ->where('student_id', auth()->id())
-                            //     ->sum('pivot.score');
                                 switch(true) {
                                 case $score >= 90:
                                     $grade = 'A';

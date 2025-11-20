@@ -2,11 +2,7 @@
     <x-header headline="Lecturer Details">
         <x-slot:actions>
             @auth
-                @php 
-                    $course = \Modules\Course\Models\Course::find($courseId);
-                    $user = auth()->user();
-                @endphp
-                @if(!$user->hasRole('student') && ($user->hasRole('admin') || ($course && $course->guarantor_id === $user->id)))
+               @can('course-lecturer.delete',$course)
                     <x-button form="lecturerDeleteForm" type="submit" variant="danger">
                         <svg class="w-3 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                             fill="currentColor" viewBox="0 0 20 20">
@@ -16,7 +12,7 @@
                         </svg>
                         Remove
                     </x-button>
-                @endif
+                    @endcan
             @endauth
             <x-button href="{{ route('course.lecturer.index', $courseId) }}" rounded="rounded-e-lg">
                 <svg class="w-3 h-3 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20"

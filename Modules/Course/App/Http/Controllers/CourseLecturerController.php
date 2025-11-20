@@ -21,7 +21,8 @@ class CourseLecturerController extends Controller {
      */
     public function index(Request $request, int $courseId) {
         $courseLecturers = $this->courseLecturerService->getByCourse($courseId);
-        return view('course::course_lecturer.index', compact('courseLecturers', 'courseId'));
+        $course = Course::find($courseId);
+        return view('course::course_lecturer.index', compact('courseLecturers', 'courseId', 'course'));
     }
 
     /**
@@ -94,7 +95,8 @@ class CourseLecturerController extends Controller {
      */
     public function show(int $courseId, int $lecturerId) {
         $courseLecturer = $this->courseLecturerService->getByCourseAndLecturer($courseId, $lecturerId);
-        return view('course::course_lecturer.show', compact('courseLecturer', 'courseId', 'lecturerId'));
+        $course = Course::find($courseId);
+        return view('course::course_lecturer.show', compact('courseLecturer', 'courseId', 'lecturerId', 'course'));
     }
 
     /**

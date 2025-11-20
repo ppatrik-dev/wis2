@@ -96,6 +96,19 @@ class Course extends Model {
 
         return $this->getApprovedEnrollmentCount() >= $this->capacity;
     }
+    /**
+     *  Check if a student is approved in this course
+     *
+     * @param User $user
+     * @return boolean
+     */
+    public function isStudentApproved(User $user): bool {
+        return $this->students()
+            ->where('student_id', $user->id)
+            ->wherePivot('is_approved', true)
+            ->exists();
+    }
+
 
     // protected static function newFactory(): CourseFactory
     // {

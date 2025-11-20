@@ -2,11 +2,7 @@
     <x-header headline="Course Lecturers">
         <x-slot:actions>
             @auth
-                @php 
-                    $course = \Modules\Course\Models\Course::find($courseId);
-                    $user = auth()->user();
-                @endphp
-                @if(!$user->hasRole('student') && ($user->hasRole('admin') || ($course && $course->guarantor_id === $user->id)))
+               @can('course-lecturer.create',$course)
                     <x-button href="{{ route('course.lecturer.create', $courseId) }}" rounded="rounded-lg">
                         <svg class="w-4 h-3 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                             fill="none" viewBox="0 0 20 20">
@@ -15,11 +11,11 @@
                         </svg>
                         Add Lecturer
                     </x-button>
-                @endif
+                @endcan
             @endauth
         </x-slot:actions>
     </x-header>
 
-    <x-course::table :courseLecturers="$courseLecturers" :courseId="$courseId" />
+    <x-course::table :courseLecturers="$courseLecturers" :courseId="$courseId" :course="$course"/>
 
 </x-course::layouts.master>
