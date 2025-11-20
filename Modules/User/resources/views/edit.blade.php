@@ -13,7 +13,7 @@
                 </svg>
                 Discard
             </x-button>
-            <x-button href="{{ route('user.index') }}" rounded="rounded-e-lg">
+            <x-button href="{{ url()->previous() }}" rounded="rounded-e-lg">
                 <svg class="w-3 h-3 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 20 20">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
                 </svg>

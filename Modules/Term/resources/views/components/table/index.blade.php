@@ -163,9 +163,11 @@
                 <th scope="col" class="px-6 py-3">
                    Location
                 </th>
+                @can('room.update')
                 <th scope="col" class="px-6 py-3 text-right">
                    Actions
                 </th>
+                @endcan
             </tr>
         </thead>
         <tbody>
@@ -182,6 +184,7 @@
                     <td class="px-6 py-3">
                         {{ $room->location }}
                     </td>
+                      @can('room.update')
                     <td class="px-6 py-3 text-right">
                         <div class="inline-flex gap-3">
                             @can('room.update')
@@ -203,6 +206,7 @@
                                     </svg>
                                 </button>
                             </form>
+                            @endcan
                         </div>
                     </td>
                     @endcan
