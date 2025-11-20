@@ -89,7 +89,7 @@ class User extends Authenticatable {
      *
      * @return string|null
      */
-    public function getHighestRole(): ?string {
+    public function getHighestRoleAttribute(): ?string {
         $roleHierarchy = config('user.RolesPermissions.hierarchy');
         $userRoles = $this->getRoleNames();
 

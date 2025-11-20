@@ -33,7 +33,7 @@
             @method('DELETE')
             <x-input label="Name" name="name" value="{{ $user->first_name }}" :disabled="true"></x-input>
             <x-input label="Surname" surname="surname" value="{{ $user->last_name }}" :disabled="true"></x-input>
-            <x-multiselect label="Roles" name="roles" :options="$roles" :selected="$user->getRoleNames()" value="{{ $user->getHighestRole() }}" :disabled="true"></x-multiselect>
+            <x-multiselect label="Roles" name="roles" :options="$roles" :selected="$user->getRoleNames()" value="{{ $user->highest_role }}" :disabled="true"></x-multiselect>
             <x-input label="Degree" name="degree" value="{{ $user->degree }}" :disabled="true"></x-input>
             <x-input label="Email" name="email" value="{{ $user->email }}" :disabled="true"></x-input>
             <x-input label="Bio" name="bio" value="{{ $user->bio }}" input="textarea" :disabled="true" class="row-span-2"></x-input>

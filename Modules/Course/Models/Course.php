@@ -108,10 +108,4 @@ class Course extends Model {
             ->wherePivot('is_approved', true)
             ->exists();
     }
-
-
-    // protected static function newFactory(): CourseFactory
-    // {
-    //     // return CourseFactory::new();
-    // }
 }

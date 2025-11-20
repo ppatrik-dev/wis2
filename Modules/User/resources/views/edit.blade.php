@@ -32,7 +32,7 @@
             <x-input label="Email" name="email" value="{{ $user->email }}" :required="true"></x-input>
              <x-input label="Birth date" name="birth_date" type="date" value="{{ $user->birth_date->format('Y-m-d') }}" :required="true"></x-input>
             @role('admin')
-            <x-multiselect label="Roles" name="roles" default="user" value="{{ $user->getHighestRole() }}" :options="$roles" :selected="$user->getRoleNames()"></x-multiselect>
+            <x-multiselect label="Roles" name="roles" default="user" value="{{ $user->highest_role }}" :options="$roles" :selected="$user->getRoleNames()"></x-multiselect>
             @endrole
 
             <x-input label="Bio" name="bio" value="{{ $user->bio }}" input="textarea" class="row-span-2"></x-input>
