@@ -13,7 +13,7 @@
     <button id="dropdownMenuButton" data-dropdown-toggle="dropdownMenu"  
         class="group relative w-full h-9.5 p-2 flex items-center dark:text-white border border-gray-300 rounded-lg
                 bg-gray-50 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 
-                dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 focus:ring-1"
+                dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 focus:ring-1 hover:cursor-pointer"
         type="button", @disabled($disabled)>
         
         <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-2.5 h-2.5 text-gray-500 dark:text-gray-400 
@@ -41,7 +41,7 @@
 
                 <input id="checkbox-item-{{ $option->name }}" type="checkbox" name="{{ $name }}[]" value="{{ $option->name }}" 
                         class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600
-                         dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                         dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500 hover:cursor-pointer"
                         @checked($checked->contains($option->name)) @disabled($option->name === $default)>
                 <label for="checkbox-item-{{ $option->name }}" class="w-full ms-2 text-sm font-medium text-gray-900 rounded-sm dark:text-gray-300">
                     {{ ucfirst($option->name) }}
