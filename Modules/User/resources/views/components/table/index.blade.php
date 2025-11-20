@@ -92,7 +92,7 @@
         </tbody>
     </table>
 
-    <div class="mt-6">
+    <div class="mt-2">
         {{ $users->links() }}
     </div>
 </div>

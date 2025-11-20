@@ -23,7 +23,7 @@
     </x-header>
     <x-term::profile :room="$room">
         <form id="roomDetailsForm" action="{{ route('room.update', $room->id) }}" method="POST"
-                class="grid w-full grid-cols-3 gap-6 py-10 mx-auto max-w-3/4">
+                class="grid w-full grid-cols-3 gap-6 py-5 mx-auto max-w-3/4">
             @csrf
             @method('PUT')
             <x-input label="Name" name="name" value="{{ $room->name }}" :required="true"></x-input>

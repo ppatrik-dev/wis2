@@ -28,6 +28,11 @@
             <div class="p-8 sm:ml-64">
                 {{ $slot ?? '' }}
             </div>
-        
+ 
+            @if(session('success'))
+                <x-alert type="success" message="{{ session('success') }}" id="success" />
+            @endif
+
+            </div>
         </body>
 </html>

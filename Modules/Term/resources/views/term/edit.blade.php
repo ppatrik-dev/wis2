@@ -22,7 +22,7 @@
         </x-slot:actions>
     </x-header>
         <x-term::profile :term="$term">
-        <form id="termUpdateForm" action="{{ route('term.update', $term->id) }}" method="POST" class="grid w-full grid-cols-3 gap-6 py-10 mx-auto max-w-3/4">
+        <form id="termUpdateForm" action="{{ route('term.update', $term->id) }}" method="POST" class="grid w-full grid-cols-3 gap-6 py-3 mx-auto max-w-3/4">
             @csrf
             @method('PUT')
             <x-input label="Name" name="name" value="{{ ucfirst($term->name) }}" :required="true"></x-input>

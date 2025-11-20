@@ -2,28 +2,40 @@
     'type' => '',
     'message' => '',
     'id' => '',
+    'index' => 0,
 ])
 
 @php
+  $hover = 'hover:cursor-pointer';
+
+  if ($type == "error") {
+    $hover = $hover . ' dark:hover:bg-rose-800';
+  }
+  else {
+    $hover = $hover . ' dark:hover:bg-emerald-800';
+  }
+
   $classes = [
-    "error" => "text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400",
-    "success" => "text-sm text-emerald-800 rounded-lg bg-emerald-50 dark:bg-gray-800 dark:text-emerald-400"
+    "error" => "text-sm text-red-800 rounded-xl bg-red-50 dark:bg-rose-900 dark:text-rose-300",
+    "success" => "text-sm text-emerald-800 rounded-xl bg-emerald-50 dark:bg-emerald-900 dark:text-emerald-300"
   ];
 
   $className = $classes[$type];
+
+  $z = 50 - $index;
+  $y = 40 * $index;
 @endphp
 
-<div id="alert-{{ $id }}" class="flex items-center p-3 mb-4 gap-2 {{ $className }}" role="alert">
+<div id="alert-{{ $id }}" class="fixed bottom-4 right-8 -translate-y-[{{ $y }}px] z-{{ $z }} flex items-center p-3 gap-2 {{ $className }}" role="alert">
   <svg class="shrink-0 inline w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
     <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
   </svg>
   <span class="sr-only">Info</span>
   <span class="font-medium">{{ ucfirst($type) }} alert:&nbsp;</span>{{ $message }}
-  <button type="button" data-dismiss-target="#alert-{{ $id }}" class="ms-auto -mx-1.5 -my-1.5 bg-blue-50 text-blue-500 rounded-lg p-1.5 hover:bg-blue-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-blue-400 dark:hover:bg-gray-700" data-dismiss-target="#alert-1" aria-label="Close">
+  <button type="button" class="ms-auto -mx-1.5 -my-1.5 rounded-xl p-1.5 {{ $hover }} inline-flex items-center justify-center h-8 w-8 shrink-0" data-dismiss-target="#alert-{{ $id }}" aria-label="Close">
     <span class="sr-only">Close</span>
-    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-    </svg>
+      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/></svg>
+  </button>
 </button>
 </div>
 

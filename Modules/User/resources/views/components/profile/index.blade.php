@@ -10,5 +10,16 @@
             <x-avatar width='30' height='30' top='12'></x-avatar>
         @endif
     </div>
+    
+    @if ($errors->any())
+        <div class="p-4 text-red-700 bg-red-100 border border-red-400 rounded">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     {{ $slot ?? '' }}
 </div>
