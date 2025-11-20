@@ -44,9 +44,12 @@ class TermController extends Controller {
             ->paginate(9);
 
         return view('term::term.index', [
-            "terms" => $terms, "query" => $query, 
-            "types" => $types, "type" => $type,
-            "courses" => $courses, "course" => $course
+            "terms" => $terms,
+            "query" => $query,
+            "types" => $types,
+            "type" => $type,
+            "courses" => $courses,
+            "course" => $course
         ]);
     }
 
@@ -63,7 +66,18 @@ class TermController extends Controller {
             $courses = Course::where('guarantor_id', Auth::id())->pluck('name', 'id')->toArray();
         }
 
-        return view('term::term.create', ["users" => $users, "rooms" => $rooms, "courses" => $courses]);
+        $courseModels = Course::with('lecturers')
+            ->whereIn('id', array_keys($courses))
+            ->get();
+
+        $allLecturers = [];
+
+        foreach ($courseModels as $course) {
+            foreach ($course->lecturers as $lecturer) {
+                $allLecturers[$lecturer->id] = $lecturer->full_name;
+            }
+        }
+        return view('term::term.create', ["users" => $allLecturers, "rooms" => $rooms, "courses" => $courses]);
     }
 
     /**
@@ -99,8 +113,6 @@ class TermController extends Controller {
             'registration_required' => $validated['registration_required'],
         ]);
 
-        $user = User::findOrFail(($validated['lecturer']));
-        $user->assignRole('lecturer');
 
         return redirect()->route('term.index')->with('success', 'Term created successfuly!');
     }
@@ -159,9 +171,6 @@ class TermController extends Controller {
             'room_id' => $validated['room'] ?? null,
             'registration_required' => $validated['registration_required'],
         ]);
-
-        $user = User::findOrFail(($validated['lecturer']));
-        $user->assignRole('lecturer');
 
         return redirect()->route('term.index')->with('success', 'Term updated successfully!');
     }
