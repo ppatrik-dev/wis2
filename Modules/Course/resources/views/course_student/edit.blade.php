@@ -41,7 +41,9 @@
 
             @endphp
                         <x-input label="Final Score" name="final_score" type="number" min="0" max="100" value="{{ $courseStudent->final_score }}" :placeholder="$totalScore"></x-input>
-            <x-toggle label="Is Approved" name="is_approved" :checked="$courseStudent->is_approved"/>
+            @if(auth()->check() && (auth()->user()->hasRole('admin') || auth()->user()->hasRole('guarantor')))
+                <x-toggle label="Is Approved" name="is_approved" :checked="$courseStudent->is_approved"/>
+            @endif
         </form>
     </x-course::profile>
 </x-course::layouts.master>
