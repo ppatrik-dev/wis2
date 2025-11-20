@@ -26,15 +26,32 @@
         </div>
     @endforeach
     @foreach($hours as $hour)
-        <div class="p-2 text-lg font-medium text-white border border-gray-400 dark:bg-gray-800">
+        <div class="flex items-center justify-center p-2 text-lg font-medium text-white border border-gray-400 dark:bg-gray-800">
             {{ $hour }}:00
         </div>
         @foreach($weekDays as $day => $termsForDay)
-            <div class="border border-gray-400 p-2 min-h-[50px] dark:bg-gray-800 dark:hover:bg-gray-700 ">
+            <div class="border border-gray-400 p-1 min-h-[55px] dark:bg-gray-800 dark:hover:bg-gray-700 ">
                     @foreach($termsForDay as $term)
                     @php
-                        $startHour = (int) $term->start_at->format('H');
-                        $endHour = (int) $term->end_at->format('H');
+                        $startHour = $term->start_at->hour;
+                        $startMinute = $term->start_at->minute;
+
+                        $endHour = $term->end_at->hour;
+                        $endMinute = $term->end_at->minute;
+
+                        $startInMinutes = $term->start_at->hour * 60 + $term->start_at->minute;
+                        $endInMinutes   = $term->end_at->hour * 60 + $term->end_at->minute;
+
+                        $blockStart = $hour * 60;
+                        $blockEnd = ($hour + 1) * 60;
+
+                        $overlapStart = max($startInMinutes, $blockStart);
+                        $overlapEnd   = min($endInMinutes, $blockEnd);
+
+                        $overlap = max(0, $overlapEnd - $overlapStart);
+
+                        $pxPerMin = 0.9;
+                        $height =  $overlap * $pxPerMin;
 
                         switch($term->type) {
                             case 'lecture':
@@ -44,7 +61,7 @@
                                 $color = 'bg-green-600 text-white';
                                 break;
                             case 'exam':
-                                $color = 'bg-red-600 text-white';
+                                $color = 'bg-red-700 text-white';
                                 break;
                             case 'assignment':
                                 $color = 'bg-yellow-600 text-black';
@@ -54,12 +71,17 @@
                         }
                     @endphp
 
-                    @if($hour >= $startHour && $hour < $endHour)
+                    @if ($endInMinutes > $blockStart && $startInMinutes < $blockEnd)
+                    @if($overlap > 0)
                          <a href="{{ route('term.show', $term->id) }}">
-                        <div class="p-2  bg-blue-500 {{ $color }} rounded-md">
+                        <div class="bg-blue-500 {{ $color }} rounded-md justify-center flex items-center relative group" style="height: {{ $height }}px;">
                             {{ $term->name }}
+                                <div class="absolute z-50 flex items-center justify-center gap-4 p-2 text-sm text-white transition-opacity transform -translate-x-1/2 -translate-y-full bg-gray-800 rounded-md opacity-0 pointer-events-none left-1/2 min-w-max whitespace-nowrap group-hover:opacity-100">
+                                    <span>{{ $term->start_at->format('H:i') }} - {{ $term->end_at->format('H:i') }}</span>
+                                </div>
                         </div>
                          </a>
+                          @endif
                     @endif
 @endforeach
             </div>
