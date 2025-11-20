@@ -74,7 +74,7 @@ class CourseLecturerController extends Controller {
             // After adding lecturer, ensure the user has the 'lecturer' role unless they are admin/guarantor
             $targetUser = User::find($validated['lecturer_id']);
             if ($targetUser) {
-                $highest = $targetUser->getHighestRole();
+                $highest = $targetUser->highest_role;
                 if (!in_array($highest, ['admin', 'guarantor'], true)) {
                     // Replace existing lower roles with only 'lecturer'
                     $targetUser->assignRole(['lecturer']);

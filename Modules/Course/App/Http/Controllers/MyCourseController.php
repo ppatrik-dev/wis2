@@ -69,7 +69,7 @@ class MyCourseController extends Controller {
                 try {
                     $guarantorUser = User::find($course->guarantor_id);
                     if ($guarantorUser) {
-                        $highest = $guarantorUser->getHighestRole();
+                        $highest = $guarantorUser->highest_role;
                         if (!in_array($highest, ['admin', 'guarantor'], true)) {
                             $guarantorUser->syncRoles(['guarantor']);
                         }
@@ -132,7 +132,7 @@ class MyCourseController extends Controller {
                 try {
                     $guarantorUser = User::find($course->guarantor_id);
                     if ($guarantorUser) {
-                        $highest = $guarantorUser->getHighestRole();
+                        $highest = $guarantorUser->highest_role;
                         if (!in_array($highest, ['admin', 'guarantor'], true)) {
                             $guarantorUser->syncRoles(['guarantor']);
                         }
@@ -145,7 +145,7 @@ class MyCourseController extends Controller {
                 try {
                     $guarantorUser = User::find($course->guarantor_id);
                     if ($guarantorUser) {
-                        $highest = $guarantorUser->getHighestRole();
+                        $highest = $guarantorUser->highest_role;
                         if (!in_array($highest, ['admin', 'guarantor'], true)) {
                             $guarantorUser->syncRoles(['guarantor']);
                         }
