@@ -7,21 +7,19 @@ use Illuminate\Http\Request;
 use Modules\Course\App\Services\CourseLecturerService;
 use Modules\User\Models\User;
 use Illuminate\View\View;
+use Modules\Course\Models\Course;
 
-class CourseLecturerController extends Controller
-{
+class CourseLecturerController extends Controller {
     private $courseLecturerService;
 
-    public function __construct(CourseLecturerService $courseLecturerService)
-    {
+    public function __construct(CourseLecturerService $courseLecturerService) {
         $this->courseLecturerService = $courseLecturerService;
     }
 
     /**
      * Display a listing of course lecturers for a specific course
      */
-    public function index(Request $request, int $courseId)
-    {
+    public function index(Request $request, int $courseId) {
         $courseLecturers = $this->courseLecturerService->getByCourse($courseId);
         return view('course::course_lecturer.index', compact('courseLecturers', 'courseId'));
     }
@@ -29,14 +27,13 @@ class CourseLecturerController extends Controller
     /**
      * Show the form for creating a new course lecturer
      */
-    public function create(int $courseId)
-    {
+    public function create(int $courseId) {
         if (!auth()->check()) {
             return redirect()->route('login');
         }
 
         $user = auth()->user();
-        $course = \Modules\Course\Models\Course::findOrFail($courseId);
+        $course = Course::findOrFail($courseId);
 
         // Only admin or the guarantor of the course may add lecturers
         if (!($user->hasRole('admin') || $course->guarantor_id === $user->id)) {
@@ -53,8 +50,7 @@ class CourseLecturerController extends Controller
     /**
      * Store a newly created course lecturer
      */
-    public function store(Request $request, int $courseId)
-    {
+    public function store(Request $request, int $courseId) {
         $validated = $request->validate([
             'lecturer_id' => ['required', 'exists:users,id'],
         ]);
@@ -63,7 +59,7 @@ class CourseLecturerController extends Controller
         }
 
         $user = auth()->user();
-        $course = \Modules\Course\Models\Course::findOrFail($courseId);
+        $course = Course::findOrFail($courseId);
 
         if (!($user->hasRole('admin') || $course->guarantor_id === $user->id)) {
             abort(403, 'Unauthorized');
@@ -80,7 +76,7 @@ class CourseLecturerController extends Controller
                 $highest = $targetUser->getHighestRole();
                 if (!in_array($highest, ['admin', 'guarantor'], true)) {
                     // Replace existing lower roles with only 'lecturer'
-                    $targetUser->syncRoles(['lecturer']);
+                    $targetUser->assignRole(['lecturer']);
                 }
             }
 
@@ -96,8 +92,7 @@ class CourseLecturerController extends Controller
     /**
      * Display the specified course lecturer
      */
-    public function show(int $courseId, int $lecturerId)
-    {
+    public function show(int $courseId, int $lecturerId) {
         $courseLecturer = $this->courseLecturerService->getByCourseAndLecturer($courseId, $lecturerId);
         return view('course::course_lecturer.show', compact('courseLecturer', 'courseId', 'lecturerId'));
     }
@@ -105,8 +100,7 @@ class CourseLecturerController extends Controller
     /**
      * Show the form for editing the specified course lecturer
      */
-    public function edit(int $courseId, int $lecturerId): View
-    {
+    public function edit(int $courseId, int $lecturerId): View {
         $courseLecturer = $this->courseLecturerService->getByCourseAndLecturer($courseId, $lecturerId);
         return view('course::course_lecturer.edit', compact('courseLecturer', 'courseId', 'lecturerId'));
     }
@@ -114,8 +108,7 @@ class CourseLecturerController extends Controller
     /**
      * Update the specified course lecturer
      */
-    public function update(Request $request, int $courseId, int $lecturerId)
-    {
+    public function update(Request $request, int $courseId, int $lecturerId) {
         $validated = $request->validate([
             'role' => ['required', 'string', 'max:50'],
         ]);
@@ -124,7 +117,7 @@ class CourseLecturerController extends Controller
         }
 
         $user = auth()->user();
-        $course = \Modules\Course\Models\Course::findOrFail($courseId);
+        $course = Course::findOrFail($courseId);
 
         if (!($user->hasRole('admin') || $course->guarantor_id === $user->id)) {
             abort(403, 'Unauthorized');
@@ -144,14 +137,13 @@ class CourseLecturerController extends Controller
     /**
      * Remove the specified course lecturer
      */
-    public function destroy(int $courseId, int $id)
-    {
+    public function destroy(int $courseId, int $id) {
         if (!auth()->check()) {
             return redirect()->route('login');
         }
 
         $user = auth()->user();
-        $course = \Modules\Course\Models\Course::findOrFail($courseId);
+        $course = Course::findOrFail($courseId);
 
         if (!($user->hasRole('admin') || $course->guarantor_id === $user->id)) {
             abort(403, 'Unauthorized');
@@ -165,8 +157,7 @@ class CourseLecturerController extends Controller
     /**
      * Get courses by lecturer
      */
-    public function getCoursesByLecturer(Request $request, int $lecturerId)
-    {
+    public function getCoursesByLecturer(Request $request, int $lecturerId) {
         $courses = $this->courseLecturerService->getCoursesByLecturer($lecturerId);
         return view('course::course_lecturer.lecturer_courses', compact('courses', 'lecturerId'));
     }

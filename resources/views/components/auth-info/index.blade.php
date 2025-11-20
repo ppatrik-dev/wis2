@@ -2,7 +2,9 @@
     @auth
         {{-- Avatar + meno --}}
             <div class="flex items-center space-x-3">
+                <div class="shrink-0">
                 <x-avatar width="8" height="8" />
+                </div>
 
                 <div class="text-sm leading-tight dark:text-white">
                     <a href="{{ route('user.show', auth()->id()) }}"

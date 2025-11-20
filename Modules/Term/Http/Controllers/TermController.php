@@ -10,15 +10,44 @@ use Modules\Course\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Gate;
+use Spatie\Permission\Models\Role;
 
 class TermController extends Controller {
     /**
      * Display a listing of the resource.
      */
-    public function index() {
+    public function index(Request $request) {
         $this->authorize('viewAny', Term::class);
-        $terms = Term::orderBy('created_at', 'desc')->paginate(10);
-        return view('term::term.index', ["terms" => $terms]);
+
+        $types = Term::query()
+            ->distinct('type')
+            ->pluck('type')
+            ->sortDesc();
+
+        $courses = Auth::user()->courses->pluck('code');
+
+        $query = $request['query'];
+        $type = $request['type'];
+        $course = $request['course'];
+
+        $terms = Term::query()
+            ->where('name', 'like', "%{$query}%")
+            ->when($type, function ($q, $type) {
+                $q->where('type', $type);
+            })
+            ->when($course, function ($q, $course) {
+                $q->whereHas('course', function ($q2) use ($course) {
+                    $q2->where('code', $course);
+                });
+            })
+            ->paginate(9);
+
+        return view('term::term.index', [
+            "terms" => $terms, "query" => $query, 
+            "types" => $types, "type" => $type,
+            "courses" => $courses, "course" => $course
+        ]);
     }
 
     /**
@@ -28,7 +57,12 @@ class TermController extends Controller {
         $this->authorize('create', Term::class);
         $users = User::all()->mapWithKeys(fn($user) => [$user->id => $user->getFullNameAttribute()])->toArray();
         $rooms = Room::all()->pluck('name', 'id')->toArray();
-        $courses = Course::where('guarantor_id', Auth::id())->pluck('name', 'id')->toArray();
+        if (auth()->user()->hasRole('admin')) {
+            $courses = Course::pluck('name', 'id')->toArray();
+        } else {
+            $courses = Course::where('guarantor_id', Auth::id())->pluck('name', 'id')->toArray();
+        }
+
         return view('term::term.create', ["users" => $users, "rooms" => $rooms, "courses" => $courses]);
     }
 

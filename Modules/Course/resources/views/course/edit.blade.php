@@ -65,8 +65,12 @@
                 :required="true"></x-input>
             <x-select label="Type" name="type" :options="['mandatory' => 'Mandatory', 'optional' => 'Optional']"
                 :selected="$course->type" :required="true"></x-select>
-            <x-select label="Guarantor" name="guarantor_id" :options="$users"
-                :selected="$course->guarantor_id"></x-select>
+            @if(auth()->check() && auth()->user()->hasRole('admin'))
+                <x-select label="Guarantor" name="guarantor_id" :options="$users"
+                    :selected="$course->guarantor_id"></x-select>
+            @else
+                <x-input label="Guarantor" name="guarantor" value="{{ $course->guarantor ? $course->guarantor->first_name . ' ' . $course->guarantor->last_name : 'Not assigned' }}" :disabled="true"></x-input>
+            @endif
                 <x-toggle name="auto_enroll_confirm" label="Auto Enroll Confirm" :checked="$course->auto_enroll_confirm"/>
                 @if(auth()->check() && auth()->user()->hasRole('admin'))
                     <x-toggle name="is_approved" label="Is Approved" :checked="$course->is_approved"/>

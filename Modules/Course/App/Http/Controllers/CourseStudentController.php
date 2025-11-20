@@ -340,10 +340,10 @@ class CourseStudentController extends Controller
 
         try {
             $course = Course::findOrFail($courseId);
-            
+
             try {
                 $courseStudent = $this->courseStudentService->addStudent($courseId, $user->id, []);
-                
+
                 if ($courseStudent->is_approved) {
                     $enrolledMessage = 'You have been registered and automatically approved for this course.';
                 } else {
@@ -411,11 +411,13 @@ class CourseStudentController extends Controller
         $messages = [];
 
         foreach ($validated['course_ids'] as $courseId) {
+            $course = Course::find($courseId);
+            $courseName = $course ? $course->name : "Course #{$courseId}";
             try {
                 $this->courseStudentService->addStudent($courseId, $user->id, []);
-                $messages[] = "Registered for course #{$courseId}";
+                $messages[] = "Registered for course '{$courseName}'";
             } catch (\Exception $e) {
-                $messages[] = "Course #{$courseId}: " . $e->getMessage();
+                $messages[] = "{$courseName}: " . $e->getMessage();
             }
         }
 
@@ -443,11 +445,13 @@ class CourseStudentController extends Controller
         $messages = [];
 
         foreach ($validated['course_ids'] as $courseId) {
+            $course = Course::find($courseId);
+            $courseName = $course ? $course->name : "Course #{$courseId}";
             try {
                 $removed = $this->courseStudentService->removeStudent($courseId, $user->id);
-                $messages[] = $removed ? "Unregistered from course #{$courseId}" : "Not registered for course #{$courseId}";
+                $messages[] = $removed ? "Unregistered from course '{$courseName}'" : "Not registered for course '{$courseName}'";
             } catch (\Exception $e) {
-                $messages[] = "Course #{$courseId}: " . $e->getMessage();
+                $messages[] = "{$courseName}: " . $e->getMessage();
             }
         }
 
@@ -497,33 +501,37 @@ class CourseStudentController extends Controller
         $messages = [];
 
         foreach ($toRegister as $courseId) {
+            // Resolve course name for messaging
+            $course = Course::find($courseId);
+            $courseName = $course ? $course->name : "Course {$courseId}";
+
             try {
-                $course = Course::findOrFail($courseId);
-                
                 // Allow registration even if full - it will go to pending status
                 $courseStudent = $this->courseStudentService->addStudent($courseId, $user->id, []);
-                
+
                 if ($courseStudent->is_approved) {
-                    $messages[] = "Registered and approved for course '{$course->name}'";
+                    $messages[] = "Registered and approved for course {$courseName}";
                 } else {
-                    if ($course->isFull()) {
-                        $messages[] = "Course '{$course->name}' is full. Registered (pending guarantor approval)";
+                    if ($course && method_exists($course, 'isFull') && $course->isFull()) {
+                        $messages[] = "Course {$courseName} is full. Registered (pending guarantor approval)";
                     } else {
-                        $messages[] = "Registered for course '{$course->name}' (pending approval)";
+                        $messages[] = "Registered for course {$courseName} (pending approval)";
                     }
                 }
             } catch (\Exception $e) {
-                $courseName = Course::find($courseId)->name ?? "Course #{$courseId}";
                 $messages[] = "{$courseName}: " . $e->getMessage();
             }
         }
 
         foreach ($toUnregister as $courseId) {
+            $course = Course::find($courseId);
+            $courseName = $course ? $course->name : "Course #{$courseId}";
+
             try {
                 $removed = $this->courseStudentService->removeStudent($courseId, $user->id);
-                $messages[] = $removed ? "Unregistered from course #{$courseId}" : "Not registered for course #{$courseId}";
+                $messages[] = $removed ? "Unregistered from course {$courseName}" : "Not registered for course {$courseName}";
             } catch (\Exception $e) {
-                $messages[] = "Course #{$courseId}: " . $e->getMessage();
+                $messages[] = "Course {$courseName}: " . $e->getMessage();
             }
         }
 

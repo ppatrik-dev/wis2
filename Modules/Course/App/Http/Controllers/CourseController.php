@@ -11,12 +11,10 @@ use Modules\User\Models\User;
 use Illuminate\View\View;
 
 
-class CourseController extends Controller
-{
+class CourseController extends Controller {
 
     protected $courseService;
-    public function __construct(CourseService $courseService)
-    {
+    public function __construct(CourseService $courseService) {
         $this->courseService = $courseService;
     }
 
@@ -24,8 +22,7 @@ class CourseController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
-    {
+    public function index(Request $request) {
         $query = $request->get('q', '');
         $user = auth()->user();
         $isAdmin = $user && $user->hasRole('admin');
@@ -55,8 +52,7 @@ class CourseController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): View
-    {
+    public function create(): View {
         $this->authorize('course.create');
 
         $users = User::select('id', 'first_name', 'last_name')
@@ -70,8 +66,7 @@ class CourseController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCourseRequest $request)
-    {
+    public function store(StoreCourseRequest $request) {
         $this->authorize('course.create');
 
         try {
@@ -81,16 +76,12 @@ class CourseController extends Controller
             // Only admin can create approved courses. All others create unapproved courses.
             if (!$user->hasRole('admin')) {
                 $data['is_approved'] = false;
-            }
-
-            // If guarantor creates the course, set guarantor_id to current user
-            if ($user->hasRole('guarantor') && !$user->hasRole('admin')) {
                 $data['guarantor_id'] = auth()->id();
             }
 
             $course = $this->courseService->create($data);
 
-            // If the course is approved on creation (admin action) and a guarantor is set,
+            // If the course is approved on creation and a guarantor is set,
             // promote the guarantor user to 'guarantor' role unless they already have admin/guarantor.
             if ($course->is_approved && $course->guarantor_id) {
                 try {
@@ -98,7 +89,7 @@ class CourseController extends Controller
                     if ($guarantorUser) {
                         $highest = $guarantorUser->getHighestRole();
                         if (!in_array($highest, ['admin', 'guarantor'], true)) {
-                            $guarantorUser->syncRoles(['guarantor']);
+                            $guarantorUser->assignRole(['guarantor']);
                         }
                     }
                 } catch (\Exception $e) {
@@ -115,8 +106,7 @@ class CourseController extends Controller
     /**
      * Show the specified resource.
      */
-    public function show($id)
-    {
+    public function show($id) {
         $course = $this->courseService->getById((int) $id);
         return view('course::course.show', compact('course'));
     }
@@ -124,14 +114,10 @@ class CourseController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id): View
-    {
-        // Only admin can edit courses
-        if (!auth()->check() || !auth()->user()->hasRole('admin')) {
-            abort(403, 'Unauthorized');
-        }
-
+    public function edit($id): View {
         $course = $this->courseService->getById((int) $id);
+        $this->authorize('course.update', $course);
+
         $users = User::select('id', 'first_name', 'last_name')
             ->orderBy('first_name')
             ->get()
@@ -143,18 +129,21 @@ class CourseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCourseRequest $request, $id)
-    {
-        // Only admin can update courses
-        if (!auth()->check() || !auth()->user()->hasRole('admin')) {
-            abort(403, 'Unauthorized');
-        }
+    public function update(UpdateCourseRequest $request, $id) {
+        $oldCourse = $this->courseService->getById((int) $id);
+        $this->authorize('course.update', $oldCourse);
 
         try {
-            // Load the previous state to detect approval transition
-            $oldCourse = $this->courseService->getById((int) $id);
+            $data = $request->validated();
+            $user = auth()->user();
 
-            $course = $this->courseService->update((int) $id, $request->validated());
+            // Only admin can change is_approved and guarantor_id
+            if (!$user->hasRole('admin')) {
+                unset($data['is_approved']);
+                unset($data['guarantor_id']);
+            }
+
+            $course = $this->courseService->update((int) $id, $data);
 
             // If course transitioned from unapproved to approved, promote guarantor to role 'guarantor' (unless already admin/guarantor)
             if (!$oldCourse->is_approved && $course->is_approved && $course->guarantor_id) {
@@ -163,7 +152,7 @@ class CourseController extends Controller
                     if ($guarantorUser) {
                         $highest = $guarantorUser->getHighestRole();
                         if (!in_array($highest, ['admin', 'guarantor'], true)) {
-                            $guarantorUser->syncRoles(['guarantor']);
+                            $guarantorUser->assignRole(['guarantor']);
                         }
                     }
                 } catch (\Exception $e) {
@@ -176,7 +165,7 @@ class CourseController extends Controller
                     if ($guarantorUser) {
                         $highest = $guarantorUser->getHighestRole();
                         if (!in_array($highest, ['admin', 'guarantor'], true)) {
-                            $guarantorUser->syncRoles(['guarantor']);
+                            $guarantorUser->assignRole(['guarantor']);
                         }
                     }
                 } catch (\Exception $e) {
@@ -194,8 +183,7 @@ class CourseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         // Only admin can delete courses
         if (!auth()->check() || !auth()->user()->hasRole('admin')) {
             abort(403, 'Unauthorized');
@@ -209,8 +197,7 @@ class CourseController extends Controller
     /**
      * Approve a course (admin only).
      */
-    public function approve($id)
-    {
+    public function approve($id) {
         if (!auth()->check() || !auth()->user()->hasRole('admin')) {
             abort(403, 'Unauthorized');
         }
@@ -224,4 +211,3 @@ class CourseController extends Controller
         }
     }
 }
-

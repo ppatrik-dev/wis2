@@ -84,7 +84,7 @@ class UserController extends Controller {
     public function show($id) {
         $roles = $this->roleService->getAllRoles();
         $user = User::findOrFail($id);
-        // $this->authorize('view', $user);
+        $this->authorize('view', $user);
         return view('user::show', ["user" => $user, "roles" => $roles]);
     }
 
