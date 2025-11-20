@@ -88,6 +88,7 @@
                                 @auth
                                     {{-- Send list of visible courses and selected ones. Absence of a course in selected_course_ids
                                     means user wants it unregistered. --}}
+                                    @cannot('course.register',$course)
                                     <input type="hidden" name="visible_course_ids[]" value="{{ $course->id }}">
                                     <label class="inline-flex items-center">
                                         <input type="checkbox" name="selected_course_ids[]" value="{{ $course->id }}"
@@ -95,6 +96,7 @@
                                             data-initial="{{ $isEnrolled ? '1' : '0' }}" {{ $isEnrolled ? 'checked' : '' }}>
                                         <span class="text-sm">{{ $isEnrolled ? 'Registered' : 'Register' }}</span>
                                     </label>
+                                       @endcannot
                                 @else
                                     <a href="{{ route('login') }}"
                                         class="px-2 py-1 text-xs font-medium text-white bg-blue-600 rounded">Login to register</a>
@@ -102,23 +104,6 @@
                             </td>
                             <td class="inline-flex px-6 py-3">
                                 @auth
-                                    @php
-                                        $user = auth()->user();
-                                        $isEnrolled = isset($course->students) && $course->students->contains('id', $user->id);
-                                        $isGuarantor = $user->hasRole('guarantor') && $course->guarantor_id === $user->id;
-                                        $isLecturer = $user->hasRole('lecturer') && $course->lecturers()->where('lecturer_id', $user->id)->exists();
-                                        $canViewNews = $isEnrolled || $isGuarantor || $isLecturer || $user->hasRole('admin');
-                                    @endphp
-                                    {{-- News icon: show if enrolled, is guarantor, is lecturer, or is admin --}}
-                                    @if($canViewNews)
-                                        <a href="{{ route('course.news.index', $course->id) }}"
-                                            class="font-medium text-blue-600 dark:text-blue-500 hover:underline" title="View News">
-                                            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                                                height="24" fill="currentColor" viewBox="0 0 24 24">
-                                                <path d="M4 5h16v2H4V5Zm0 4h16v2H4V9Zm0 4h16v2H4v-2Zm0 4h10v2H4v-2Z" />
-                                            </svg>
-                                        </a>
-                                    @endif
                                     {{-- Admin actions: only show if user can update course (policy check) --}}
                                     @can('course.update', $course)
                                         <a href="{{ route('course.edit', $course->id) }}"
@@ -153,6 +138,23 @@
                                                 height="24" fill="currentColor" viewBox="0 0 24 24">
                                                 <path
                                                     d="M7 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm10-2h2a2 2 0 0 1 2 2v10h-2V12h-2v10h-2V12a2 2 0 0 1 2-2Z" />
+                                            </svg>
+                                        </a>
+                                    @endif
+                                    @php
+                                        $user = auth()->user();
+                                        $isEnrolled = isset($course->students) && $course->students->contains('id', $user->id);
+                                        $isGuarantor = $user->hasRole('guarantor') && $course->guarantor_id === $user->id;
+                                        $isLecturer = $user->hasRole('lecturer') && $course->lecturers()->where('lecturer_id', $user->id)->exists();
+                                        $canViewNews = $isEnrolled || $isGuarantor || $isLecturer || $user->hasRole('admin');
+                                    @endphp
+                                    {{-- News icon: show if enrolled, is guarantor, is lecturer, or is admin --}}
+                                    @if($canViewNews)
+                                        <a href="{{ route('course.news.index', $course->id) }}"
+                                            class="font-medium text-blue-600 dark:text-blue-500 hover:underline" title="View News">
+                                            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                                height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M4 5h16v2H4V5Zm0 4h16v2H4V9Zm0 4h16v2H4v-2Zm0 4h10v2H4v-2Z" />
                                             </svg>
                                         </a>
                                     @endif

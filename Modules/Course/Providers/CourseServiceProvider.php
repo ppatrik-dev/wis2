@@ -46,6 +46,7 @@ class CourseServiceProvider extends ServiceProvider {
             Gate::policy($model, $policy);
         }
         Gate::resource('course', CoursePolicy::class);
+        Gate::define('course.register', [CoursePolicy::class, 'register']);
         Gate::resource('course-student', CourseStudentPolicy::class);
         Gate::resource('course-lecturer', CourseLecturerPolicy::class);
         Gate::resource('course-news', CourseNewsPolicy::class);
