@@ -22,8 +22,7 @@ class CourseStudentPolicy {
     }
     public function update(User $user, Course $course) {
         return $user->hasRole('admin')
-            || ($user->hasRole('guarantor') && $course->guarantor_id === $user->id)
-            || ($user->hasRole('lecturer') && $course->lecturers()->where('lecturer_id', $user->id)->exists());
+            || ($user->hasRole('guarantor') && $course->guarantor_id === $user->id);
     }
     public function delete(User $user, Course $course) {
         return $user->hasRole('admin')
