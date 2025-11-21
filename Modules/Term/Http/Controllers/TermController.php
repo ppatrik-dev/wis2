@@ -43,7 +43,6 @@ class TermController extends Controller {
 
             $courses = $guarantorCourses->merge($lecturerCourses)->merge($studentCourses)
                 ->unique('id')->pluck('code');
-            dd($courses);
         }
 
         $query = $request['query'];
