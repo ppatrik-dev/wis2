@@ -1,4 +1,4 @@
-<div class="relative overflow-x-auto overflow-y-visible min-h-[300px]">
+<div class="overflow-x-auto overflow-y-visible">
     @isset($terms)
     <table class="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -145,7 +145,7 @@
             @endforeach
         </tbody>
     </table>
-    <div class="mt-4">
+    <div class="mt-2">
     {{ $terms->links() }}
     </div>
     @endisset
@@ -212,9 +212,10 @@
                     @endcan
                 </tr>
             @endforeach
+            
         </tbody>
     </table>
-       <div class="mt-4">
+       <div class="mt-2">
     {{ $rooms->links() }}
     </div>
     @endisset

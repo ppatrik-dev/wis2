@@ -41,7 +41,7 @@ class TermController extends Controller {
                     $q2->where('code', $course);
                 });
             })
-            ->paginate(9);
+            ->paginate(10);
 
         return view('term::term.index', [
             "terms" => $terms,

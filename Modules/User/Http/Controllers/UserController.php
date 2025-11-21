@@ -26,7 +26,7 @@ class UserController extends Controller {
         $this->authorize('viewAny', User::class);
         $roles = $this->roleService->getAllRoles();
 
-        $perPage = 6;
+        $perPage = 10;
         $query = $request->input('query', '');
         $role  = $request->input('role', null);
 
