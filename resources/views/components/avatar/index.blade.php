@@ -2,19 +2,21 @@
     'width' => '10',
     'height' => '10',
     'text' => 'sm',
-    'top' => '3',
     'letters' => null,
 ])
 
-<div class="relative inline-flex items-center justify-center w-{{ $width }} h-{{ $height }} overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+<div
+    class="relative inline-flex items-center justify-center overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600"
+    style="width: {{ $width }}px; height: {{ $height }}px;"
+>
     @if ($letters)
         <span class="font-medium text-{{ $text }} text-gray-600 dark:text-gray-300">{{ $letters }}</span>
     @else
-        <div class="relative w-{{ $width }} h-{{ $height }} bg-gray-100 rounded-full dark:bg-gray-600">
-            <svg class="absolute w-{{ $width + 2}} h-{{ $height + 2}} text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd">
-                </path>
+        <div class="relative bg-gray-100 rounded-full dark:bg-gray-600" style="width: {{ $width}}px; height: {{ $height}}px;">
+            <svg class="text-gray-600 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z" clip-rule="evenodd"/>
             </svg>
+
         </div>
     @endif
 </div>
