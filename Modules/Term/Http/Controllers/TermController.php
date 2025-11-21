@@ -31,12 +31,15 @@ class TermController extends Controller {
             $courses = Course::pluck('code')->toArray();
         } else {
             $guarantorCourses = Course::where('guarantor_id', $user->id)->get();
-            $lecturerCourses = Course::whereHas('lecturers', fn($q) =>
-                $q->where('users.id', $user->id)
-            )->get();
-            $studentCourses = Course::whereHas(
-                'students', fn($q) =>$q->where('users.id', $user->id)
-            )->get();
+            $lecturerCourses = Course::whereHas('terms', function ($q) use ($user) {
+                $q->where('lecturer_id', $user->id);
+            })->get();
+
+            $studentCourses = Course::whereHas('terms', function ($termQuery) use ($user) {
+                $termQuery->whereHas('termStudents', function ($tsQuery) use ($user) {
+                    $tsQuery->where('student_id', $user->id);
+                });
+            })->get();
 
             $courses = $guarantorCourses->merge($lecturerCourses)->merge($studentCourses)
                 ->unique('id')->pluck('code');
