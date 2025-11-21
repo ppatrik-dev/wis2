@@ -65,7 +65,7 @@
                         </div>
                     </td>
                        @role('admin')
-                    <td class="inline-flex px-6 py-3">
+                    <td class="inline-flex px-6 py-3 gap-3">
 
                         <a href="{{ route('user.edit', $user->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline" title="Edit">
                             <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -74,7 +74,7 @@
                         </a>
 
 
-                        <form action="{{ route('user.destroy', $user->id) }}" method="POST" class="inline ms-3" title="Delete"
+                        <form action="{{ route('user.destroy', $user->id) }}" method="POST" class="inline" title="Delete"
                             onsubmit="return confirm('Are you sure you want to delete this user?');">
                             @csrf
                             @method('DELETE')
