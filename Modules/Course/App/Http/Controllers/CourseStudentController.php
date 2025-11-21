@@ -343,12 +343,7 @@ class CourseStudentController extends Controller {
                 }
             }
 
-            $highest = $user->highest_role;
-            $higherRoles = ['admin', 'guarantor', 'lecturer'];
-
-            if (!in_array($highest, $higherRoles, true) && !$user->hasRole('student')) {
-                $user->assignRole('student');
-            }
+            $user->assignRole('student');
 
             return redirect()->back()->with('success', $enrolledMessage ?? 'Registered successfully.');
         } catch (\Exception $e) {
@@ -400,12 +395,8 @@ class CourseStudentController extends Controller {
                 $messages[] = "{$courseName}: " . $e->getMessage();
             }
         }
+        $user->assignRole('student');
 
-        $highest = $user->highest_role;
-        $higherRoles = ['admin', 'guarantor', 'lecturer'];
-        if (!in_array($highest, $higherRoles, true) && !$user->hasRole('student')) {
-            $user->assignRole('student');
-        }
 
         return redirect()->back()->with('success', implode('; ', array_slice($messages, 0, 5)));
     }
@@ -514,11 +505,7 @@ class CourseStudentController extends Controller {
         }
 
         if (!empty($toRegister)) {
-            $highest = $user->highest_role;
-            $higherRoles = ['admin', 'guarantor', 'lecturer'];
-            if (!in_array($highest, $higherRoles, true) && !$user->hasRole('student')) {
-                $user->assignRole('student');
-            }
+            $user->assignRole('student');
         }
 
         return redirect()->back()->with('success', implode('; ', array_slice($messages, 0, 12)));

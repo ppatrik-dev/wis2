@@ -19,7 +19,6 @@ class TermPolicy {
         if ($term->course && ($user->hasRole('guarantor') && $term->course->guarantor_id === $user->id)) {
             return true;
         }
-
         if ($user->hasRole('lecturer') && $term->lecturer_id === $user->id) {
             return true;
         }

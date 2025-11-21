@@ -212,7 +212,7 @@
                     @endcan
                 </tr>
             @endforeach
-            
+
         </tbody>
     </table>
        <div class="mt-2">
