@@ -58,7 +58,6 @@ class TermController extends Controller {
      */
     public function create() {
         $this->authorize('create', Term::class);
-        $users = User::all()->mapWithKeys(fn($user) => [$user->id => $user->getFullNameAttribute()])->toArray();
         $rooms = Room::all()->pluck('name', 'id')->toArray();
         if (auth()->user()->hasRole('admin')) {
             $courses = Course::pluck('name', 'id')->toArray();
@@ -131,11 +130,26 @@ class TermController extends Controller {
      */
     public function edit($id) {
         $term = Term::findOrFail($id);
-        $users = User::all()->mapWithKeys(fn($user) => [$user->id => $user->getFullNameAttribute()])->toArray();
         $rooms = Room::all()->pluck('name', 'id')->toArray();
-        $courses = Course::all()->pluck('name', 'id')->toArray();
+        if (auth()->user()->hasRole('admin')) {
+            $courses = Course::pluck('name', 'id')->toArray();
+        } else {
+            $courses = Course::where('guarantor_id', Auth::id())->pluck('name', 'id')->toArray();
+        }
+
+        $courseModels = Course::with('lecturers')
+            ->whereIn('id', array_keys($courses))
+            ->get();
+
+        $allLecturers = [];
+
+        foreach ($courseModels as $course) {
+            foreach ($course->lecturers as $lecturer) {
+                $allLecturers[$lecturer->id] = $lecturer->full_name;
+            }
+        }
         $this->authorize('update', $term);
-        return view('term::term.edit', ["term" => $term, "users" => $users, "rooms" => $rooms, "courses" => $courses]);
+        return view('term::term.edit', ["term" => $term, "users" => $allLecturers, "rooms" => $rooms, "courses" => $courses]);
     }
 
     /**

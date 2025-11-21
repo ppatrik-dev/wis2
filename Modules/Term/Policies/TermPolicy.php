@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 class TermPolicy {
     use HandlesAuthorization;
     public function viewAny(User $user) {
-        return $user->hasAnyRole(['admin', 'guarantor', 'lecturer', 'student']);
+        return $user->hasAnyRole(['admin', 'guarantor', 'lecturer', 'student', 'user']);
     }
     public function view(User $user, Term $term) {
         if ($user->hasRole('admin')) {

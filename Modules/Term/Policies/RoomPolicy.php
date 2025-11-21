@@ -10,10 +10,10 @@ use Modules\Term\Models\Room;
 class RoomPolicy {
     use HandlesAuthorization;
     public function viewAny(User $user) {
-        return $user->hasAnyRole(['admin', 'guarantor', 'lecturer', 'student']);
+        return $user->hasAnyRole(['admin', 'guarantor', 'lecturer', 'student', 'user']);
     }
     public function view(User $user) {
-        return $user->hasAnyRole(['admin', 'guarantor', 'lecturer', 'student']);
+        return $user->hasAnyRole(['admin', 'guarantor', 'lecturer', 'student', 'user']);
     }
     public function create(User $user) {
         return $user->hasRole('admin');
