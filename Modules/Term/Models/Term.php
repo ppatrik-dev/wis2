@@ -74,17 +74,6 @@ class Term extends Model {
 
     public function getTermStudentsAttribute() {
         return $this->termStudents()->with('student')->get();
-        // ->map(
-        //     function ($ts) {
-        //         return (object)[
-        //             'id'        => $ts->student->id,
-        //             'full_name' => $ts->student->full_name,
-        //             'score'     => $ts->score,
-        //             'registred_at'  => $ts->created_at,
-        //             'modified_at'  => $ts->updated_at,
-        //         ];
-        //     }
-        // );
     }
 
     public function termStudentBy($studentId) {
@@ -104,5 +93,38 @@ class Term extends Model {
     public function isOverlapping($otherTerm): bool {
         return $this->start_at < $otherTerm->end_at &&
             $this->end_at > $otherTerm->start_at;
+    }
+
+    protected static function booted() {
+
+        static::created(function (Term $term) {
+            if ($term->registration_required == false) {
+                $students = $term->course->students;
+                
+                foreach ($students as $student) {
+                    TermStudent::firstOrCreate([
+                        'term_id'    => $term->id,
+                        'student_id' => $student->id,
+                        'score'      => null,
+                    ]);
+                }
+            }
+        });
+
+        static::updated(function (Term $term) {
+            if ($term->wasChanged('registration_required')) {
+                if ($term->registration_required == false) {
+                    $students = $term->course->students;
+
+                    foreach ($students as $student) {
+                        TermStudent::firstOrCreate([
+                            'term_id'    => $term->id,
+                            'student_id' => $student->id,
+                            'score'      => null,
+                        ]);
+                    }
+                }
+            }
+        });
     }
 }

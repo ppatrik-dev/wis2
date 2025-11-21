@@ -31,11 +31,11 @@
             <x-toggle label="Registration required" name="registration_required" :required="true"></x-toggle>
             <x-input label="Capacity" name="capacity" type="number" :required="true"></x-input>
             <x-input label="Max score" name="max_score" type="number" :required="true"></x-input>
-            <x-select label="Lecturer" name="lecturer" :options="$users"></x-select>
+            <x-select label="Lecturer" name="lecturer_id" :options="$users"></x-select>
             <x-input label="Start at" name="start_at" type="datetime-local" :required="true"></x-input>
             <x-input label="End at" name="end_at" type="datetime-local" :required="true"></x-input>
-            <x-select label="Room" name="room" :options="$rooms"></x-select>
-            <x-select label="Course" name="course" :options="$courses" :required="true" class="col-span-3"></x-select>
+            <x-select label="Room" name="room_id" :options="$rooms"></x-select>
+            <x-select label="Course" name="course_id" :options="$courses" :required="true" class="col-span-3"></x-select>
             <x-input label="Description" name="description" input="textarea" rows="3" class="col-span-3"></x-input>
         </form>
    </x-term::profile>

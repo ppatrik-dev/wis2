@@ -33,14 +33,14 @@
             {{-- <x-input label="Name" name="name" value="{{ ucfirst($term->name) }}" :disabled="true"></x-input> --}}
             <x-input label="Type" name="type" value="{{ ucfirst($term->type) }}" :disabled="true"></x-input>
             <x-input label="Registration" name="registration_required" :value="$term->registration_required ? 'Required' : 'Not Required'" :disabled="true"></x-input>
-            <x-input label="Lecturer" name="lecturer" value="{{ $term->lecturer?->getFullNameAttribute() }}" placeholder="Not selected" :disabled="true"></x-input>
+            <x-input label="Lecturer" name="lecturer_id" value="{{ $term->lecturer?->getFullNameAttribute() }}" placeholder="Not selected" :disabled="true"></x-input>
             <x-input label="Capacity" name="capacity" value="{{ $term->capacity }}" type="number" :disabled="true"></x-input>
             <x-input label="Max score" name="max_score" value="{{ $term->max_score }}" type="number" :disabled="true"></x-input>
-            <x-input label="Room" name="room" value="{{ $term->room?->name }}" placeholder="Not selected" :disabled="true"></x-input>
+            <x-input label="Room" name="room_id" value="{{ $term->room?->name }}" placeholder="Not selected" :disabled="true"></x-input>
             <x-input label="Start at" name="start_at" :value="$term->start_at?->format('Y-m-d H:i')" type="datetime-local" :disabled="true"></x-input>
             <x-input label="End at" name="end_at" :value="$term->end_at?->format('Y-m-d H:i')" type="datetime-local" :disabled="true"></x-input>
             <x-input label="Description" name="description" value="{{ $term->description }}" input="textarea" :disabled="true" rows="1" class="col-span-3"></x-input>
-            {{-- <x-input label="Course" name="course" value="{{ $term->course?->code }}" placeholder="Not selected" :disabled="true"></x-input> --}}
+            {{-- <x-input label="Course" name="course_id" value="{{ $term->course?->code }}" placeholder="Not selected" :disabled="true"></x-input> --}}
         </form>
     </x-term::profile>
 </x-term::layouts.master>

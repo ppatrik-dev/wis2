@@ -92,26 +92,13 @@ class TermController extends Controller {
             'max_score' => ['required', 'integer', 'min:0'],
             'capacity' => ['required', 'integer', 'min:1'],
             'description' => ['nullable', 'string'],
-            'course' => ['required', 'exists:courses,id'],
-            'lecturer' => ['nullable', 'exists:users,id'],
-            'room' => ['nullable', 'exists:rooms,id'],
+            'course_id' => ['required', 'exists:courses,id'],
+            'lecturer_id' => ['nullable', 'exists:users,id'],
+            'room_id' => ['nullable', 'exists:rooms,id'],
             'registration_required' => ['required', 'boolean'],
         ]);
 
-        $term = Term::create([
-            'name' => ucfirst($validated['name']),
-            'type' => $validated['type'],
-            'start_at' => $validated['start_at'],
-            'end_at' => $validated['end_at'],
-            'max_score' => $validated['max_score'],
-            'capacity' => $validated['capacity'],
-            'description' => $validated['description'] ?? null,
-            'course_id' => $validated['course'],
-            'lecturer_id' => $validated['lecturer'] ?? null,
-            'room_id' => $validated['room'] ?? null,
-            'registration_required' => $validated['registration_required'],
-        ]);
-
+        $term = Term::create($validated);
 
         return redirect()->route('term.index')->with('success', 'Term created successfuly!');
     }
@@ -164,27 +151,15 @@ class TermController extends Controller {
             'max_score' => ['required', 'integer', 'min:0'],
             'capacity' => ['required', 'integer', 'min:1'],
             'description' => ['nullable', 'string'],
-            'course' => ['required', 'exists:courses,id'],
-            'lecturer' => ['nullable', 'exists:users,id'],
-            'room' => ['nullable', 'exists:rooms,id'],
+            'course_id' => ['required', 'exists:courses,id'],
+            'lecturer_id' => ['nullable', 'exists:users,id'],
+            'room_id' => ['nullable', 'exists:rooms,id'],
             'registration_required' => ['required', 'boolean'],
         ]);
 
         $term = Term::findOrFail($id);
         $this->authorize('update', $term);
-        $term->update([
-            'name' => ucfirst($validated['name']),
-            'type' => $validated['type'],
-            'start_at' => $validated['start_at'],
-            'end_at' => $validated['end_at'],
-            'max_score' => $validated['max_score'],
-            'capacity' => $validated['capacity'],
-            'description' => $validated['description'] ?? null,
-            'course_id' => $validated['course'],
-            'lecturer_id' => $validated['lecturer'] ?? null,
-            'room_id' => $validated['room'] ?? null,
-            'registration_required' => $validated['registration_required'],
-        ]);
+        $term->update($validated);
 
         return redirect()->route('term.index')->with('success', 'Term updated successfully!');
     }
