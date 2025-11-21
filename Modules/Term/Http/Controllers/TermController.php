@@ -25,7 +25,22 @@ class TermController extends Controller {
             ->pluck('type')
             ->sortDesc();
 
-        $courses = Auth::user()->courses->pluck('code');
+        $user = auth()->user();
+
+        if ($user->hasRole('admin')) {
+            $courses = Course::pluck('code')->toArray();
+        } else {
+            $guarantorCourses = Course::where('guarantor_id', $user->id)->get();
+            $lecturerCourses = Course::whereHas('lecturers', fn($q) =>
+                $q->where('users.id', $user->id)
+            )->get();
+            $studentCourses = Course::whereHas(
+                'students', fn($q) =>$q->where('users.id', $user->id)
+            )->get();
+
+            $courses = $guarantorCourses->merge($lecturerCourses)->merge($studentCourses)
+                ->unique('id')->pluck('code');
+        }
 
         $query = $request['query'];
         $type = $request['type'];
