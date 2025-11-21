@@ -10,10 +10,16 @@ class RoomController extends Controller {
     /**
      * Display a listing of the resource.
      */
-    public function index() {
+    public function index(Request $request) {
         $this->authorize('viewAny', Room::class);
-        $rooms = Room::orderby('created_at', 'desc')->paginate(10);
-        return view('term::room.index', ["rooms" => $rooms]);
+
+        $query = $request['query'];
+
+        $rooms = Room::query()
+            ->where('name', 'like', "%{$query}%")
+            ->paginate(10);
+
+        return view('term::room.index', ["rooms" => $rooms, "query" => $query]);
     }
 
     /**

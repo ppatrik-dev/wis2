@@ -58,7 +58,7 @@
                     </td>
                     <td class="px-6 py-3">
                         <div class="flex items-center">
-                            @if ($user->highest_role))
+                            @if ($user->highest_role)
                                 <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
                             @endif
                             {{ ucfirst($user->highest_role) }}

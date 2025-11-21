@@ -2,7 +2,7 @@
 
 namespace Modules\User\database\seeders;
 
-use Illuminate\database\Seeder;
+use Illuminate\Database\Seeder;
 
 class UserDatabaseSeeder extends Seeder {
     /**

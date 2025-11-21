@@ -16,10 +16,9 @@
         </x-slot:actions>
     </x-header>
 
-   <div class="mb-4">
-    <form method="get" action="{{ route('course.index') }}">
-        <div
-            class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-3.5">
+     <div class="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between my-2">
+        <form method="get" action="{{ route('course.index') }}"
+            class="w-full flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-3">
             <div class="flex items-center gap-2">
                 <label for="course-search" class="sr-only">Search</label>
                 <div class="relative">
@@ -48,9 +47,8 @@
                     </a>
                 @endif
             </div>
-        </div>
-    </form>
-</div>
+        </form>
+    </div>
 
 
     <x-course::table :courses="$courses" />

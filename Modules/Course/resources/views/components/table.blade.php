@@ -149,7 +149,7 @@
                         </tr>
                     @endforeach
                     @auth
-                        <div class="absolute right-15 top-24.5">
+                        <div class="absolute right-8 top-25.5">
                             <button id="update-registrations-btn" type="submit"
                                 formaction="{{ route('course.student.update-registrations') }}"
                                 class="px-4 py-2 text-sm font-medium text-white transition-colors bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-indigo-600"

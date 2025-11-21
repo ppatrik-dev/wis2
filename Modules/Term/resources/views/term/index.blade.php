@@ -14,7 +14,7 @@
 
     <div class="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between my-2">
         <form method="GET" action="{{ route('term.index') }}"
-                class="w-full flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-3.5">
+                class="w-full flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-3">
             <div class="flex items-center gap-2">
                 <label for="term-search" class="sr-only">Search</label>
                 <div class="relative">
