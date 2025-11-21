@@ -50,6 +50,7 @@ class CourseServiceProvider extends ServiceProvider {
         Gate::define('course.viewStudents', [CoursePolicy::class, 'viewStudents']);
         Gate::define('course.viewLecturers', [CoursePolicy::class, 'viewLecturers']);
         Gate::define('course.viewNews', [CoursePolicy::class, 'viewNews']);
+        Gate::define('course.viewMyCourse', [CoursePolicy::class, 'viewMyCourse']);
         Gate::resource('course-student', CourseStudentPolicy::class);
         Gate::resource('course-lecturer', CourseLecturerPolicy::class);
         Gate::resource('course-news', CourseNewsPolicy::class);

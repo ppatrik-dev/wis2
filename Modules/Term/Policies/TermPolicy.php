@@ -23,7 +23,7 @@ class TermPolicy {
         if ($user->hasRole('lecturer') && $term->lecturer_id === $user->id) {
             return true;
         }
-        if ($term->course && ($user->hasRole('student') && $term->course->students()->where('users.id', $user->id)->exists())) {
+        if ($term->course && ($user->hasRole('student') && $term->course->students()->where('users.id', $user->id)->exists() && $term->course->isStudentApproved($user))) {
             return true;
         }
 

@@ -14,7 +14,7 @@ class CourseNewsPolicy {
         return $user->hasRole('admin')
             || ($user->hasRole('guarantor') && $course->guarantor_id === $user->id)
             || ($user->hasRole('lecturer') && $course->lecturers()->where('lecturer_id', $user->id)->exists())
-            || $course->students()->where('student_id', $user->id)->exists();
+            || ($course->students()->where('student_id', $user->id)->exists() && $course->isStudentApproved($user));
     }
 
     public function view(User $user, CourseNews $news) {
@@ -23,7 +23,7 @@ class CourseNewsPolicy {
         return $user->hasRole('admin')
             || ($user->hasRole('guarantor') && $course->guarantor_id === $user->id)
             || ($user->hasRole('lecturer') && $course->lecturers()->where('lecturer_id', $user->id)->exists())
-            || $course->students()->where('student_id', $user->id)->exists();
+            || ($course->students()->where('student_id', $user->id)->exists() && $course->isStudentApproved($user));
     }
 
     public function create(User $user, Course $course) {

@@ -9,10 +9,10 @@ use Modules\Course\Models\Course;
 class CoursePolicy {
     use HandlesAuthorization;
     public function viewAny(User $user) {
-        return $user->hasRole(['admin', 'guarantor', 'lecturer', 'student']);
+        return $user->hasRole(['admin', 'guarantor', 'lecturer', 'student', 'user']);
     }
     public function view(User $user) {
-        return $user->hasRole(['admin', 'guarantor', 'lecturer', 'student']);
+        return $user->hasRole(['admin', 'guarantor', 'lecturer', 'student', 'user']);
     }
     public function create(User $user) {
         // All authenticated users can create courses
@@ -41,9 +41,12 @@ class CoursePolicy {
             || ($user->hasRole('guarantor') && $course->guarantor_id === $user->id));
     }
     public function viewNews(User $user, Course $course) {
-        $isEnrolled = isset($course->students) && $course->students->contains('id', $user->id) && $course->isStudentApproved($user);
+        $isEnrolled = $course->students->contains('id', $user->id) && $course->isStudentApproved($user);
         $isGuarantor = $user->hasRole('guarantor') && $course->guarantor_id === $user->id;
         $isLecturer = $user->hasRole('lecturer') && $course->lecturers()->where('lecturer_id', $user->id)->exists();
         return $isEnrolled || $isGuarantor || $isLecturer || $user->hasRole('admin');
+    }
+    public function viewMyCourse(User $user, Course $course) {
+        return $course->students->contains('id', $user->id) && $course->isStudentApproved($user);
     }
 }
