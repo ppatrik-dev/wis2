@@ -1,4 +1,12 @@
 <?php
+/**
+ * @file RoomSeeder.php
+ * @author Patrik Procházka (xprochp00@vutbr.cz)
+ * @brief Seeder for Rooms table
+ * @version 0.1
+ * @date 2025-11-22
+ * @copyright Copyright (c) 2025
+ */
 
 namespace Modules\Term\database\seeders;
 

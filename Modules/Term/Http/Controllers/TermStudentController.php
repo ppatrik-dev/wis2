@@ -1,4 +1,12 @@
 <?php
+/**
+ * @file TermStudentController.php
+ * @author Patrik Procházka (xprochp00@vutbr.cz)
+ * @brief Controller for managing terms students in the Term module
+ * @version 0.1
+ * @date 2025-11-22
+ * @copyright Copyright (c) 2025
+ */
 
 namespace Modules\Term\Http\Controllers;
 

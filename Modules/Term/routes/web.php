@@ -1,4 +1,12 @@
 <?php
+/**
+ * @file web.php
+ * @author Patrik Procházka (xprochp00@vutbr.cz)
+ * @brief Web routes for Term module
+ * @version 0.1
+ * @date 2025-11-22
+ * @copyright Copyright (c) 2025
+ */
 
 use Illuminate\Support\Facades\Route;
 use Modules\Term\Http\Controllers\TermController;

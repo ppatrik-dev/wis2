@@ -1,4 +1,12 @@
 <?php
+/**
+ * @file Room.php
+ * @author Patrik Procházka (xprochp00@vutbr.cz)
+ * @brief Model for Room table
+ * @version 0.1
+ * @date 2025-11-22
+ * @copyright Copyright (c) 2025
+ */
 
 namespace Modules\Term\Models;
 
