@@ -52,6 +52,12 @@
 
                         $pxPerMin = 0.9;
                         $height =  $overlap * $pxPerMin;
+                        $top = 0;
+                        if($height < 30){
+                            $top = 45 - $height;
+                        }
+
+                        // $height = ($endInMinutes - $startInMinutes) * $pxPerMin;
 
                         switch($term->type) {
                             case 'lecture':
@@ -73,8 +79,9 @@
 
                     @if ($endInMinutes > $blockStart && $startInMinutes < $blockEnd)
                     @if($overlap > 0)
+                    {{-- @php      dd($top);@endphp --}}
                          <a href="{{ route('term.show', $term->id) }}">
-                        <div class="bg-blue-500 {{ $color }} rounded-md justify-center flex items-center relative group" style="height: {{ $height }}px;">
+                        <div class="bg-blue-500 {{ $color }} rounded-md justify-center flex items-center relative group"style="top: {{ $top }}px; height: {{ $height }}px;">
                             {{ $term->name }}
                                 <div class="absolute z-50 flex items-center justify-center gap-4 p-2 text-sm text-white transition-opacity transform -translate-x-1/2 -translate-y-full bg-gray-800 rounded-md opacity-0 pointer-events-none left-1/2 min-w-max whitespace-nowrap group-hover:opacity-100">
                                     <span>{{ $term->start_at->format('H:i') }} - {{ $term->end_at->format('H:i') }}</span>
