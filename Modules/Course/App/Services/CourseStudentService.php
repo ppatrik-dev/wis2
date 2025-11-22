@@ -106,6 +106,13 @@ class CourseStudentService {
                 'is_approved' => $shouldAutoApprove,
                 'approved_at' => $shouldAutoApprove ? now() : null,
             ]);
+            if ($shouldAutoApprove) {
+                $student = User::findOrFail($studentId);
+
+                if (!$student->hasRole('student')) {
+                    $student->assignRole('student');
+                }
+            }
 
             // Return the pivot model
             return $course->students()->where('student_id', $studentId)->first()->pivot;
@@ -289,6 +296,15 @@ class CourseStudentService {
      */
     public function bulkApprove(array $studentIds): int {
         return DB::transaction(function () use ($studentIds) {
+            $pivots = CourseStudent::whereIn('id', $studentIds)->get();
+
+            foreach ($pivots as $pivot) {
+                $student = User::find($pivot->student_id);
+
+                if ($student && !$student->hasRole('student')) {
+                    $student->assignRole('student');
+                }
+            }
             return CourseStudent::whereIn('id', $studentIds)
                 ->update([
                     'is_approved' => true,

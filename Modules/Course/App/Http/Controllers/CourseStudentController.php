@@ -191,6 +191,10 @@ class CourseStudentController extends Controller {
                 'is_approved' => 1,
                 'approved_at' => now()
             ]);
+            $student = User::find($studentId);
+            if ($student && !$student->hasRole('student')) {
+                $student->assignRole('student');
+            }
             return redirect()->route('course.student.index', $courseId)
                 ->with('success', 'Student enrollment approved successfully!');
         } catch (\Exception $e) {
