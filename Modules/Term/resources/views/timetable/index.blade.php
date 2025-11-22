@@ -53,7 +53,7 @@
                         $pxPerMin = 0.9;
                         $height =  $overlap * $pxPerMin;
                         $top = 0;
-                        if($height < 30){
+                        if($height < 25){
                             $top = 45 - $height;
                         }
 
