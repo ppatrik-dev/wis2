@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html><head>
+    <meta http-equiv="content-type" content="text/html">
+	<meta charset="UTF-8">
+    <title>Projekt IIS</title>
+    <style type="text/css">
+    	table { border-collapse: collapse; }
+    	td, th { border: 1px solid black; padding: 0.3em 0.5em; text-align: left; }
+    	dt { font-weight: bold; margin-top: 0.5em; }
+    </style>
+</head>
+<body>
+
+<h1>WIS2</h1>
+
+<dl>
+	<dt>Autori</dt>
+	<dd>Miroslav Bašista
+	    <a href="mailto:xlogin00@stud.fit.vutbr.cz">xbasism00@stud.fit.vutbr.cz</a> -
+		Vedúci
+	</dd>
+	<dd>Patrik Procházka
+	    <a href="mailto:xlogin00@stud.fit.vutbr.cz">xprochp00@stud.fit.vutbr.cz</a> - 
+		Člen
+	</dd>
+	<dd>Nataliia Solomatina
+	    <a href="mailto:xlogin00@stud.fit.vutbr.cz">xsolom02@stud.fit.vutbr.cz</a> - 
+		Člen
+	</dd>
+	<dt>URL aplikácie</dt>
+	<dd><a href="https://url">https://www.stud.fit.vutbr.cz/~xbasism00/index.php</a></dd>
+</dl>
+
+<h2>Užívatelia systému pre testovanie</h2>
+<table>
+<tbody><tr><th>Login</th><th>Heslo</th><th>Rola</th></tr>
+<tr><td>systemadministrator@gmail.com</td><td>admin12345</td><td>Administrátor</td></tr>
+<tr><td>guarantordefault@gmail.com</td><td>guarantor12345</td><td>Garant</td></tr>
+<tr><td>lecturerdefault@gmail.com</td><td>lecturer12345</td><td>Lektor</td></tr>
+<tr><td>defaultstudent@gmail.com</td><td>student12345</td><td>Student</td></tr>
+</tbody></table>
+
+<h3>Video</h3>
+TODO: Mirek321
+
+<h2>Implementácia</h2>
+<p>Projekt je implementovaný v jazyku PHP s použitím frameworku Laravel.</p>
+<p>Implementácia projektu je rozdelená do modulov:</p>
+
+<h3>1. User</h3>
+<p style="font-weight: bold;">Controllers</p>
+<ul>
+	<li>UserController.php</li>
+</ul>
+
+<p style="font-weight: bold;">Views</p>
+<ul>
+	<li>index.blade.php - zobrazenie  (odstraňovanie) užívateľov</li>
+	<li>create.blade.php - vytvárenie užívateľa</li>
+	<li>show.blade.php - zobrazenie užívateľa</li>
+	<li>edit.blade.php - editácia užívateľa</li>
+</ul>
+
+<p style="font-weight: bold;">Models</p>
+<ul>
+	<li>User.php</li>
+</ul>
+
+<h3>2. Course</h3>
+<p style="font-weight: bold;">Controllers</p>
+<ul>
+	<li>CourseController.php</li>
+	<li>CourseNewsController.php</li> 
+	<li>CourseStudentController.php</li>
+	<li>CourseLecturerController.php</li>
+	<li>MyCourseController.php</li> 
+</ul>
+
+<p style="font-weight: bold;">Views</p>
+<ul>
+	<li>course/ - vytváranie, zobrazovanie, editovanie, odstraňovanie kurzov</li>
+	<li>course_news/ - vytváranie, zobrazovanie, editovanie noviniek</li>
+	<li>course_students/ - pridávanie, zobrazovanie, odstraňovanie, hodnotenie študentov</li>
+	<li>course_lecturer/ - pridávanie, zobrazovanie, odstraňovanie lektorov </li>
+	<li>my_course/ - zobrazenie zapísaných kurzov s hodnotením</li>
+</ul>
+
+<p style="font-weight: bold;">Models</p>
+<ul>
+	<li>Course.php</li>
+	<li>CourseNews.php</li>
+	<li>CourseStudent.php</li>
+	<li>CourseLecturer.php</li>
+</ul>
+
+<h3>3. Term</h3>
+<p style="font-weight: bold;">Controllers</p>
+<ul>
+	<li>TermController.php</li>
+	<li>RoomController.php</li>
+	<li>TermStudentController.php</li>
+	<li>TimeTableController.php</li>
+</ul>
+
+<p style="font-weight: bold;">Views</p>
+<ul>
+	<li>term/ - vytváranie, zobrazovanie, editovanie a odstraňovanie termínov</li>
+	<li>room/ - vytváranie, zobrazovanie, editovanie a odstraňovanie miestností </li>
+	<li>term_student/ - registrovanie, zobrazovanie, odstraňovanie, hodnotenie študentov</li>
+	<li>timetable/ - zobrazovanie rozvrhu</li>
+</ul>
+
+<p style="font-weight: bold;">Models</p>
+<ul>
+	<li>Term.php</li>
+	<li>Room.php</li>
+	<li>TermStudent.php</li>
+</ul>
+
+<h3>Databáza</h3>
+
+<img src="docs/wis2-er-diagram.svg" alt="ER Diagram" width="500">
+
+<h2>Inštalácia</h2>
+<p>TODO: Mirek321</p>
+
+Stručne popište: 
+<ul>
+<li>postup instalace na server</li>
+<li>softwarové požadavky (verze PHP apod.),</li>
+<li>jak rozbalit, konfigurovat, inicializovat databázi, ...</li>
+</ul>
+
+<h2>Známe problémy</h2>
+<!-- <p>Zde popište, které body zadání nejsou implementovány a z jakého důvodu. Např. „Z časových důvodů nebyla implementována správa uživatelů.” Pomůžete tím zrychlit hodnocení, když neimplementované funkce nebudeme muset dlouze hledat.</p> -->
+
+</body></html>
