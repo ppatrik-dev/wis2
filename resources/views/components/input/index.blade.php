@@ -29,5 +29,5 @@
             {{ $label }} {!! $required ? '<span class="text-blue-500">*</span>' : '' !!}
         </label>
         <textarea id="textarea-{{ $name }}" rows="{{ $rows }}" name="{{ $name }}" class="{{ $classes }}" @required($required) @disabled($disabled)>{{ old($name, $value) }}</textarea>
-    </div
+    </div>
 @endif

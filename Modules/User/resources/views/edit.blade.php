@@ -34,9 +34,7 @@
             @role('admin')
             <x-multiselect label="Roles" name="roles" default="user" value="{{ $user->highest_role }}" :options="$roles" :selected="$user->getRoleNames()"></x-multiselect>
             @endrole
-
             <x-input label="Bio" name="bio" value="{{ $user->bio }}" input="textarea" class="row-span-2"></x-input>
-
             <x-select label="Gender" name="gender" :options="array('male', 'female')" :selected="$user->gender" :required="true"></x-select>
             <x-input label="Country" name="country" value="{{ $user->country }}"></x-input>
             <x-input label="Password" name="password" type="password"></x-input>

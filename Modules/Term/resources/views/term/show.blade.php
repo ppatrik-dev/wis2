@@ -39,7 +39,7 @@
             <x-input label="Room" name="room_id" value="{{ $term->room?->name }}" placeholder="Not selected" :disabled="true"></x-input>
             <x-input label="Start at" name="start_at" :value="$term->start_at?->format('Y-m-d H:i')" type="datetime-local" :disabled="true"></x-input>
             <x-input label="End at" name="end_at" :value="$term->end_at?->format('Y-m-d H:i')" type="datetime-local" :disabled="true"></x-input>
-            <x-input label="Description" name="description" value="{{ $term->description }}" input="textarea" :disabled="true" rows="1" class="col-span-3"></x-input>
+            <x-input label="Description" name="description" value="{{ $term->description }}" input="textarea" :disabled="true" rows="3" class="col-span-3"></x-input>
             {{-- <x-input label="Course" name="course_id" value="{{ $term->course?->code }}" placeholder="Not selected" :disabled="true"></x-input> --}}
         </form>
     </x-term::profile>

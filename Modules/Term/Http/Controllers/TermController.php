@@ -35,11 +35,9 @@ class TermController extends Controller {
                 $q->where('lecturer_id', $user->id);
             })->get();
 
-            $studentCourses = Course::whereHas('terms', function ($termQuery) use ($user) {
-                $termQuery->whereHas('termStudents', function ($tsQuery) use ($user) {
-                    $tsQuery->where('student_id', $user->id);
-                });
-            })->get();
+            $studentCourses = Course::whereHas('students', function ($query) use ($user) {
+                $query->where('users.id', $user->id);
+            })->whereHas('terms')->get();
 
             $courses = $guarantorCourses->merge($lecturerCourses)->merge($studentCourses)
                 ->unique('id')->pluck('code');
