@@ -37,14 +37,14 @@
 <tr><td>systemadministrator@gmail.com</td><td>admin12345</td><td>Administrátor</td></tr>
 <tr><td>guarantordefault@gmail.com</td><td>guarantor12345</td><td>Garant</td></tr>
 <tr><td>lecturerdefault@gmail.com</td><td>lecturer12345</td><td>Lektor</td></tr>
-<tr><td>defaultstudent@gmail.com</td><td>student12345</td><td>Student</td></tr>
-<tr><td>anna.kovacova@student.example</td><td>studentpass1</td><td>Student</td></tr>
-<tr><td>marek.novak@student.example</td><td>studentpass2</td><td>Student</td></tr>
-<tr><td>lucia.horvathova@student.example</td><td>studentpass3</td><td>Student</td></tr>
-<tr><td>peter.svec@student.example</td><td>studentpass4</td><td>Student</td></tr>
-<tr><td>zuzana.mikova@student.example</td><td>studentpass5</td><td>Student</td></tr>
-<tr><td>tomas.varga@student.example</td><td>studentpass6</td><td>Student</td></tr>
-<tr><td>petra.kralova@student.example</td><td>studentpass7</td><td>Student</td></tr>
+<tr><td>defaultstudent@gmail.com</td><td>student12345</td><td>Študent</td></tr>
+<tr><td>anna.kovacova@student.example</td><td>studentpass1</td><td>Študent</td></tr>
+<tr><td>marek.novak@student.example</td><td>studentpass2</td><td>Študent</td></tr>
+<tr><td>lucia.horvathova@student.example</td><td>studentpass3</td><td>Študent</td></tr>
+<tr><td>peter.svec@student.example</td><td>studentpass4</td><td>Študent</td></tr>
+<tr><td>zuzana.mikova@student.example</td><td>studentpass5</td><td>Študent</td></tr>
+<tr><td>tomas.varga@student.example</td><td>studentpass6</td><td>Študent</td></tr>
+<tr><td>petra.kralova@student.example</td><td>studentpass7</td><td>Študent</td></tr>
 <tr><td>defaultuser@gmail.com</td><td>user12345</td><td>User</td></tr>
 </tbody></table>
 
@@ -52,99 +52,100 @@
 TODO: Mirek321
 
 <h2>Implementácia</h2>
-<p>Projekt je implementovaný v jazyku PHP s použitím frameworku Laravel a kniznice spatie/permission.</p>
+<p>Projekt je implementovaný v jazyku PHP s použitím frameworku <b>Laravel</b> a knižnice <code>spatie/permission</code>.</p>
+<p>Na vývoj užívateľského grafického rozhrania bola využitá knižnica <b>Flowbite</b> využívajúca <b>Tailwind</b>.</p>
 <p>Implementácia projektu je rozdelená do modulov:</p>
 
 <h3>1. Auth</h3>
-<p style="font-weight: bold;">Controllers</p>
+<p>Controllers</p>
 <ul>
-	<li>AuthController.php - Zakladná autentifikácia užívateľov (registrácia, prihlásenie, odhlásenie)</li>
+	<li><code>AuthController.php</code> - Zakladná autentifikácia užívateľov (registrácia, prihlásenie, odhlásenie)</li>
 </ul>
 
-<p style="font-weight: bold;">Views</p>
+<p>Views</p>
 <ul>
-    <li>card/index.php - componenta karty</li>
-    <li>layouts/master.blade - Layout pre registraciu a login</li>
-	<li>forms/login.blade.php - formular pre prihlasenie</li>
-	<li>forms/register.blade.php - formular pre registraciu</li>
-	<li>login.blade.php - Zobrazenie stranky pre prihlasenie do IS</li>
-	<li>register.blade.php - Zobrazenie stranky pre registrociu do IS</li>
+    <li><code>card/index.php</code> - komponenta karty</li>
+    <li><code>layouts/master.blade</code> - layout pre registráciu a login</li>
+	<li><code>forms/login.blade.php</code> - formulár pre prihlásenie</li>
+	<li><code>forms/register.blade.php</code> - formulár pre registráciu</li>
+	<li><code>login.blade.php</code> - zobrazenie stránky pre prihlásenie do IS</li>
+	<li><code>register.blade.php</code> - zobrazenie stránky pre registráciu do IS</li>
 </ul>
 
 <h3>2. User</h3>
- <p>V tomto module sa taktiez nachadza vytvarania roli ktore su definovane v subore RolesPermissions.php a pomocou seedera sa pridavaju do databazy (logiky)</p>
-<p style="font-weight: bold;">Controllers</p>
+ <p>V tomto module sa taktiež nachádza vytváranie rolí, ktoré sú definované v súbore <code>RolesPermissions.php</code> a pomocou <code>seedera</code> sa pridájú do datábazy (logiky).</p>
+<p>Controllers</p>
 <ul>
-	<li>UserController.php</li>
+	<li><code>UserController.php</code></li>
 </ul>
 
 <p>Views</p>
 <ul>
-	<li>index.blade.php - zobrazenie  (odstraňovanie) užívateľov</li>
-	<li>create.blade.php - vytvárenie užívateľa</li>
-	<li>show.blade.php - zobrazenie užívateľa</li>
-	<li>edit.blade.php - editácia užívateľa</li>
+	<li><code>index.blade.php</code> - zobrazenie  (odstraňovanie) užívateľov</li>
+	<li><code>create.blade.php</code> - vytvárenie užívateľa</li>
+	<li><code>show.blade.php</code> - zobrazenie užívateľa</li>
+	<li><code>edit.blade.php</code> - editácia užívateľa</li>
 </ul>
 
 <p>Models</p>
 <ul>
-	<li>User.php</li>
+	<li><code>User.php</code></li>
 </ul>
 <h3>3. Course</h3>
-<p style="font-weight: bold;">Controllers</p>
+<p>Controllers</p>
 <ul>
-	<li>CourseController.php</li>
-	<li>CourseNewsController.php</li>
-	<li>CourseStudentController.php</li>
-	<li>CourseLecturerController.php</li>
-	<li>MyCourseController.php</li>
+	<li><code>CourseController.php</code></li>
+	<li><code>CourseNewsController.php</code></li>
+	<li><code>CourseStudentController.php</code></li>
+	<li><code>CourseLecturerController.php</code></li>
+	<li><code>MyCourseController.php</code></li>
 </ul>
 
 <p>Views</p>
 <ul>
-	<li>course/ - vytváranie, zobrazovanie, editovanie, odstraňovanie kurzov</li>
-	<li>course_news/ - vytváranie, zobrazovanie, editovanie noviniek</li>
-	<li>course_students/ - pridávanie, zobrazovanie, odstraňovanie, hodnotenie študentov</li>
-	<li>course_lecturer/ - pridávanie, zobrazovanie, odstraňovanie lektorov </li>
-	<li>my_course/ - zobrazenie zapísaných kurzov s hodnotením</li>
+	<li><code>course/</code> - vytváranie, zobrazovanie, editovanie, odstraňovanie kurzov</li>
+	<li><code>course_news/</code> - vytváranie, zobrazovanie, editovanie noviniek</li>
+	<li><code>course_students/</code> - pridávanie, zobrazovanie, odstraňovanie, hodnotenie študentov</li>
+	<li><code>course_lecturer/</code> - pridávanie, zobrazovanie, odstraňovanie lektorov </li>
+	<li><code>my_course/</code> - zobrazenie zapísaných kurzov s hodnotením</li>
 </ul>
 
 <p>Models</p>
 <ul>
-	<li>Course.php</li>
-	<li>CourseNews.php</li>
-	<li>CourseStudent.php</li>
-	<li>CourseLecturer.php</li>
+	<li><code>Course.php</code></li>
+	<li><code>CourseNews.php</code></li>
+	<li><code>CourseStudent.php</code></li>
+	<li><code>CourseLecturer.php</code></li>
 </ul>
 <h3>4. Term</h3>
-<p style="font-weight: bold;">Controllers</p>
+<p>Controllers</p>
 <ul>
-	<li>TermController.php</li>
-	<li>RoomController.php</li>
-	<li>TermStudentController.php</li>
-	<li>TimeTableController.php</li>
+	<li><code>TermController.php</code></li>
+	<li><code>RoomController.php</code></li>
+	<li><code>TermStudentController.php</code></li>
+	<li><code>TimeTableController.php</code></li>
 </ul>
 
 <p>Views</p>
 <ul>
-	<li>term/ - vytváranie, zobrazovanie, editovanie a odstraňovanie termínov</li>
-	<li>room/ - vytváranie, zobrazovanie, editovanie a odstraňovanie miestností </li>
-	<li>term_student/ - registrovanie, zobrazovanie, odstraňovanie, hodnotenie študentov</li>
-	<li>timetable/ - zobrazovanie rozvrhu</li>
+	<li><code>term/</code> - vytváranie, zobrazovanie, editovanie a odstraňovanie termínov</li>
+	<li><code>room/</code> - vytváranie, zobrazovanie, editovanie a odstraňovanie miestností </li>
+	<li><code>term_student/</code> - registrovanie, zobrazovanie, odstraňovanie, hodnotenie študentov</li>
+	<li><code>timetable/</code> - zobrazovanie rozvrhu</li>
 </ul>
 
 <p>Models</p>
 <ul>
-	<li>Term.php</li>
-	<li>Room.php</li>
-	<li>TermStudent.php</li>
+	<li><code>Term.php</code></li>
+	<li><code>Room.php</code></li>
+	<li><code>TermStudent.php</code></li>
 </ul>
 </ol>
 <br>
 
 Implementované rozšírenia:
 <ul>
-	<li>Vyhľadávanie užívateľov podľa mena/priezviska a filtrovanie podľa role</li>
+	<li>Vyhľadávanie užívateľov podľa mena a filtrovanie podľa role</li>
 	<li>Vyhľadávanie kurzov podľa názvu alebo skratky kurzu</li>
 	<li>Vyhľadávanie termínov podľa názvu a filtrovanie podľa kurzu a typu</li>
 	<li>Vyhľadávanie miestností podľa názvu</li>
@@ -155,9 +156,10 @@ Implementované rozšírenia:
 <img src="docs/wis2-er-diagram.svg" alt="ER Diagram" width="500">
 
 <h2>Inštalácia</h2>
-<p>Pre spustenie je potrebné mať docker</p>
-<p>Php verzia 8.1</p>
-<p>Potrebný je taktiež composer, commandy pre instalaciu:</p>
+<p>Pre spustenie je potrebné mať nainštalovaný nástroj <b>docker</b>.</p>
+<p>Programovací jazyk PHP vo verzii 8.1.</p>
+<p>Potrebný je taktiež nástroj <b>composer</b>, príkazy pre inštaláciu:</p>
+
 <code>php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"</code><br>
 <code>php composer-setup.php --install-dir=/usr/local/bin --filename=composer</code><br>
 <code>php -r "unlink('composer-setup.php');"</code>
@@ -166,12 +168,13 @@ Implementované rozšírenia:
 <code>chmod +x sail.sh</code><br>
 <code>./sail.sh up -d</code><br>
 <code>./sail.sh npm run dev</code><br>
-<p>Otvorime novy terminal a tam spustime prikazy pre inicializovanie databazy a jej spustenie</p>
+
+<p>V novom okne terminálu spustíme príkazy pre inicializovanie datábazy:</p>
 <code>./sail.sh php artisan migrate:fresh</code><br>
 <code>./sail.sh php artisan db:seed</code><br>
-<p>V prehliadači zadame: <a href="http://localhost/">http://localhost/</a></p>
+
+<p>V prehliadači zadáme: <a href="http://localhost/">http://localhost/</a></p>
 
 <h2>Známe problémy</h2>
-<!-- <p>Zde popište, které body zadání nejsou implementovány a z jakého důvodu. Např. „Z časových důvodů nebyla implementována správa uživatelů.” Pomůžete tím zrychlit hodnocení, když neimplementované funkce nebudeme muset dlouze hledat.</p> -->
 
 </body></html>
