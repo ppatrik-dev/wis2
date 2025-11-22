@@ -23,7 +23,10 @@ use Spatie\Permission\Models\Role;
 
 class TermController extends Controller {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the terms.
+     *
+     * @param Request $request
+     * @return void
      */
     public function index(Request $request) {
         $this->authorize('viewAny', Term::class);
@@ -78,7 +81,9 @@ class TermController extends Controller {
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new term.
+     *
+     * @return void
      */
     public function create() {
         $this->authorize('create', Term::class);
@@ -104,7 +109,7 @@ class TermController extends Controller {
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created term in storage.
      */
     public function store(Request $request) {
         $this->authorize('create', Term::class);
@@ -128,7 +133,10 @@ class TermController extends Controller {
     }
 
     /**
-     * Show the specified resource.
+     * Show the specified term.
+     *
+     * @param [type] $id
+     * @return void
      */
     public function show($id) {
         $term = Term::findOrFail($id);
@@ -137,7 +145,10 @@ class TermController extends Controller {
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified term.
+     *
+     * @param [type] $id
+     * @return void
      */
     public function edit($id) {
         $term = Term::findOrFail($id);
@@ -164,7 +175,11 @@ class TermController extends Controller {
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified term in storage.
+     *
+     * @param Request $request
+     * @param [type] $id
+     * @return void
      */
     public function update(Request $request, $id) {
         $validated = $request->validate([
@@ -189,7 +204,10 @@ class TermController extends Controller {
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified term from storage.
+     *
+     * @param [type] $id
+     * @return void
      */
     public function destroy($id) {
         $term = Term::findOrFail($id);

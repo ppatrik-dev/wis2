@@ -20,15 +20,31 @@ class TermStudent extends Model {
     use HasFactory;
 
     /**
-     * The attributes that are mass assignable.
+     * The table associated with the model.
+     *
+     * @var string
      */
     protected $table = "term_student";
+
+    /**
+     * The attributes that are mass assignable.
+     */
     protected $fillable = ['term_id', 'student_id', 'score'];
 
+    /**
+     * The student that belongs to term student
+     *
+     * @return void
+     */
     public function student() {
         return $this->belongsTo(User::class, 'student_id');
     }
 
+    /**
+     * The term that belongs to term student
+     *
+     * @return void
+     */
     public function term() {
         return $this->belongsTo(Term::class, 'term_id');
     }

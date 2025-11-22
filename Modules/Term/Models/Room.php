@@ -19,16 +19,25 @@ class Room extends Model {
     use HasFactory;
 
     /**
-     * The attributes that are mass assignable.
+     * The table associated with the model.
+     *
+     * @var string
      */
     protected $table = "rooms";
+
+    /**
+     * The attributes that are mass assignable.
+     */
     protected $fillable = ['name', 'location', 'capacity'];
 
-
+    /**
+     * The terms that belong to the room.
+     *
+     * @return void
+     */
     public function terms() {
         return $this->hasMany(Term::class, 'room_id');
     }
-
 
     // protected static function newFactory(): RoomFactory
     // {

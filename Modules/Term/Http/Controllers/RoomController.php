@@ -16,7 +16,10 @@ use Illuminate\Http\Request;
 
 class RoomController extends Controller {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the rooms.
+     *
+     * @param Request $request
+     * @return void
      */
     public function index(Request $request) {
         $this->authorize('viewAny', Room::class);
@@ -31,7 +34,9 @@ class RoomController extends Controller {
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new room.
+     *
+     * @return void
      */
     public function create() {
         $this->authorize('create', Room::class);
@@ -39,7 +44,10 @@ class RoomController extends Controller {
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created room in storage.
+     *
+     * @param Request $request
+     * @return void
      */
     public function store(Request $request) {
         $validated = $request->validate([
@@ -54,7 +62,10 @@ class RoomController extends Controller {
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified room.
+     *
+     * @param [type] $id
+     * @return void
      */
     public function show($id) {
         $this->authorize('view', Room::class);
@@ -64,7 +75,10 @@ class RoomController extends Controller {
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified room.
+     *
+     * @param [type] $id
+     * @return void
      */
     public function edit($id) {
         $this->authorize('update', Room::class);
@@ -74,7 +88,11 @@ class RoomController extends Controller {
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified room in storage.
+     *
+     * @param Request $request
+     * @param [type] $id
+     * @return void
      */
     public function update(Request $request, $id) {
         $this->authorize('update', Room::class);
@@ -91,7 +109,10 @@ class RoomController extends Controller {
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified room from storage.
+     *
+     * @param [type] $id
+     * @return void
      */
     public function destroy($id) {
         $this->authorize('delete', Room::class);

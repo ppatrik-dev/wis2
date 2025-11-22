@@ -18,7 +18,10 @@ use Illuminate\Http\Request;
 
 class TermStudentController extends Controller {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the students.
+     *
+     * @param Term $term
+     * @return void
      */
     public function index(Term $term) {
         $students = $term->termStudents();
@@ -27,7 +30,10 @@ class TermStudentController extends Controller {
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new student.
+     *
+     * @param Term $term
+     * @return void
      */
     public function create(Term $term) {
         $this->authorize('create', $term);
@@ -35,7 +41,11 @@ class TermStudentController extends Controller {
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created student in storage.
+     *
+     * @param Request $request
+     * @param Term $term
+     * @return void
      */
     public function store(Request $request, Term $term) {
         $validated = $request->validate([
@@ -68,7 +78,11 @@ class TermStudentController extends Controller {
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified student.
+     *
+     * @param Term $term
+     * @param [type] $studentId
+     * @return void
      */
     public function show(Term $term, $studentId) {
         $student = $term->termStudentBy($studentId);
@@ -77,7 +91,11 @@ class TermStudentController extends Controller {
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified student.
+     *
+     * @param Term $term
+     * @param [type] $studentId
+     * @return void
      */
     public function edit(Term $term, $studentId) {
         $student = $term->termStudentBy($studentId);
@@ -86,7 +104,12 @@ class TermStudentController extends Controller {
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified student in storage.
+     *
+     * @param Request $request
+     * @param Term $term
+     * @param [type] $studentId
+     * @return void
      */
     public function update(Request $request, Term $term, $studentId) {
         $validated = $request->validate([
@@ -112,7 +135,11 @@ class TermStudentController extends Controller {
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified student from storage.
+     *
+     * @param Term $term
+     * @param [type] $studentId
+     * @return void
      */
     public function destroy(Term $term, $studentId) {
         $termStudent = $term->termStudents()
@@ -131,6 +158,12 @@ class TermStudentController extends Controller {
             ->with('success', 'Student removed from term successfully!');
     }
 
+    /**
+     * Register the specified student to storage.
+     *
+     * @param Term $term
+     * @return void
+     */
     public function register(Term $term) {
         $user = Auth::user();
 
@@ -148,6 +181,12 @@ class TermStudentController extends Controller {
             ->with('success', 'Logged user registered to the term successfully!');
     }
 
+    /**
+     * Unregister the specified student from storage.
+     *
+     * @param Term $term
+     * @return void
+     */
     public function unregister(Term $term) {
         $user = Auth::user();
 

@@ -22,9 +22,15 @@ class Term extends Model {
     use HasFactory;
 
     /**
-     * The attributes that are mass assignable.
+     * The table associated with the model.
+     *
+     * @var string
      */
     protected $table = "terms";
+
+    /**
+     * The attributes that are mass assignable.
+     */
     protected $fillable = [
         'lecturer_id',
         'room_id',
@@ -38,31 +44,57 @@ class Term extends Model {
         'start_at',
         'end_at'
     ];
+
+    /**
+     * The attributes that should be cast to native types.
+     */
     protected $casts = [
         'registration_required' => 'boolean',
         'start_at' => 'datetime',
         'end_at' => 'datetime',
     ];
 
+    /**
+     * The lecturer that belong to the term.
+     *
+     * @return void
+     */
     public function lecturer() {
         return $this->belongsTo(User::class, 'lecturer_id');
     }
 
+    /**
+     * The course that belong to the term.
+     *
+     * @return void
+     */
     public function course() {
         return $this->belongsTo(Course::class, 'course_id');
     }
 
+    /**
+     * The room that belong to the term.
+     *
+     * @return void
+     */
     public function room() {
         return $this->belongsTo(Room::class, 'room_id');
     }
 
-
-    // To get score of students in this term
+    /**
+     * Score of students in this term.
+     *
+     * @return void
+     */
     public function termStudents() {
         return $this->hasMany(TermStudent::class, 'term_id');
     }
 
-    // To get all students registered for this term
+    /**
+     * All students registered for this term.
+     *
+     * @return void
+     */
     public function students() {
         return $this->belongsToMany(
             User::class,
@@ -72,6 +104,11 @@ class Term extends Model {
         )->withPivot('score');
     }
 
+    /**
+     * Course students.
+     *
+     * @return array
+     */
     public function getCourseStudentsAttribute(): array {
         $students = $this->course->students ?? collect();
 
@@ -80,29 +117,61 @@ class Term extends Model {
         )->toArray();
     }
 
+    /**
+     * Term students.
+     *
+     * @return void
+     */
     public function getTermStudentsAttribute() {
         return $this->termStudents()->with('student')->get();
     }
 
+    /**
+     * Term student by id.
+     *
+     * @param [type] $studentId
+     * @return void
+     */
     public function termStudentBy($studentId) {
         return $this->termStudents()
             ->where('student_id', $studentId)
             ->first();
     }
 
+    /**
+     * Term day attribute.
+     *
+     * @return void
+     */
     public function getDayAttribute() {
         return $this->start_at->format('l');
     }
 
+    /**
+     * Term duration in minutes.
+     *
+     * @return void
+     */
     public function getDurationInMinutes() {
         return $this->start_at->diffInMinutes($this->end_at);
     }
 
+    /**
+     * Term overlapping start and end.
+     *
+     * @param [type] $otherTerm
+     * @return boolean
+     */
     public function isOverlapping($otherTerm): bool {
         return $this->start_at < $otherTerm->end_at &&
             $this->end_at > $otherTerm->start_at;
     }
 
+    /**
+     * Term model boot method checks for term registration required value.
+     *
+     * @return void
+     */
     protected static function booted() {
 
         static::created(function (Term $term) {
