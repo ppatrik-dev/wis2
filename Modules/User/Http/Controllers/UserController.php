@@ -28,7 +28,10 @@ class UserController extends Controller {
     }
 
     /**
-     * Display a listing of the resource.
+     * Show all users
+     *
+     * @param Request $request
+     * @return void
      */
     public function index(Request $request) {
         $this->authorize('viewAny', User::class);
@@ -57,7 +60,9 @@ class UserController extends Controller {
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show form to create a new user
+     *
+     * @return void
      */
     public function create() {
         $this->authorize('create', User::class);
@@ -66,7 +71,10 @@ class UserController extends Controller {
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create a new user
+     *
+     * @param Request $request
+     * @return void
      */
     public function store(Request $request) {
         $this->authorize('create', User::class);
@@ -88,7 +96,10 @@ class UserController extends Controller {
     }
 
     /**
-     * Show the specified resource.
+     * Show specific user
+     *
+     * @param int $id
+     * @return void
      */
     public function show($id) {
         $roles = $this->roleService->getAllRoles();
@@ -98,7 +109,10 @@ class UserController extends Controller {
     }
 
     /**
-     * Show the form for editing the specified resource.
+     *
+     *
+     * @param int $id
+     * @return void
      */
     public function edit($id) {
         $roles = $this->roleService->getAllRoles();
@@ -108,7 +122,11 @@ class UserController extends Controller {
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update a user
+     *
+     * @param Request $request
+     * @param int $id
+     * @return void
      */
     public function update(Request $request, $id) {
 
@@ -136,7 +154,10 @@ class UserController extends Controller {
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete a user
+     *
+     * @param int $id
+     * @return void
      */
     public function destroy($id) {
         $user = User::findOrFail($id);

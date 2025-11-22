@@ -17,9 +17,22 @@ use Illuminate\Support\Facades\Log;
 
 class TermPolicy {
     use HandlesAuthorization;
+    /**
+     * View any term
+     *
+     * @param User $user
+     * @return void
+     */
     public function viewAny(User $user) {
         return $user->hasAnyRole(['admin', 'guarantor', 'lecturer', 'student', 'user']);
     }
+    /**
+     * View a specific term
+     *
+     * @param User $user
+     * @param Term $term
+     * @return void
+     */
     public function view(User $user, Term $term) {
         if ($user->hasRole('admin')) {
             return true;
@@ -36,9 +49,22 @@ class TermPolicy {
 
         return false;
     }
+    /**
+     * Create a term
+     *
+     * @param User $user
+     * @return void
+     */
     public function create(User $user) {
         return $user->hasAnyRole(['admin', 'guarantor']);
     }
+    /**
+     * Update a term
+     *
+     * @param User $user
+     * @param Term $term
+     * @return void
+     */
     public function update(User $user, Term $term) {
         if ($user->hasRole('admin')) {
             return true;
@@ -48,6 +74,13 @@ class TermPolicy {
         }
         return false;
     }
+    /**
+     * Delete a term
+     *
+     * @param User $user
+     * @param Term $term
+     * @return void
+     */
     public function delete(User $user, Term $term) {
         if ($user->hasRole('admin')) {
             return true;
@@ -57,7 +90,13 @@ class TermPolicy {
         }
         return false;
     }
-
+    /**
+     * Register for a term
+     *
+     * @param User $user
+     * @param Term $term
+     * @return void
+     */
     public function register(User $user, Term $term) {
         if ($user->hasRole('student') && $term->course->students()->where('users.id', $user->id)->exists()) {
             return true;

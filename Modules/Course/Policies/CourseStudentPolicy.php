@@ -16,22 +16,57 @@ use Modules\Course\Models\Course;
 
 class CourseStudentPolicy {
     use HandlesAuthorization;
+    /**
+     * View students of the course
+     *
+     * @param User $user
+     * @param Course $course
+     * @return void
+     */
     public function viewAny(User $user, Course $course) {
         return $user->hasRole('admin')
             || ($user->hasRole('guarantor') && $course->guarantor_id === $user->id)  || ($user->hasRole('lecturer') && $course->lecturers()->where('lecturer_id', $user->id)->exists());
     }
+    /**
+     * View specific student of the course
+     *
+     * @param User $user
+     * @param Course $course
+     * @return void
+     */
     public function view(User $user, Course $course) {
         return $user->hasRole('admin')
             || ($user->hasRole('guarantor') && $course->guarantor_id === $user->id)  || $course->lecturers()->where('lecturer_id', $user->id)->exists();
     }
+    /**
+     * CAdd a student to the course
+     *
+     * @param User $user
+     * @param Course $course
+     * @return void
+     */
     public function create(User $user, Course $course) {
         return $user->hasRole('admin')
             || ($user->hasRole('guarantor') && $course->guarantor_id === $user->id);
     }
+    /**
+     * Update a student of the course
+     *
+     * @param User $user
+     * @param Course $course
+     * @return void
+     */
     public function update(User $user, Course $course) {
         return $user->hasRole('admin')
             || ($user->hasRole('guarantor') && $course->guarantor_id === $user->id);
     }
+    /**
+     * Remove student from the course
+     *
+     * @param User $user
+     * @param Course $course
+     * @return void
+     */
     public function delete(User $user, Course $course) {
         return $user->hasRole('admin')
             || ($user->hasRole('guarantor') && $course->guarantor_id === $user->id);

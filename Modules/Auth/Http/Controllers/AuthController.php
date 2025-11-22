@@ -18,12 +18,29 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller {
+
+    /**
+     * Show the registration form.
+     *
+     * @return void
+     */
     public function showRegister() {
         return view('auth::register');
     }
+    /**
+     * Show the login form.
+     *
+     * @return void
+     */
     public function showLogin() {
         return view('auth::login');
     }
+    /**
+     *  Handle user registration.
+     *
+     * @param Request $request request object containing user input
+     * @return void
+     */
     public function register(Request $request) {
         $validated = $request->validate([
             'degree'      => ['nullable', 'string', 'max:64'],
@@ -42,6 +59,12 @@ class AuthController extends Controller {
         Auth::login($user);
         return redirect()->route('course.index')->with('success', 'User created successfully !');
     }
+    /**
+     * Handle user login.
+     *
+     * @param Request $request request object containing user input
+     * @return void
+     */
     public function login(Request $request) {
         $validated = $request->validate([
             'email'       => ['required', 'email', 'max:64',],
@@ -53,6 +76,12 @@ class AuthController extends Controller {
         }
         throw ValidationException::withMessages((['credentials' => 'The provided credentials do not match our records.']));
     }
+    /**
+     *  Handle user logout.
+     *
+     * @param Request $request request object
+     * @return void
+     */
     public function logout(Request $request) {
         Auth::logout();
         $request->session()->invalidate();
