@@ -49,20 +49,19 @@
 </tbody></table>
 
 <h3>Video</h3>
-<p>Ak nejde video kliknite na nazov a otvori sa na youtube</p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/uuVdDMu6ndg?si=KlQ0YojIots40FIj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<p>Ak nefunguje prehrávač alebo sa video prehráva <b>bez zvuku</b>, kliknite na tento <a href="https://www.youtube.com/watch?v=uuVdDMu6ndg">odkaz</a>.</p>
 
 <h2>Implementácia</h2>
 <p>Projekt je implementovaný v jazyku PHP s použitím frameworku <b>Laravel</b> a knižnice <code>spatie/permission</code>.</p>
 <p>Na vývoj užívateľského grafického rozhrania bola využitá knižnica <b>Flowbite</b> využívajúca <b>Tailwind</b>.</p>
-<p>Implementácia projektu je rozdelená do modulov:</p>
+<p>Projekt je implementovaný využitím modulárnej architektúry <code>laravel-modules</code>:</p>
 
 <h3>1. Auth</h3>
 <p>Controllers</p>
 <ul>
 	<li><code>AuthController.php</code> - Zakladná autentifikácia užívateľov (registrácia, prihlásenie, odhlásenie)</li>
 </ul>
-
 <p>Views</p>
 <ul>
     <li><code>card/index.php</code> - komponenta karty</li>
@@ -79,7 +78,6 @@
 <ul>
 	<li><code>UserController.php</code></li>
 </ul>
-
 <p>Views</p>
 <ul>
 	<li><code>index.blade.php</code> - zobrazenie  (odstraňovanie) užívateľov</li>
@@ -87,11 +85,11 @@
 	<li><code>show.blade.php</code> - zobrazenie užívateľa</li>
 	<li><code>edit.blade.php</code> - editácia užívateľa</li>
 </ul>
-
 <p>Models</p>
 <ul>
 	<li><code>User.php</code></li>
 </ul>
+
 <h3>3. Course</h3>
 <p>Controllers</p>
 <ul>
@@ -101,7 +99,6 @@
 	<li><code>CourseLecturerController.php</code></li>
 	<li><code>MyCourseController.php</code></li>
 </ul>
-
 <p>Views</p>
 <ul>
 	<li><code>course/</code> - vytváranie, zobrazovanie, editovanie, odstraňovanie kurzov</li>
@@ -110,7 +107,6 @@
 	<li><code>course_lecturer/</code> - pridávanie, zobrazovanie, odstraňovanie lektorov </li>
 	<li><code>my_course/</code> - zobrazenie zapísaných kurzov s hodnotením</li>
 </ul>
-
 <p>Models</p>
 <ul>
 	<li><code>Course.php</code></li>
@@ -118,6 +114,7 @@
 	<li><code>CourseStudent.php</code></li>
 	<li><code>CourseLecturer.php</code></li>
 </ul>
+
 <h3>4. Term</h3>
 <p>Controllers</p>
 <ul>
@@ -126,7 +123,6 @@
 	<li><code>TermStudentController.php</code></li>
 	<li><code>TimeTableController.php</code></li>
 </ul>
-
 <p>Views</p>
 <ul>
 	<li><code>term/</code> - vytváranie, zobrazovanie, editovanie a odstraňovanie termínov</li>
@@ -134,7 +130,6 @@
 	<li><code>term_student/</code> - registrovanie, zobrazovanie, odstraňovanie, hodnotenie študentov</li>
 	<li><code>timetable/</code> - zobrazovanie rozvrhu</li>
 </ul>
-
 <p>Models</p>
 <ul>
 	<li><code>Term.php</code></li>
