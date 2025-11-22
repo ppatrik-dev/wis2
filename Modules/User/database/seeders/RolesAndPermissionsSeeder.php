@@ -2,6 +2,16 @@
 
 namespace Modules\User\database\seeders;
 
+//
+//   @file RolesAndPermissionsSeeder.php
+//   @author Miroslav Basista (xbasism00@vutbr.cz)
+//   @brief Seeder to populate roles and permissions for the User module
+//   @version 0.1
+//   @date 2025-11-22
+//
+//   @copyright Copyright (c) 2025
+//
+
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;

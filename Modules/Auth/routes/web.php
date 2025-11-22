@@ -1,5 +1,13 @@
 <?php
-
+//
+//   @file web.php
+//   @author Miroslav Basista (xbasism00@vutbr.cz)
+//   @brief Web routes for authentication module
+//   @version 0.1
+//   @date 2025-11-22
+//
+//   @copyright Copyright (c) 2025
+//
 use Illuminate\Support\Facades\Route;
 use Modules\Auth\Http\Controllers\AuthController;
 

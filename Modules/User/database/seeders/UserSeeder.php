@@ -1,7 +1,15 @@
 <?php
 
 namespace Modules\User\database\seeders;
-
+//
+//   @file UserSeeder.php
+//   @author Miroslav Basista (xbasism00@vutbr.cz)
+//   @brief Seeder to create default users for the User module
+//   @version 0.1
+//   @date 2025-11-22
+//
+//   @copyright Copyright (c) 2025
+//
 use Illuminate\Database\Seeder;
 use Modules\User\Models\User;
 

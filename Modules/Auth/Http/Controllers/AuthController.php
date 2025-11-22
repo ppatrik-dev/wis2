@@ -1,7 +1,15 @@
 <?php
 
 namespace Modules\Auth\Http\Controllers;
-
+//
+//   @file AuthController.php
+//   @author Miroslav Basista (xbasism00@vutbr.cz)
+//   @brief Controller for user authentication (registration, login, logout)
+//   @version 0.1
+//   @date 2025-11-22
+//
+//   @copyright Copyright (c) 2025
+//
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;

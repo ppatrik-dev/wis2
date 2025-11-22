@@ -1,7 +1,15 @@
 <?php
 
 namespace Modules\User\Http\Controllers;
-
+//
+//   @file UserController.php
+//   @author Miroslav Basista (xbasism00@vutbr.cz)
+//   @brief Controller for managing users in the User module
+//   @version 0.1
+//   @date 2025-11-22
+//
+//   @copyright Copyright (c) 2025
+//
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\User\Models\User;
@@ -18,7 +26,7 @@ class UserController extends Controller {
     public function __construct(RoleService $roleService) {
         $this->roleService = $roleService;
     }
-    
+
     /**
      * Display a listing of the resource.
      */
@@ -42,7 +50,8 @@ class UserController extends Controller {
             $users->setCollection($filteredUsers);
         }
 
-        return view('user::index',
+        return view(
+            'user::index',
             ["users" => $users, "roles" => $roles, "query" => $query, "selectedRole" => $role]
         );
     }

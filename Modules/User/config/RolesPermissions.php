@@ -1,5 +1,13 @@
 <?php
-
+//
+//   @file RolesPermissions.php
+//   @author Miroslav Basista (xbasism00@vutbr.cz)
+//   @brief Configuration file defining roles and permissions for the User module
+//   @version 0.1
+//   @date 2025-11-22
+//
+//   @copyright Copyright (c) 2025
+//
 return [
 
     /*

@@ -1,7 +1,15 @@
 <?php
 
 namespace Modules\Term\Policies;
-
+//
+//   @file RoomPolicy.php
+//   @author Miroslav Basista (xbasism00@vutbr.cz)
+//   @brief Policy class for Room model authorization
+//   @version 0.1
+//   @date 2025-11-22
+//
+//   @copyright Copyright (c) 2025
+//
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Modules\Term\Models\Term;
 use Modules\User\Models\User;

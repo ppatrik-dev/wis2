@@ -1,7 +1,15 @@
 <?php
 
 namespace Modules\Course\Policies;
-
+//
+//   @file CourseStudentPolicy.php
+//   @author Miroslav Basista (xbasism00@vutbr.cz)
+//   @brief Policy class for CourseStudent model authorization
+//   @version 0.1
+//   @date 2025-11-22
+//
+//   @copyright Copyright (c) 2025
+//
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Modules\User\Models\User;
 use Modules\Course\Models\Course;
