@@ -37,7 +37,7 @@
 <tr><td>systemadministrator@gmail.com</td><td>admin12345</td><td>Administrátor</td></tr>
 <tr><td>guarantordefault@gmail.com</td><td>guarantor12345</td><td>Garant</td></tr>
 <tr><td>lecturerdefault@gmail.com</td><td>lecturer12345</td><td>Lektor</td></tr>
-<tr><td>defaultstudent@gmail.com</td><td>student12345</td><td>Student</td></tr>
+<tr><td>defaultstudent@gmail.com</td><td>student12345</td><td>Študent</td></tr>
 </tbody></table>
 
 <h3>Video</h3>
@@ -47,13 +47,14 @@ TODO: Mirek321
 <p>Projekt je implementovaný v jazyku PHP s použitím frameworku Laravel.</p>
 <p>Implementácia projektu je rozdelená do modulov:</p>
 
-<h3>1. User</h3>
-<p style="font-weight: bold;">Controllers</p>
+<ol>
+<li style="font-weight: bold;">User</li>
+<p>Controllers</p>
 <ul>
 	<li>UserController.php</li>
 </ul>
 
-<p style="font-weight: bold;">Views</p>
+<p>Views</p>
 <ul>
 	<li>index.blade.php - zobrazenie  (odstraňovanie) užívateľov</li>
 	<li>create.blade.php - vytvárenie užívateľa</li>
@@ -61,13 +62,14 @@ TODO: Mirek321
 	<li>edit.blade.php - editácia užívateľa</li>
 </ul>
 
-<p style="font-weight: bold;">Models</p>
+<p>Models</p>
 <ul>
 	<li>User.php</li>
 </ul>
+<br>
 
-<h3>2. Course</h3>
-<p style="font-weight: bold;">Controllers</p>
+<li style="font-weight: bold;">Course</li>
+<p>Controllers</p>
 <ul>
 	<li>CourseController.php</li>
 	<li>CourseNewsController.php</li> 
@@ -76,7 +78,7 @@ TODO: Mirek321
 	<li>MyCourseController.php</li> 
 </ul>
 
-<p style="font-weight: bold;">Views</p>
+<p>Views</p>
 <ul>
 	<li>course/ - vytváranie, zobrazovanie, editovanie, odstraňovanie kurzov</li>
 	<li>course_news/ - vytváranie, zobrazovanie, editovanie noviniek</li>
@@ -85,16 +87,17 @@ TODO: Mirek321
 	<li>my_course/ - zobrazenie zapísaných kurzov s hodnotením</li>
 </ul>
 
-<p style="font-weight: bold;">Models</p>
+<p>Models</p>
 <ul>
 	<li>Course.php</li>
 	<li>CourseNews.php</li>
 	<li>CourseStudent.php</li>
 	<li>CourseLecturer.php</li>
 </ul>
+<br>
 
-<h3>3. Term</h3>
-<p style="font-weight: bold;">Controllers</p>
+<li style="font-weight: bold;">Term</li>
+<p>Controllers</p>
 <ul>
 	<li>TermController.php</li>
 	<li>RoomController.php</li>
@@ -102,7 +105,7 @@ TODO: Mirek321
 	<li>TimeTableController.php</li>
 </ul>
 
-<p style="font-weight: bold;">Views</p>
+<p>Views</p>
 <ul>
 	<li>term/ - vytváranie, zobrazovanie, editovanie a odstraňovanie termínov</li>
 	<li>room/ - vytváranie, zobrazovanie, editovanie a odstraňovanie miestností </li>
@@ -110,11 +113,21 @@ TODO: Mirek321
 	<li>timetable/ - zobrazovanie rozvrhu</li>
 </ul>
 
-<p style="font-weight: bold;">Models</p>
+<p>Models</p>
 <ul>
 	<li>Term.php</li>
 	<li>Room.php</li>
 	<li>TermStudent.php</li>
+</ul>
+</ol>
+<br>
+
+Implementované rozšírenia:
+<ul>
+	<li>Vyhľadávanie užívateľov podľa mena/priezviska a filtrovanie podľa role</li>
+	<li>Vyhľadávanie kurzov podľa názvu alebo skratky kurzu</li>
+	<li>Vyhľadávanie termínov podľa názvu a filtrovanie podľa kurzu a typu</li>
+	<li>Vyhľadávanie miestností podľa názvu</li>
 </ul>
 
 <h3>Databáza</h3>
