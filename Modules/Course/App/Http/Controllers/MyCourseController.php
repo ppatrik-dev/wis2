@@ -2,6 +2,15 @@
 
 namespace Modules\Course\App\Http\Controllers;
 
+/**
+ * @file MyCourseCOntroller.php
+ * @author Miroslav Basista (xbasim00), Nataliia Solomatina (xsolom02)
+ * @brief Controller for My Courses
+ * @version 0.1
+ * @date 2025-11-22
+ * @copyright Copyright (c) 2025
+ */
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\Course\App\Http\Requests\StoreCourseRequest;
@@ -23,7 +32,10 @@ class MyCourseController extends Controller {
 
 
     /**
-     * Display a listing of the resource.
+     * Show all courses where is user a student
+     *
+     * @param Request $request
+     * @return void
      */
     public function index(Request $request) {
         $courses = Auth::user()->courses;

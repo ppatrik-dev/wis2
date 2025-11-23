@@ -2,7 +2,7 @@
 
 /**
  * @file web.php
- * @author Patrik Procházka (xprochp00@vutbr.cz)
+ * @author Patrik Procházka (xprochp00@vutbr.cz), Miroslav Basista (xbasim00)
  * @brief Web routes for Term module
  * @version 0.1
  * @date 2025-11-22

@@ -28,7 +28,7 @@
 		Člen
 	</dd>
 	<dt>URL aplikácie</dt>
-	<dd><a href="https://url">https://www.stud.fit.vutbr.cz/~xbasism00/index.php</a></dd>
+	<dd><a href="https://www.stud.fit.vutbr.cz/~xbasism00/index.php">https://www.stud.fit.vutbr.cz/~xbasism00/index.php</a></dd>
 </dl>
 
 <h2>Užívatelia systému pre testovanie</h2>
@@ -159,10 +159,14 @@ Implementované rozšírenia:
 <code>php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"</code><br>
 <code>php composer-setup.php --install-dir=/usr/local/bin --filename=composer</code><br>
 <code>php -r "unlink('composer-setup.php');"</code>
+<p>Následne nainštalovať <code>sail</code></p>
 <code>composer require laravel/sail --dev</code><br>
 <code>php artisan sail:install</code><br>
+<p>Prideliť práva pre pomocný skript</p>
 <code>chmod +x sail.sh</code><br>
+<p>Vytvoriť kontajner ktorý sá následne aj spustí</p>
 <code>./sail.sh up -d</code><br>
+<p>Je potrebné aj spustiť <code>Vite dev server</code> pre fungovanie <code>Tailwind.css</code> pomocou príkazu</p>
 <code>./sail.sh npm run dev</code><br>
 
 <p>V novom okne terminálu spustíme príkazy pre inicializovanie datábazy:</p>

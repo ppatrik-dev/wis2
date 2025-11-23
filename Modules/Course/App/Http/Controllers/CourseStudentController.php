@@ -1,12 +1,14 @@
 <?php
+
 /**
  * @file CourseStudentController.php
- * @author Nataliia Solomatina (xsolom02)
+ * @author Nataliia Solomatina (xsolom02), Miroslav Basista (xbasim00)
  * @brief Controller for Course Student resource
  * @version 0.1
  * @date 2025-11-22
  * @copyright Copyright (c) 2025
  */
+
 namespace Modules\Course\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
@@ -17,17 +19,14 @@ use Illuminate\View\View;
 use Illuminate\Support\Facades\Log;
 use Modules\Course\Models\Course;
 
-class CourseStudentController extends Controller
-{
+class CourseStudentController extends Controller {
     private $courseStudentService;
 
-    public function __construct(CourseStudentService $courseStudentService)
-    {
+    public function __construct(CourseStudentService $courseStudentService) {
         $this->courseStudentService = $courseStudentService;
     }
 
-    public function index(Request $request, int $courseId)
-    {
+    public function index(Request $request, int $courseId) {
         if (!auth()->check()) {
             return redirect()->route('login');
         }
@@ -44,8 +43,7 @@ class CourseStudentController extends Controller
         return view('course::course_student.index', compact('courseStudents', 'courseId', 'course'));
     }
 
-    public function create(int $courseId)
-    {
+    public function create(int $courseId) {
         if (!auth()->check()) {
             return redirect()->route('login');
         }
@@ -65,8 +63,7 @@ class CourseStudentController extends Controller
         return view('course::course_student.create', compact('courseId', 'users'));
     }
 
-    public function store(Request $request, int $courseId)
-    {
+    public function store(Request $request, int $courseId) {
         if (!auth()->check()) {
             return redirect()->route('login');
         }
@@ -101,14 +98,12 @@ class CourseStudentController extends Controller
         }
     }
 
-    public function show(int $courseId, int $studentId)
-    {
+    public function show(int $courseId, int $studentId) {
         $courseStudent = $this->courseStudentService->getById($courseId, $studentId);
         return view('course::course_student.show', compact('courseStudent', 'courseId', 'studentId'));
     }
 
-    public function edit(int $courseId, int $studentId)
-    {
+    public function edit(int $courseId, int $studentId) {
         $course = Course::findOrFail($courseId);
         $this->authorize('course-student.update', $course);
 
@@ -116,8 +111,7 @@ class CourseStudentController extends Controller
         return view('course::course_student.edit', compact('courseStudent', 'courseId', 'studentId'));
     }
 
-    public function update(Request $request, int $courseId, int $studentId)
-    {
+    public function update(Request $request, int $courseId, int $studentId) {
         Log::info('CourseStudentController.update called', [
             'course_id' => $courseId,
             'student_id' => $studentId,
@@ -169,34 +163,29 @@ class CourseStudentController extends Controller
         }
     }
 
-    public function destroy(int $courseId, int $studentId)
-    {
+    public function destroy(int $courseId, int $studentId) {
         $this->courseStudentService->removeStudent($courseId, $studentId);
 
         return redirect()->route('course.student.index', $courseId)
             ->with('success', 'Student removed from course successfully!');
     }
 
-    public function getCoursesByStudent(Request $request, int $studentId)
-    {
+    public function getCoursesByStudent(Request $request, int $studentId) {
         $courses = $this->courseStudentService->getCoursesByStudent($studentId);
         return view('course::course_student.student_course', compact('courses', 'studentId'));
     }
 
-    public function approved(int $courseId)
-    {
+    public function approved(int $courseId) {
         $courseStudents = $this->courseStudentService->getApprovedByCourse($courseId);
         return view('course::course_student.approved', compact('courseStudents', 'courseId'));
     }
 
-    public function pending(int $courseId)
-    {
+    public function pending(int $courseId) {
         $courseStudents = $this->courseStudentService->getPendingByCourse($courseId);
         return view('course::course_student.pending', compact('courseStudents', 'courseId'));
     }
 
-    public function approve(int $courseId, int $studentId)
-    {
+    public function approve(int $courseId, int $studentId) {
         if (!auth()->check()) {
             return redirect()->route('login');
         }
@@ -222,8 +211,7 @@ class CourseStudentController extends Controller
         }
     }
 
-    public function reject(int $courseId, int $studentId)
-    {
+    public function reject(int $courseId, int $studentId) {
         if (!auth()->check()) {
             return redirect()->route('login');
         }
@@ -245,8 +233,7 @@ class CourseStudentController extends Controller
         }
     }
 
-    public function updateScore(Request $request, int $courseId, int $studentId)
-    {
+    public function updateScore(Request $request, int $courseId, int $studentId) {
         $validated = $request->validate([
             'final_score' => ['required', 'numeric', 'min:0', 'max:100'],
         ]);
@@ -272,8 +259,7 @@ class CourseStudentController extends Controller
         }
     }
 
-    public function lookupPublic(int $courseId, Request $request)
-    {
+    public function lookupPublic(int $courseId, Request $request) {
         $id = $request->query('id');
         if (!$id || !is_numeric($id)) {
             return response('', 200);
@@ -289,8 +275,7 @@ class CourseStudentController extends Controller
         return response($name ?: '', 200);
     }
 
-    public function scores(int $courseId)
-    {
+    public function scores(int $courseId) {
         if (!auth()->check()) {
             return redirect()->route('login');
         }
@@ -307,8 +292,7 @@ class CourseStudentController extends Controller
         return view('course::course_student.scores', compact('courseStudents', 'courseId'));
     }
 
-    public function bulkApprove(Request $request, int $courseId)
-    {
+    public function bulkApprove(Request $request, int $courseId) {
         $validated = $request->validate([
             'student_ids' => ['required', 'array'],
             'student_ids.*' => ['integer', 'exists:course_student,id'],
@@ -323,8 +307,7 @@ class CourseStudentController extends Controller
         }
     }
 
-    public function bulkReject(Request $request, int $courseId)
-    {
+    public function bulkReject(Request $request, int $courseId) {
         $validated = $request->validate([
             'student_ids' => ['required', 'array'],
             'student_ids.*' => ['integer', 'exists:course_student,id'],
@@ -339,8 +322,7 @@ class CourseStudentController extends Controller
         }
     }
 
-    public function registerCurrentUser(Request $request, int $courseId)
-    {
+    public function registerCurrentUser(Request $request, int $courseId) {
         if (!auth()->check()) {
             return redirect()->route('login');
         }
@@ -382,8 +364,7 @@ class CourseStudentController extends Controller
         }
     }
 
-    public function unregisterCurrentUser(Request $request, int $courseId)
-    {
+    public function unregisterCurrentUser(Request $request, int $courseId) {
         if (!auth()->check()) {
             return redirect()->route('login');
         }
@@ -403,8 +384,7 @@ class CourseStudentController extends Controller
         }
     }
 
-    public function registerMultiple(Request $request)
-    {
+    public function registerMultiple(Request $request) {
         if (!auth()->check()) {
             return redirect()->route('login');
         }
@@ -434,8 +414,7 @@ class CourseStudentController extends Controller
         return redirect()->back()->with('success', implode('; ', array_slice($messages, 0, 5)));
     }
 
-    public function unregisterMultiple(Request $request)
-    {
+    public function unregisterMultiple(Request $request) {
         if (!auth()->check()) {
             return redirect()->route('login');
         }
@@ -465,8 +444,7 @@ class CourseStudentController extends Controller
     /**
      * Update registrations in bulk: accepts visible_course_ids[] and selected_course_ids[] (selected means register)
      */
-    public function updateRegistrations(Request $request)
-    {
+    public function updateRegistrations(Request $request) {
         if (!auth()->check()) {
             return redirect()->route('login');
         }

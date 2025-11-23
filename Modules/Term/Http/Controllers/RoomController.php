@@ -1,7 +1,8 @@
 <?php
+
 /**
  * @file RoomController.php
- * @author Patrik Procházka (xprochp00@vutbr.cz)
+ * @author Patrik Procházka (xprochp00@vutbr.cz),Miroslav Basista (xbasim00)
  * @brief Controller for managing rooms in the Room module
  * @version 0.1
  * @date 2025-11-22

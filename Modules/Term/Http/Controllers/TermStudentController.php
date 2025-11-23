@@ -1,7 +1,8 @@
 <?php
+
 /**
  * @file TermStudentController.php
- * @author Patrik Procházka (xprochp00@vutbr.cz)
+ * @author Patrik Procházka (xprochp00@vutbr.cz), Miroslav Basista (xbasim00)
  * @brief Controller for managing terms students in the Term module
  * @version 0.1
  * @date 2025-11-22
@@ -191,7 +192,8 @@ class TermStudentController extends Controller {
         $user = Auth::user();
 
         $termStudent = TermStudent::where([
-            'term_id' => $term->id, 'student_id' => $user->id
+            'term_id' => $term->id,
+            'student_id' => $user->id
         ])->firstOrFail();
 
         $termStudent->delete();

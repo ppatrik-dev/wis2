@@ -1,7 +1,8 @@
 <?php
+
 /**
  * @file web.php
- * @author Nataliia Solomatina (xsolom02)
+ * @author Nataliia Solomatina (xsolom02), Miroslav Basista (xbasim00)
  * @brief Web routes for Course module
  * @version 0.1
  * @date 2025-11-22

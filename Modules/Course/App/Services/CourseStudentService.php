@@ -1,7 +1,8 @@
 <?php
+
 /**
  * @file CourseStudentService.php
- * @author Nataliia Solomatina (xsolom02)
+ * @author Nataliia Solomatina (xsolom02), Miroslav Basista (xbasim00)
  * @brief Service for managing course students
  * @version 0.1
  * @date 2025-11-22
@@ -17,13 +18,11 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class CourseStudentService
-{
+class CourseStudentService {
     /**
      * Get all students for a specific course
      */
-    public function getByCourse(int $courseId): Collection
-    {
+    public function getByCourse(int $courseId): Collection {
         $course = Course::findOrFail($courseId);
         return $course->students()->withPivot(['final_score', 'is_approved', 'approved_at', 'created_at', 'updated_at'])->get();
     }
@@ -31,8 +30,7 @@ class CourseStudentService
     /**
      * Get paginated students for a course
      */
-    public function getPaginatedByCourse(int $courseId, int $perPage = 15): LengthAwarePaginator
-    {
+    public function getPaginatedByCourse(int $courseId, int $perPage = 15): LengthAwarePaginator {
         return CourseStudent::with(['student', 'course'])
             ->where('course_id', $courseId)
             ->orderBy('created_at', 'desc')
@@ -42,8 +40,7 @@ class CourseStudentService
     /**
      * Get student by ID
      */
-    public function getById(int $courseId, int $studentId): CourseStudent
-    {
+    public function getById(int $courseId, int $studentId): CourseStudent {
         $course = Course::findOrFail($courseId);
         $student = $course->students()->where('student_id', $studentId)->first();
 
@@ -61,8 +58,7 @@ class CourseStudentService
     /**
      * Get current approved enrollment count for a course
      */
-    public function getApprovedEnrollmentCount(int $courseId): int
-    {
+    public function getApprovedEnrollmentCount(int $courseId): int {
         return CourseStudent::where('course_id', $courseId)
             ->where('is_approved', true)
             ->count();
@@ -71,8 +67,7 @@ class CourseStudentService
     /**
      * Check if course has available capacity
      */
-    public function hasAvailableCapacity(int $courseId): bool
-    {
+    public function hasAvailableCapacity(int $courseId): bool {
         $course = Course::findOrFail($courseId);
 
         if (!$course->capacity || $course->capacity <= 0) {
@@ -86,8 +81,7 @@ class CourseStudentService
     /**
      * Add student to course with automatic approval if capacity allows
      */
-    public function addStudent(int $courseId, int $studentId, array $data = []): CourseStudent
-    {
+    public function addStudent(int $courseId, int $studentId, array $data = []): CourseStudent {
         return DB::transaction(function () use ($courseId, $studentId, $data) {
             $course = Course::findOrFail($courseId);
 
@@ -127,8 +121,7 @@ class CourseStudentService
     /**
      * Update student enrollment
      */
-    public function update(int $courseId, int $studentId, array $data): CourseStudent
-    {
+    public function update(int $courseId, int $studentId, array $data): CourseStudent {
         return DB::transaction(function () use ($courseId, $studentId, $data) {
             $course = Course::findOrFail($courseId);
             $student = $course->students()->where('student_id', $studentId)->first();
@@ -151,8 +144,7 @@ class CourseStudentService
     /**
      * Remove student from course
      */
-    public function removeStudent(int $courseId, int $studentId): bool
-    {
+    public function removeStudent(int $courseId, int $studentId): bool {
         return DB::transaction(function () use ($courseId, $studentId) {
             return CourseStudent::where('course_id', $courseId)
                 ->where('student_id', $studentId)
@@ -163,8 +155,7 @@ class CourseStudentService
     /**
      * Get courses by student
      */
-    public function getCoursesByStudent(int $studentId): Collection
-    {
+    public function getCoursesByStudent(int $studentId): Collection {
         return CourseStudent::with(['course', 'course.guarantor'])
             ->where('student_id', $studentId)
             ->orderBy('created_at', 'desc')
@@ -174,8 +165,7 @@ class CourseStudentService
     /**
      * Get approved students for a course
      */
-    public function getApprovedByCourse(int $courseId): Collection
-    {
+    public function getApprovedByCourse(int $courseId): Collection {
         return CourseStudent::with(['student'])
             ->where('course_id', $courseId)
             ->where('is_approved', true)
@@ -186,8 +176,7 @@ class CourseStudentService
     /**
      * Get pending students for a course
      */
-    public function getPendingByCourse(int $courseId): Collection
-    {
+    public function getPendingByCourse(int $courseId): Collection {
         return CourseStudent::with(['student'])
             ->where('course_id', $courseId)
             ->where('is_approved', false)
@@ -198,8 +187,7 @@ class CourseStudentService
     /**
      * Approve student enrollment
      */
-    public function approve(int $id): CourseStudent
-    {
+    public function approve(int $id): CourseStudent {
         return DB::transaction(function () use ($id) {
             $courseStudent = CourseStudent::findOrFail($id);
             $courseStudent->update([
@@ -213,8 +201,7 @@ class CourseStudentService
     /**
      * Reject student enrollment
      */
-    public function reject(int $id): CourseStudent
-    {
+    public function reject(int $id): CourseStudent {
         return DB::transaction(function () use ($id) {
             $courseStudent = CourseStudent::findOrFail($id);
             $courseStudent->update([
@@ -228,8 +215,7 @@ class CourseStudentService
     /**
      * Update student final score by course and student id (when pivot id isn't available)
      */
-    public function updateScoreByCourseAndStudent(int $courseId, int $studentId, float $score): CourseStudent
-    {
+    public function updateScoreByCourseAndStudent(int $courseId, int $studentId, float $score): CourseStudent {
         return DB::transaction(function () use ($courseId, $studentId, $score) {
             $courseStudent = CourseStudent::where('course_id', $courseId)
                 ->where('student_id', $studentId)
@@ -248,8 +234,7 @@ class CourseStudentService
     /**
      * Check if student is enrolled in course
      */
-    public function isEnrolled(int $courseId, int $studentId): bool
-    {
+    public function isEnrolled(int $courseId, int $studentId): bool {
         return CourseStudent::where('course_id', $courseId)
             ->where('student_id', $studentId)
             ->exists();
@@ -258,8 +243,7 @@ class CourseStudentService
     /**
      * Get student enrollment status
      */
-    public function getEnrollmentStatus(int $courseId, int $studentId): ?CourseStudent
-    {
+    public function getEnrollmentStatus(int $courseId, int $studentId): ?CourseStudent {
         return CourseStudent::where('course_id', $courseId)
             ->where('student_id', $studentId)
             ->first();
@@ -268,8 +252,7 @@ class CourseStudentService
     /**
      * Get students with scores
      */
-    public function getStudentsWithScores(int $courseId): Collection
-    {
+    public function getStudentsWithScores(int $courseId): Collection {
         return CourseStudent::with(['student'])
             ->where('course_id', $courseId)
             ->whereNotNull('final_score')
@@ -280,8 +263,7 @@ class CourseStudentService
     /**
      * Bulk approve students
      */
-    public function bulkApprove(array $studentIds): int
-    {
+    public function bulkApprove(array $studentIds): int {
         return DB::transaction(function () use ($studentIds) {
             $pivots = CourseStudent::whereIn('id', $studentIds)->get();
 
@@ -303,8 +285,7 @@ class CourseStudentService
     /**
      * Bulk reject students
      */
-    public function bulkReject(array $studentIds): int
-    {
+    public function bulkReject(array $studentIds): int {
         return DB::transaction(function () use ($studentIds) {
             return CourseStudent::whereIn('id', $studentIds)
                 ->update([
