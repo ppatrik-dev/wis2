@@ -1,4 +1,12 @@
 <?php
+/**
+ * @file CourseStudentDatabaseSeeder.php
+ * @author Nataliia Solomatina (xsolom02)
+ * @brief Seeder for Course Students pivot table
+ * @version 0.1
+ * @date 2025-11-22
+ * @copyright Copyright (c) 2025
+ */
 
 namespace Modules\Course\database\seeders;
 
@@ -36,7 +44,7 @@ class CourseStudentDatabaseSeeder extends Seeder
         $courses = [
             'IZP' => 'all',
             'IIS' => 'all',
-            'PKA' => 'some', // only some students will be enrolled into PKA
+            'PKA' => 'some',
         ];
 
         foreach ($courses as $code => $mode) {
@@ -60,7 +68,7 @@ class CourseStudentDatabaseSeeder extends Seeder
                 $exists = $course->students()->where('student_id', $student->id)->exists();
                 $pivotData = [
                     'final_score' => null,
-                    'is_approved' => 1, // automatically approved/enrolled
+                    'is_approved' => 1, // automatically approved
                     'approved_at' => Carbon::now(),
                 ];
 

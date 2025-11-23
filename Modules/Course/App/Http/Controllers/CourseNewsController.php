@@ -1,4 +1,12 @@
 <?php
+/** 
+ * @file CourseNewsController.php
+ * @author Nataliia Solomatina (xsolom02)
+ * @brief Controller for Course News resource
+ * @version 0.1
+ * @date 2025-11-22
+ * @copyright Copyright (c) 2025
+ */
 
 namespace Modules\Course\App\Http\Controllers;
 
@@ -9,17 +17,20 @@ use Modules\User\Models\User;
 use Modules\Course\Models\Course;
 use Illuminate\View\View;
 
-class CourseNewsController extends Controller {
+class CourseNewsController extends Controller
+{
     private $courseNewsService;
 
-    public function __construct(CourseNewsService $courseNewsService) {
+    public function __construct(CourseNewsService $courseNewsService)
+    {
         $this->courseNewsService = $courseNewsService;
     }
 
     /**
      * Display a listing of course news for a specific course
      */
-    public function index(Request $request, int $courseId) {
+    public function index(Request $request, int $courseId)
+    {
         $course = Course::findOrFail($courseId);
         $courseNews = $this->courseNewsService->getByCourse($courseId);
         return view('course::course_news.index', compact('courseNews', 'courseId', 'course'));
@@ -28,14 +39,16 @@ class CourseNewsController extends Controller {
     /**
      * Show the form for creating a new course news
      */
-    public function create(int $courseId): View {
+    public function create(int $courseId): View
+    {
         return view('course::course_news.create', compact('courseId'));
     }
 
     /**
      * Store a newly created course news
      */
-    public function store(Request $request, int $courseId) {
+    public function store(Request $request, int $courseId)
+    {
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
@@ -52,7 +65,8 @@ class CourseNewsController extends Controller {
     /**
      * Display the specified course news
      */
-    public function show(int $courseId, int $id) {
+    public function show(int $courseId, int $id)
+    {
         $courseNews = $this->courseNewsService->getById($id);
         return view('course::course_news.show', compact('courseNews', 'courseId'));
     }
@@ -60,7 +74,8 @@ class CourseNewsController extends Controller {
     /**
      * Show the form for editing the specified course news
      */
-    public function edit(int $courseId, int $id) {
+    public function edit(int $courseId, int $id)
+    {
         $courseNews = $this->courseNewsService->getById($id);
         return view('course::course_news.edit', compact('courseNews', 'courseId'));
     }
@@ -68,7 +83,8 @@ class CourseNewsController extends Controller {
     /**
      * Update the specified course news
      */
-    public function update(Request $request, int $courseId, int $id) {
+    public function update(Request $request, int $courseId, int $id)
+    {
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
@@ -83,7 +99,8 @@ class CourseNewsController extends Controller {
     /**
      * Remove the specified course news
      */
-    public function destroy(int $courseId, int $id) {
+    public function destroy(int $courseId, int $id)
+    {
         $this->courseNewsService->delete($id);
 
         return redirect()->route('course.news.index', $courseId)
@@ -93,7 +110,8 @@ class CourseNewsController extends Controller {
     /**
      * Search course news
      */
-    public function search(Request $request, int $courseId) {
+    public function search(Request $request, int $courseId)
+    {
         $query = $request->get('q', '');
         $courseNews = $this->courseNewsService->search($courseId, $query);
 

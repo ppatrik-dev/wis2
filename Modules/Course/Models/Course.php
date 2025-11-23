@@ -1,4 +1,12 @@
 <?php
+/**
+ * @file Course.php
+ * @author Nataliia Solomatina (xsolom02)
+ * @brief Model for Course table
+ * @version 0.1
+ * @date 2025-11-22
+ * @copyright Copyright (c) 2025
+ */
 
 namespace Modules\Course\Models;
 
@@ -28,7 +36,8 @@ use Modules\Course\Models\CourseLecturer;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @mixin \Eloquent
  */
-class Course extends Model {
+class Course extends Model
+{
     use HasFactory;
 
     /**
@@ -42,42 +51,49 @@ class Course extends Model {
         'is_approved' => 'boolean',
     ];
 
-    public function guarantor() {
+    public function guarantor()
+    {
         return $this->belongsTo(User::class, 'guarantor_id');
     }
 
-    public function news() {
+    public function news()
+    {
         return $this->hasMany(CourseNews::class);
     }
 
-    public function students() {
+    public function students()
+    {
         return $this->belongsToMany(User::class, 'course_student', 'course_id', 'student_id')
             ->using(CourseStudent::class)
             ->withPivot(['final_score', 'is_approved', 'approved_at', 'created_at', 'updated_at']);
     }
 
 
-    public function lecturers() {
+    public function lecturers()
+    {
         return $this->belongsToMany(User::class, 'course_lecturer', 'course_id', 'lecturer_id')
             ->using(CourseLecturer::class)
             ->withPivot(['role', 'created_at', 'updated_at']);
     }
 
-    public function terms() {
+    public function terms()
+    {
         return $this->hasMany(Term::class);
     }
 
     /**
      * Get the number of approved students enrolled
      */
-    public function getApprovedEnrollmentCount(): int {
+    public function getApprovedEnrollmentCount(): int
+    {
         return $this->students()->wherePivot('is_approved', true)->count();
     }
 
     /**
      * Get remaining capacity
      */
-    public function getRemainingCapacity(): ?int {
+    public function getRemainingCapacity(): ?int
+    {
         if (!$this->capacity || $this->capacity <= 0) {
             return null; // No limit
         }
@@ -89,7 +105,8 @@ class Course extends Model {
     /**
      * Check if course is full
      */
-    public function isFull(): bool {
+    public function isFull(): bool
+    {
         if (!$this->capacity || $this->capacity <= 0) {
             return false; // No limit, never full
         }
@@ -102,7 +119,8 @@ class Course extends Model {
      * @param User $user
      * @return boolean
      */
-    public function isStudentApproved(User $user): bool {
+    public function isStudentApproved(User $user): bool
+    {
         return $this->students()
             ->where('student_id', $user->id)
             ->wherePivot('is_approved', true)

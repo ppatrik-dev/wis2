@@ -1,4 +1,12 @@
 <?php
+/**
+ * @file CourseNews.php
+ * @author Nataliia Solomatina (xsolom02)
+ * @brief Model for Course News table
+ * @version 0.1
+ * @date 2025-11-22
+ * @copyright Copyright (c) 2025
+ */
 
 namespace Modules\Course\Models;
 
@@ -32,9 +40,4 @@ class CourseNews extends Model
     {
         return $this->belongsTo(User::class, 'author_id');
     }
-
-    // protected static function newFactory(): CourseNewsFactory
-    // {
-    //     // return CourseNewsFactory::new();
-    // }
 }

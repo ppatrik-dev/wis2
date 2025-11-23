@@ -1,4 +1,12 @@
 <?php
+/**
+ * @file CourseLecturerService.php
+ * @author Nataliia Solomatina (xsolom02)
+ * @brief Service for managing course lecturers
+ * @version 0.1
+ * @date 2025-11-22
+ * @copyright Copyright (c) 2025
+ */
 
 namespace Modules\Course\App\Services;
 
@@ -51,7 +59,6 @@ class CourseLecturerService
             throw new \Exception('Lecturer not found in this course.');
         }
 
-        // Load the lecturer data and return the pivot with lecturer relationship
         $pivot = $lecturer->pivot;
         $pivot->lecturer = $lecturer;
         $pivot->course = $course;
@@ -80,7 +87,6 @@ class CourseLecturerService
                 'role' => 'lecturer', // Always lecturer
             ]);
 
-            // Return the pivot model
             return $course->lecturers()->where('lecturer_id', $lecturerId)->first()->pivot;
         });
     }
@@ -101,7 +107,6 @@ class CourseLecturerService
             // Update pivot data
             $course->lecturers()->updateExistingPivot($lecturerId, ['role' => $role]);
 
-            // Return updated pivot
             return $course->lecturers()->where('lecturer_id', $lecturerId)->first()->pivot;
         });
     }
@@ -117,19 +122,6 @@ class CourseLecturerService
                 ->delete() > 0;
         });
     }
-
-    /**
-     * Remove lecturer by ID
-     */
-    /*
-    public function delete(int $id): bool
-    {
-        return DB::transaction(function () use ($id) {
-            $courseLecturer = CourseLecturer::findOrFail($id);
-            return $courseLecturer->delete();
-        });
-    }
-    */
 
     /**
      * Get courses by lecturer

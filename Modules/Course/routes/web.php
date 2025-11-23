@@ -1,4 +1,12 @@
 <?php
+/**
+ * @file web.php
+ * @author Nataliia Solomatina (xsolom02)
+ * @brief Web routes for Course module
+ * @version 0.1
+ * @date 2025-11-22
+ * @copyright Copyright (c) 2025
+ */
 
 use Illuminate\Support\Facades\Route;
 use Modules\Course\App\Http\Controllers\CourseController;

@@ -1,4 +1,12 @@
 <?php
+/**
+ * @file CourseStudent.php
+ * @author Nataliia Solomatina (xsolom02)
+ * @brief Model for Course Student table
+ * @version 0.1
+ * @date 2025-11-22
+ * @copyright Copyright (c) 2025
+ */
 
 namespace Modules\Course\Models;
 

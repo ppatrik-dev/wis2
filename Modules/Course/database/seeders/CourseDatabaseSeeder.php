@@ -1,4 +1,12 @@
 <?php
+/**
+ * @file CourseDatabaseSeeder.php
+ * @author Nataliia Solomatina (xsolom02)
+ * @brief Seeder for Courses table
+ * @version 0.1
+ * @date 2025-11-22
+ * @copyright Copyright (c) 2025
+ */
 
 namespace Modules\Course\database\seeders;
 

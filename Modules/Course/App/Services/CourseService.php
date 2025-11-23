@@ -1,4 +1,12 @@
 <?php
+/**
+ * @file CourseService.php
+ * @author Nataliia Solomatina (xsolom02)
+ * @brief Service for managing courses
+ * @version 0.1
+ * @date 2025-11-22
+ * @copyright Copyright (c) 2025
+ */
 
 namespace Modules\Course\App\Services;
 
@@ -9,7 +17,10 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class CourseService
 {
-
+    /**
+     * All courses
+     * @return Collection<int, Course>
+     */
     public function getAll(): Collection
     {
         return Course::with(['guarantor', 'students', 'lecturers', 'news'])
@@ -17,12 +28,22 @@ class CourseService
             ->get();
     }
 
+    /**
+     * Get course by its id
+     * @param int $id
+     * @return Course
+     */
     public function getById(int $id): Course
     {
         return Course::with(['guarantor', 'students', 'lecturers', 'news', 'terms'])
             ->findOrFail($id);
     }
 
+    /**
+     * Create a new course
+     * @param array $data
+     * @return Course
+     */
     public function create(array $data): Course
     {
         return DB::transaction(function () use ($data) {
@@ -36,6 +57,12 @@ class CourseService
         });
     }
 
+    /**
+     * Update an existing course
+     * @param int $id
+     * @param array $data
+     * @return Course
+     */
     public function update(int $id, array $data): Course
     {
         return DB::transaction(function () use ($id, $data) {
@@ -56,6 +83,11 @@ class CourseService
         });
     }
 
+    /**
+     * Delete a course
+     * @param int $id
+     * @return bool
+     */
     public function delete(int $id): bool
     {
         return DB::transaction(function () use ($id) {
@@ -64,7 +96,9 @@ class CourseService
         });
     }
 
-
+    /**
+     * Search courses by name or code
+     */
     public function search(string $query): Collection
     {
         return Course::with(['guarantor', 'students', 'lecturers'])
@@ -74,7 +108,11 @@ class CourseService
             ->get();
     }
 
-    //Get courses by guarantor
+    /**
+     * Get course by guarantor
+     * @param int $guarantorId
+     * @return Collection<int, Course>
+     */
     public function getByGuarantor(int $guarantorId): Collection
     {
         return Course::with(['guarantor', 'students', 'lecturers'])
@@ -83,8 +121,11 @@ class CourseService
             ->get();
     }
 
-
-    //Get courses by academic year
+    /**
+     * Get course by academic year
+     * @param string $academicYear
+     * @return Collection<int, Course>
+     */
     public function getByAcademicYear(string $academicYear): Collection
     {
         return Course::with(['guarantor', 'students', 'lecturers'])
@@ -93,7 +134,11 @@ class CourseService
             ->get();
     }
 
-    //Approve course??? 
+    /**
+     * Approve a course
+     * @param int $id
+     * @return Course
+     */
     public function approve(int $id): Course
     {
         return DB::transaction(function () use ($id) {
@@ -103,8 +148,10 @@ class CourseService
         });
     }
 
-
-    //Get approved courses
+    /**
+     * Get approved courses
+     * @return Collection<int, Course>
+     */
     public function getApproved(): Collection
     {
         return Course::with(['guarantor', 'students', 'lecturers'])
@@ -113,7 +160,11 @@ class CourseService
             ->get();
     }
 
-    //Get paginated courses fot blade? 
+    /**
+     * Get paginated list of courses
+     * @param int $perPage
+     * @return LengthAwarePaginator<int, Course>
+     */
     public function getPaginated(int $perPage = 15): LengthAwarePaginator
     {
         return Course::with(['guarantor', 'students', 'lecturers'])->orderBy('created_at', 'desc')->paginate($perPage);

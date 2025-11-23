@@ -1,4 +1,11 @@
 <?php
+/**
+ * @file CourseController.php
+ * @author Nataliia Solomatina (xsolom02)
+ * @brief Controller for Course resource
+ * @version 0.1
+ * @date 2025-11-22
+ */
 
 namespace Modules\Course\App\Http\Controllers;
 
@@ -11,10 +18,12 @@ use Modules\User\Models\User;
 use Illuminate\View\View;
 
 
-class CourseController extends Controller {
+class CourseController extends Controller
+{
 
     protected $courseService;
-    public function __construct(CourseService $courseService) {
+    public function __construct(CourseService $courseService)
+    {
         $this->courseService = $courseService;
     }
 
@@ -22,7 +31,8 @@ class CourseController extends Controller {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $query = $request->get('q', '');
         $user = auth()->user();
         $isAdmin = $user && $user->hasRole('admin');
@@ -52,7 +62,8 @@ class CourseController extends Controller {
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): View {
+    public function create(): View
+    {
         $this->authorize('course.create');
 
         $users = User::select('id', 'first_name', 'last_name')
@@ -66,7 +77,8 @@ class CourseController extends Controller {
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCourseRequest $request) {
+    public function store(StoreCourseRequest $request)
+    {
         $this->authorize('course.create');
 
         try {
@@ -93,7 +105,6 @@ class CourseController extends Controller {
                         }
                     }
                 } catch (\Exception $e) {
-                    // Don't block course creation on role assignment failure; log silently if logging available
                 }
             }
 
@@ -106,7 +117,8 @@ class CourseController extends Controller {
     /**
      * Show the specified resource.
      */
-    public function show($id) {
+    public function show($id)
+    {
         $course = $this->courseService->getById((int) $id);
         return view('course::course.show', compact('course'));
     }
@@ -114,7 +126,8 @@ class CourseController extends Controller {
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id): View {
+    public function edit($id): View
+    {
         $course = $this->courseService->getById((int) $id);
         $this->authorize('course.update', $course);
 
@@ -129,7 +142,8 @@ class CourseController extends Controller {
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCourseRequest $request, $id) {
+    public function update(UpdateCourseRequest $request, $id)
+    {
         $oldCourse = $this->courseService->getById((int) $id);
         $this->authorize('course.update', $oldCourse);
 
@@ -183,7 +197,8 @@ class CourseController extends Controller {
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
         // Only admin can delete courses
         if (!auth()->check() || !auth()->user()->hasRole('admin')) {
             abort(403, 'Unauthorized');
@@ -197,7 +212,8 @@ class CourseController extends Controller {
     /**
      * Approve a course (admin only).
      */
-    public function approve($id) {
+    public function approve($id)
+    {
         if (!auth()->check() || !auth()->user()->hasRole('admin')) {
             abort(403, 'Unauthorized');
         }
