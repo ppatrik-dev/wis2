@@ -2,6 +2,15 @@
 
 namespace Modules\Term\Http\Controllers;
 
+/**
+ * @file TimeTableController.php
+ * @author Miroslav Basista (xbasism00.vutbr.cz)
+ * @brief Controller for timetable
+ * @version 0.1
+ * @date 2025-11-22
+ * @copyright Copyright (c) 2025
+ */
+
 use App\Http\Controllers\Controller;
 use Modules\User\Models\User;
 use Modules\Term\Models\Term;
@@ -13,8 +22,12 @@ use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 
 class TimeTableController extends Controller {
+
     /**
-     * Display a listing of the resource.
+     * Show timetable
+     *
+     * @param Request $request
+     * @return void
      */
     public function index(Request $request) {
         $weekDays = [
