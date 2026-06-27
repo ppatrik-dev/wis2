@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/images/wis2.png" alt="Project Icon" height="130">
+  <img src="public/images/wis2.png" alt="Project Icon" height="140">
 </p>
 
 A **modular web-based information system** built with **Laravel (PHP 8.1)** that provides management of users, courses, scheduling, and academic activities. The system implements role-based access control, a structured modular architecture, and a modern responsive UI built with **Flowbite** and **Tailwind CSS** components.
@@ -90,7 +90,7 @@ Provides management of classrooms including creation, updates, and availability 
 
 The system uses **Laravel migrations and seeders** to manage the structure and initial data in **MySQL** database.
 
-[Entity Relation diagram](/docs/wis2-er-diagram.svg) – Shows the database structure and relationships between system entities.
+[Entity Relation diagram](/docs/wis2-er-diagram.svg) – Visualizes the database structure and relationships between system entities.
 
 ---
 
