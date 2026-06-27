@@ -34,6 +34,60 @@ https://github.com/user-attachments/assets/38b933f7-0991-4e22-8755-7a87a1231775
 
 ---
 
+## ⚙️ Installation & Setup
+
+### 📋 Requirements
+
+- `Docker`
+- `PHP 8.1`
+- `Composer`
+- `Node.js` & `npm`
+
+### 🚀 Getting Started
+
+#### 1. Install Laravel Sail
+
+```bash
+composer require laravel/sail --dev
+php artisan sail:install
+```
+
+#### 2. Make the helper script executable
+
+```bash
+chmod +x sail.sh
+```
+
+#### 3. Start the Docker containers
+
+```bash
+./sail.sh up -d
+```
+
+#### 4. Install frontend dependencies and start the Vite development server
+
+```bash
+./sail.sh npm install
+./sail.sh npm run dev
+```
+
+#### 5. Initialize the database
+
+Open a new terminal and run:
+
+```bash
+./sail.sh php artisan migrate:fresh
+./sail.sh php artisan db:seed
+```
+
+#### 6. Open the application
+
+```text
+http://localhost/
+```
+
+---
+
 ## 🧩 Modules
 
 ### 🔐 Authentication
