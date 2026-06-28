@@ -92,7 +92,7 @@ http://localhost/
 
 ### 🔐 Authentication
 
-Responsible for user authentication including registration, login, logout, and session management.
+Provides secure user authentication, including registration, login with remember me option, logout, and session management.
 
 <p align="center">
   <img src="docs/screens/register-login-page.png" alt="Home page screenshot" width="900" />
@@ -102,7 +102,7 @@ Responsible for user authentication including registration, login, logout, and s
 
 ### 👤 User Management
 
-Provides complete user administration with role assignment, permissions, search, filtering, and CRUD operations.
+Manages user accounts, role assignments, and permissions. Supports user creation, editing, deletion, searching by name, and filtering by assigned role.
 
 <p align="center">
   <img src="docs/screens/users-page.png" alt="Home page screenshot" width="900" />
@@ -112,7 +112,7 @@ Provides complete user administration with role assignment, permissions, search,
 
 ### 📚 Course Management
 
-Allows administrators and lecturers to manage courses, assign lecturers, enroll students, publish course news, and evaluate student performance.
+Handles course administration, including course creation, lecturer assignment, student enrollment, course announcements, grading, and personal course overview.
 
 <p align="center">
   <img src="docs/screens/courses-page.png" alt="Home page screenshot" width="900" />
@@ -122,7 +122,7 @@ Allows administrators and lecturers to manage courses, assign lecturers, enroll 
 
 ### 📅 Term Management
 
-Provides management of teaching terms, classrooms, student registrations, grading, and timetable visualization.
+Manages teaching terms, student registrations, grading, timetable visualization, and supports searching and filtering of scheduled terms.
 
 <p align="center">
   <img src="docs/screens/terms-page.png" alt="Home page screenshot" width="900" />
@@ -132,7 +132,7 @@ Provides management of teaching terms, classrooms, student registrations, gradin
 
 ### 🏠 Room Management
 
-Provides management of classrooms including creation, updates, and availability tracking.
+Provides classroom management for scheduled terms, including room creation, editing, availability management, and room search functionality.
 
 <p align="center">
   <img src="docs/screens/rooms-page.png" alt="Home page screenshot" width="900" />
